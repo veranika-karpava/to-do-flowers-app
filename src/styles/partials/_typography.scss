@@ -16,3 +16,26 @@
     font-weight: 400;
     font-style: normal;
 }
+
+@mixin font-stack ($font-family, $font-style, $font-size, $font-weight, $line-height, $color) {
+    font-family: $font-family;
+    font-style: $font-style;
+    font-size: $font-size;
+    font-weight: $font-weight;
+    line-height: $line-height;
+    color: $color;
+}
+
+
+// Main Heading
+@mixin font-stack-heading-mobile {
+    @include font-stack ('Josefin Sans', normal, 1.25rem, 700, 1.25rem, $bg-list-light);
+    letter-spacing: 0.4rem;
+    text-transform: uppercase;
+}
+
+@mixin font-stack-heading-tablet {
+    @include font-stack ('Josefin Sans', normal, 1.75rem, 700, 1.75rem, $bg-list-light);
+    letter-spacing: 0.4rem;
+    text-transform: uppercase;
+}
