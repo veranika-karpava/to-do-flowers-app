@@ -18,10 +18,20 @@ const App = () => {
     setIsDark(!isDark)
   }
 
+
+  // delete task from list
+  const deleteTask = (name) => {
+    const newDataTasks = [...dataTasks];
+    const index = newDataTasks.indexOf(name);
+    newDataTasks.splice(index, 1);
+    setDataTasks(newDataTasks);
+  }
+
+
   return (
     <div className="App">
       <Header clickToggle={clickToggle} isDark={isDark} />
-      <ToDoList isDark={isDark} dataTasks={dataTasks} />
+      <ToDoList isDark={isDark} dataTasks={dataTasks} deleteTask={deleteTask} />
       <h1>Hello World</h1>
       <Footer isDark={isDark} />
     </div>
