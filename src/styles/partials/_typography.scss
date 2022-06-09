@@ -1,0 +1,18 @@
+@use "../partials/variables" as *;
+@use "../partials/mixins" as *;
+
+@font-face {
+    font-family: 'Josefin Sans';
+    src: url('../../assets/fonts/JosefinSans-Bold.woff2') format ("woff2"),
+        url('../../assets/fonts/JosefinSans-Bold.woff2') format ("woff");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Josefin Sans';
+    src: url('../../assets/fonts/JosefinSans-Regular.woff2') format("woff2"),
+        url('../../assets/fonts/JosefinSans-Regular.woff') format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
