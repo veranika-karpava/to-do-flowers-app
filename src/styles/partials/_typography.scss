@@ -39,3 +39,12 @@
     letter-spacing: 0.4rem;
     text-transform: uppercase;
 }
+
+// Footer
+@mixin font-stack-footer-light {
+    @include font-stack ('Josefin Sans', normal, 0.6875rem, 400, 0.7rem, $text-color-actived-light);
+}
+
+@mixin font-stack-footer-dark {
+    @include font-stack ('Josefin Sans', normal, 0.6875rem, 400, 0.7rem, $text-color-completed-dark);
+}
