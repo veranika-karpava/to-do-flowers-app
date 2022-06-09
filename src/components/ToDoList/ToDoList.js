@@ -3,11 +3,11 @@ import ToDoTask from '../ToDoTask/ToDoTask';
 import './ToDoList.scss';
 
 
-const ToDoList = ({ dataTasks }) => {
+const ToDoList = ({ isDark, dataTasks }) => {
     return (
-        <ul>
+        <ul className={!isDark ? 'list' : 'list list__dark'}>
             {dataTasks.map((task, i) => {
-                return <ToDoTask task={task} key={i} />
+                return <ToDoTask task={task} key={i} isDark={isDark} />
             })}
         </ul>
     );

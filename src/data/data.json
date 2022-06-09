@@ -1,17 +1,11 @@
 [
     {
-        "id": 1,
-        "name": "Give dog a bath",
-        "isCompleted": false
+        "name": "Give dog a bath"
     },
     {
-        "id": 2,
-        "name": "Do laundry",
-        "isCompleted": false
+        "name": "Do laundry"
     },
     {
-        "id": 3,
-        "name": "Vacuum floor",
-        "isCompleted": false
+        "name": "Vacuum floor"
     }
 ]

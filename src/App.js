@@ -21,7 +21,7 @@ const App = () => {
   return (
     <div className="App">
       <Header clickToggle={clickToggle} isDark={isDark} />
-      <ToDoList dataTasks={dataTasks} />
+      <ToDoList isDark={isDark} dataTasks={dataTasks} />
       <h1>Hello World</h1>
       <Footer isDark={isDark} />
     </div>
