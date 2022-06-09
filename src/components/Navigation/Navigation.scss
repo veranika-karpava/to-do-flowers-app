@@ -1,0 +1,50 @@
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/variables" as *;
+
+.navigation {
+    width: 100%;
+
+    &__container {
+        @include flex(space-between, center, column, nowrap);
+
+    }
+
+    &__wrap-container {
+        @include flex(space-between, center, row, nowrap);
+        width: 90%;
+        padding: 1rem;
+        background-color: $bg-list-light;
+        border-radius: 0px 0px 4px 4px;
+        margin-bottom: 1rem;
+        @include font-stack-nav-main-light;
+    }
+
+    &__wrap-container-dark {
+        background-color: $bg-list-dark;
+    }
+
+    &__clear-button {
+        cursor: pointer;
+        border: none;
+        background-color: $bg-list-light;
+        @include font-stack-nav-main-light;
+
+        &:hover {
+            @include font-stack-nav-hover-light;
+        }
+    }
+
+    &__wrap-filter {
+        @include flex(space-evenly, center, row, nowrap);
+        width: 90%;
+        padding: 1rem;
+        background-color: $bg-list-light;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+
+    &__wrap-filter-dark {
+        background-color: $bg-list-dark;
+    }
+}

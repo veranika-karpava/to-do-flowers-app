@@ -12,7 +12,7 @@ const ToDoTask = ({ isDark, task, deleteTask }) => {
                 <input type='checkbox' onChange={() => setIsCompleted(!isCompleted)} checked={isCompleted} className='to-do-item__check-form' />
                 <label className={!isCompleted ? 'to-do-item__label' : 'to-do-item__label to-do-item__label--checked'} >{task.name}</label>
             </div>
-            <button className={!isCompleted ? 'to-do-item__button-remove' : 'to-do-item__button-remove to-do-item__button-remove--checked'} onClick={() => { deleteTask(task.name) }}>
+            <button type="button" className={!isCompleted ? 'to-do-item__button-remove' : 'to-do-item__button-remove to-do-item__button-remove--checked'} onClick={() => { deleteTask(task.name) }}>
                 <img className='to-do-item__button-icon' src={cross} alt='Delete button' />
             </button>
         </li>
