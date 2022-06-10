@@ -1,18 +1,19 @@
 import React from 'react';
-import './Navigation.scss'
+import './Navigation.scss';
+import Button from '../Button/Button';
 
-const Navigation = ({ isDark }) => {
+const Navigation = ({ isDark, deleteAllCompleted }) => {
     return (
         <nav className='navigation'>
             <div className='navigation__container'>
                 <div className={!isDark ? 'navigation__wrap-container' : 'navigation__wrap-container navigation__wrap-container-dark'}>
                     <p className='navigation__left-items'>items left</p>
-                    <button className='navigation__clear-button' type="button" >Clear Completed</button>
+                    <Button title='Clear Completed' isDark={isDark} onClick={deleteAllCompleted} />
                 </div>
                 <div className={!isDark ? 'navigation__wrap-filter' : 'navigation__wrap-filter navigation__wrap-filter-dark'}>
-                    <button type="button" className='navigation__clear-button'>All</button>
-                    <button type="button" className='navigation__clear-button'>Active</button>
-                    <button type="button" className='navigation__clear-button'>Completed</button>
+                    <Button title='All' isDark={isDark} />
+                    <Button title='Active' isDark={isDark} />
+                    <Button title='Completed' isDark={isDark} />
                 </div>
             </div>
         </nav>

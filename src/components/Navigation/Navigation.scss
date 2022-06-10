@@ -24,17 +24,6 @@
         background-color: $bg-list-dark;
     }
 
-    &__clear-button {
-        cursor: pointer;
-        border: none;
-        background-color: $bg-list-light;
-        @include font-stack-nav-main-light;
-
-        &:hover {
-            @include font-stack-nav-hover-light;
-        }
-    }
-
     &__wrap-filter {
         @include flex(space-evenly, center, row, nowrap);
         width: 90%;

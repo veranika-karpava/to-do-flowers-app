@@ -1,11 +1,14 @@
 [
     {
-        "name": "Give dog a bath"
+        "name": "Give dog a bath",
+        "completed": false
     },
     {
-        "name": "Do laundry"
+        "name": "Do laundry",
+        "completed": false
     },
     {
-        "name": "Vacuum floor"
+        "name": "Vacuum floor",
+        "completed": false
     }
 ]

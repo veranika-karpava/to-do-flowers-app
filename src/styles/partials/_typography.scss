@@ -72,5 +72,5 @@
 }
 
 @mixin font-stack-nav-hover-dark {
-    @include font-stack ('Josefin Sans', normal, 0.8rem, 400, 1rem, $text-color-hover-dark);
+    @include font-stack ('Josefin Sans', normal, 0.8rem, 400, 1rem, $active-bright-blue);
 }

@@ -17,6 +17,17 @@ const App = () => {
   const clickToggle = () => {
     setIsDark(!isDark)
   }
+  // for highlight finishing task
+  const completedTask = (name) => {
+    const newDataTasks = [...dataTasks];
+    const index = newDataTasks.findIndex(item => item.name === name);
+    if (!newDataTasks[index].completed) {
+      newDataTasks[index].completed = true;
+    } else {
+      newDataTasks[index].completed = false;
+    }
+    setDataTasks(newDataTasks);
+  }
 
   // delete task from list
   const deleteTask = (name) => {
@@ -26,11 +37,18 @@ const App = () => {
     setDataTasks(newDataTasks);
   }
 
+  // delete all completed tasks
+  const deleteAllCompleted = () => {
+    const completedDataTasks = dataTasks.filter((task) => !task.completed);
+    console.log(completedDataTasks)
+    setDataTasks(completedDataTasks);
+  }
+
 
   return (
     <div className="App">
       <Header clickToggle={clickToggle} isDark={isDark} />
-      <ToDoPage isDark={isDark} dataTasks={dataTasks} deleteTask={deleteTask} />
+      <ToDoPage isDark={isDark} dataTasks={dataTasks} completedTask={completedTask} deleteTask={deleteTask} deleteAllCompleted={deleteAllCompleted} />
       <Footer isDark={isDark} />
     </div>
   );
