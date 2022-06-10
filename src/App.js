@@ -37,6 +37,13 @@ const App = () => {
     setDataTasks(newDataTasks);
   }
 
+  // count of items in the list are left
+  const countItemsLeft = () => {
+    const LeftDataTasks = dataTasks.filter((task) => task.completed === false)
+    const counter = LeftDataTasks.length;
+    return counter;
+  }
+
   // delete all completed tasks
   const deleteAllCompleted = () => {
     const completedDataTasks = dataTasks.filter((task) => !task.completed);
@@ -48,7 +55,7 @@ const App = () => {
   return (
     <div className="App">
       <Header clickToggle={clickToggle} isDark={isDark} />
-      <ToDoPage isDark={isDark} dataTasks={dataTasks} completedTask={completedTask} deleteTask={deleteTask} deleteAllCompleted={deleteAllCompleted} />
+      <ToDoPage isDark={isDark} dataTasks={dataTasks} completedTask={completedTask} deleteTask={deleteTask} deleteAllCompleted={deleteAllCompleted} countItemsLeft={countItemsLeft} />
       <Footer isDark={isDark} />
     </div>
   );

@@ -3,7 +3,7 @@ import ToDoTask from '../ToDoTask/ToDoTask';
 import './ToDoList.scss';
 
 
-const ToDoList = ({ isDark, dataTasks, deleteTask, completedTask }) => {
+const ToDoList = ({ isDark, dataTasks, deleteTask, completedTask, countItemsLeft }) => {
 
     return (
         <ul className={!isDark ? 'list' : 'list list__dark'}>
