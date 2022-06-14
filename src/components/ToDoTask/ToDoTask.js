@@ -1,7 +1,7 @@
 import React from 'react';
 import './ToDoTask.scss';
 import cross from '../../assets/icons/icon-cross.svg';
-import { useState } from 'react';
+
 
 const ToDoTask = ({ isDark, task, deleteTask, completedTask }) => {
 
