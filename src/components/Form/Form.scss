@@ -19,6 +19,7 @@
     }
 
     &__button-submit {
+        cursor: pointer;
         border: 1px solid $text-color-completed-light;
         border-radius: 50%;
         height: 1.56rem;
@@ -28,6 +29,7 @@
     }
 
     &__input {
+        cursor: pointer;
         margin-left: 1rem;
         padding: 0;
         width: 95%;
