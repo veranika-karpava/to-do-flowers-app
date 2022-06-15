@@ -22,7 +22,7 @@
     }
 
     &__container {
-        width: 100%;
+        width: 90%;
         @include flex(space-between, center, row, nowrap);
 
         @include tablet {

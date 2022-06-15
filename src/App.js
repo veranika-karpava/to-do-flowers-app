@@ -1,7 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
 import './App.scss';
-import data from './data/data.json';
 import Header from './components/Header/Header';
 import ToDoPage from './pages/ToDoPage/ToDoPage';
 import Footer from './components/Footer/Footer';

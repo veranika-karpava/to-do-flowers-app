@@ -18,6 +18,10 @@
         border-radius: 0px 0px 4px 4px;
         margin-bottom: 1rem;
         @include font-stack-nav-main-light;
+
+        @include tablet {
+            width: 50%;
+        }
     }
 
     &__wrap-container-dark {
@@ -31,6 +35,10 @@
         background-color: $bg-list-light;
         border-radius: 4px;
         margin-bottom: 1rem;
+
+        @include tablet {
+            width: 50%;
+        }
     }
 
     &__wrap-filter-dark {

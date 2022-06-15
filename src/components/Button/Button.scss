@@ -12,6 +12,10 @@
         @include font-stack-nav-hover-light;
     }
 
+    &:focus {
+        @include font-stack-nav-hover-dark;
+    }
+
     &__dark {
         &:hover {
             @include font-stack-nav-hover-dark;

@@ -12,3 +12,15 @@
         @include font-stack-nav-main-dark;
     }
 }
+
+.message-container {
+    margin: 2rem 0rem;
+    width: 90%;
+    padding: 1rem;
+    @include font-stack-list-light;
+    @include flex(space-between, center, column, nowrap);
+
+    &__dark {
+        @include font-stack-list-dark;
+    }
+}
