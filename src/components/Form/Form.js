@@ -7,7 +7,6 @@ const Form = ({ isDark, inputText, setInputText, placeholder, submitHandler }) =
         setInputText(e.target.value);
     }
 
-
     return (
         <form className={!isDark ? 'form' : 'form form__dark'}>
             <button type='submit' className='form__button-submit' onClick={submitHandler}></button>
