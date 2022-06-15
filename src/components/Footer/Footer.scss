@@ -3,7 +3,7 @@
 @use "../../styles/partials/variables" as *;
 
 .footer {
-    padding: 2rem 1rem;
+    padding: 12rem 1rem 2rem 1rem;
     text-align: center;
     @include font-stack-footer-light;
     background-color: $bg-main-light;

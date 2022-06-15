@@ -7,7 +7,7 @@ const ToDoList = ({ isDark, dataTasks, filteredTasks, ...props }) => {
     return (
         <ul className={!isDark ? 'list' : 'list list__dark'}>
             {filteredTasks.map((task, i) => {
-                return <ToDoTask task={task} key={i} dataTasks={dataTasks} {...props} />
+                return <ToDoTask task={task} key={i} dataTasks={dataTasks} isDark={isDark} {...props} />
             })}
         </ul>
     );

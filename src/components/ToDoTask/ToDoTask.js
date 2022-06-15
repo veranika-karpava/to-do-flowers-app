@@ -5,7 +5,6 @@ import cross from '../../assets/icons/icon-cross.svg';
 
 const ToDoTask = ({ isDark, task, dataTasks, setDataTasks }) => {
 
-
     // handler for delete one item
     const deleteHandlerTask = () => {
         setDataTasks(dataTasks.filter((item) => item.id !== task.id))
@@ -27,7 +26,7 @@ const ToDoTask = ({ isDark, task, dataTasks, setDataTasks }) => {
         <li className={!isDark ? 'to-do-item' : 'to-do-item to-do-item__dark'}>
             <div className='to-do-item__container'>
                 <input type='checkbox' onChange={completedHandlerTask} checked={task.completed} className='to-do-item__check-form' value={task.name} />
-                <label className={!task.completed ? 'to-do-item__label' : 'to-do-item__label to-do-item__label--checked'} >
+                <label className={!task.completed ? 'to-do-item__label' : (!isDark ? 'to-do-item__label to-do-item__label--checked' : 'to-do-item__label to-do-item__label-dark--checked')} >
                     {task.name}</label>
             </div>
             <button type="button" className={!task.completed ? 'to-do-item__button-remove' : 'to-do-item__button-remove to-do-item__button-remove--checked'} onClick={deleteHandlerTask} >

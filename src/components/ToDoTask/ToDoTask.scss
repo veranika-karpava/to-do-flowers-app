@@ -9,6 +9,10 @@
     @include flex(space-between, center, row, nowrap);
     cursor: pointer;
 
+    &__dark {
+        border-bottom: 1px solid $text-color-completed-dark;
+    }
+
     &__container {
         width: 70%;
         @include flex(flex-start, center, row, nowrap);
@@ -76,6 +80,12 @@
     &__label--checked {
         text-decoration: line-through;
         color: $text-color-completed-light;
+    }
+
+    &__label-dark--checked {
+        color: $text-color-completed-dark;
+        text-decoration: line-through;
+
     }
 
     &__button-remove {
