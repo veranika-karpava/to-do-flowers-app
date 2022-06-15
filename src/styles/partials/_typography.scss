@@ -51,11 +51,11 @@
 
 // for list of todo
 @mixin font-stack-list-light {
-    @include font-stack ('Josefin Sans', normal, 1.125rem, 400, 1.125rem, $text-color-main-light);
+    @include font-stack ('Josefin Sans', normal, 1.125rem, 400, 1.56rem, $text-color-main-light);
 }
 
 @mixin font-stack-list-dark {
-    @include font-stack ('Josefin Sans', normal, 1.125rem, 400, 1.125rem, $text-color-main-dark);
+    @include font-stack ('Josefin Sans', normal, 1.125rem, 400, normal, $text-color-main-dark);
 }
 
 // for Navigation

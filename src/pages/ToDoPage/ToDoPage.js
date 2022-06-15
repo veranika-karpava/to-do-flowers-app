@@ -43,7 +43,7 @@ const ToDoPage = ({ isDark }) => {
 
     return (
         <section className={!isDark ? 'to-do-section' : 'to-do-section to-do-section__dark'}>
-            <Form inputText={inputText} setInputText={setInputText} placeholder='Create a new todo... ' submitHandler={submitHandler} />
+            <Form isDark={isDark} inputText={inputText} setInputText={setInputText} placeholder='Create a new todo... ' submitHandler={submitHandler} />
             {dataTasks.length === 0 ? <div className={!isDark ? 'message-container' : 'message-container message-container__dark'}>
                 <p className='message-container__message'>Your TO-DO list is empty</p></div> : <>
                 <ToDoList isDark={isDark} dataTasks={dataTasks} setDataTasks={setDataTasks} filteredTasks={filteredTasks} />
