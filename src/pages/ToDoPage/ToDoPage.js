@@ -1,91 +1,60 @@
 import React from 'react';
 import './ToDoPage.scss';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import data from '../../data/data.json';
 import Form from '../../components/Form/Form';
 import ToDoList from '../../components/ToDoList/ToDoList';
 import Navigation from '../../components/Navigation/Navigation';
 
 const ToDoPage = ({ isDark }) => {
-    // state staff
-    const [inputText, setInputText] = useState(" ");
+    // state stuff
+    const [inputText, setInputText] = useState('');
     const [dataTasks, setDataTasks] = useState(data);
+    const [status, setStatus] = useState('all');
+    const [filteredTasks, setFilteredTasks] = useState([])
 
 
     // for submiting form 
     const submitHandler = (e) => {
         e.preventDefault();
-        setDataTasks([...dataTasks, { name: inputText, completed: false }]);
+        setDataTasks([...dataTasks, { id: uuidv4(), name: inputText, completed: false }]);
         setInputText('');
     }
-    // for highlight finishing task
-    const completedTask = (name) => {
-        const newDataTasks = [...dataTasks];
-        const index = newDataTasks.findIndex(item => item.name === name);
-        if (!newDataTasks[index].completed) {
-            newDataTasks[index].completed = true;
-        } else {
-            newDataTasks[index].completed = false;
+
+    // for filter data
+
+    useEffect(() => {
+        filterHandlerForUseEffect();
+    }, [dataTasks, status]);
+
+    const filterHandlerForUseEffect = () => {
+        switch (status) {
+            case "Completed":
+                setFilteredTasks(dataTasks.filter((task) => task.completed === true))
+                break;
+            case "Active":
+                setFilteredTasks(dataTasks.filter((task) => task.completed === false))
+                break;
+            default:
+                setFilteredTasks(dataTasks);
+                break;
         }
-        setDataTasks(newDataTasks);
     }
-
-    // delete task from list
-    const deleteTask = (name) => {
-        const newDataTasks = [...dataTasks];
-        const index = newDataTasks.indexOf(name);
-        newDataTasks.splice(index, 1);
-        setDataTasks(newDataTasks);
-    }
-
-    // count of items in the list are left
-    const countItemsLeft = () => {
-        const LeftDataTasks = dataTasks.filter((task) => task.completed === false)
-        const counter = LeftDataTasks.length;
-        return counter;
-    }
-
-    // delete all completed tasks
-    const deleteAllCompleted = () => {
-        const completedDataTasks = dataTasks.filter((task) => !task.completed);
-        setDataTasks(completedDataTasks);
-    }
-
-    // // filter handler 
-    // const filterHandler = () => {
-    //   switch (status) {
-    //     case 'co'
-    //   }
-    // }
-
-    // filter for all
-    const filterAllData = () => {
-        const allDataTasks = [...dataTasks];
-        console.log(allDataTasks)
-        setDataTasks(allDataTasks);
-    }
-
-    // filter for active items
-    const filterActiveData = () => {
-        const activeDataTasks = dataTasks.filter((task) => task.completed === true);
-        console.log(activeDataTasks)
-        setDataTasks(activeDataTasks);
-    }
-
-    // filter for completed items
-    const filterCompletedData = () => {
-        const completedDataTasks = dataTasks.filter((task) => task.completed === true);
-        console.log(dataTasks)
-        console.log(completedDataTasks)
-        setDataTasks(completedDataTasks);
-    }
-
 
     return (
         <section className={!isDark ? 'to-do-section' : 'to-do-section to-do-section__dark'}>
-            <Form inputText={inputText} setInputText={setInputText} placeholder='Create a new todo... ' onClick={submitHandler} />
-            <ToDoList isDark={isDark} dataTasks={dataTasks} deleteTask={deleteTask} completedTask={completedTask} />
-            <Navigation isDark={isDark} deleteAllCompleted={deleteAllCompleted} countItemsLeft={countItemsLeft} filterAllData={filterAllData} filterActiveData={filterActiveData} filterCompletedData={filterCompletedData} />
+            <Form inputText={inputText} setInputText={setInputText} placeholder='Create a new todo... ' submitHandler={submitHandler} />
+            {dataTasks.length === 0 ? <div className={!isDark ? 'list' : 'list list__dark'}>Your TO-DO list is empty</div> : <>
+                <ToDoList isDark={isDark} dataTasks={dataTasks} setDataTasks={setDataTasks} filteredTasks={filteredTasks} />
+                <Navigation
+                    isDark={isDark}
+                    dataTasks={dataTasks}
+                    setDataTasks={setDataTasks}
+                    setStatus={setStatus}
+                    filteredTasks={filteredTasks}
+                />
+            </>}
         </section>
     );
 };
