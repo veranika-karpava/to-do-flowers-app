@@ -1,0 +1,25 @@
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/variables" as *;
+
+.button {
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    @include font-stack-nav-main-light;
+
+    &:hover {
+        @include font-stack-nav-hover-light;
+    }
+
+    &:focus {
+        @include font-stack-nav-hover-dark;
+        outline: 0px solid transparent;
+    }
+
+    &__dark {
+        &:hover {
+            @include font-stack-nav-hover-dark;
+        }
+    }
+}

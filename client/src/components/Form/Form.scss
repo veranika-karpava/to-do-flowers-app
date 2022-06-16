@@ -1,0 +1,64 @@
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/variables" as *;
+
+.form {
+    margin-top: 1rem;
+    width: 90%;
+    padding: 1rem;
+    background-color: $bg-list-light;
+    border-radius: 4px 4px;
+    @include flex(flex-start, center, row, nowrap);
+
+    @include tablet {
+        width: 50%;
+    }
+
+    &__dark {
+        background-color: $bg-list-dark;
+    }
+
+    &__button-submit {
+        cursor: pointer;
+        border: 1px solid $text-color-completed-light;
+        border-radius: 50%;
+        height: 1.56rem;
+        width: 1.56rem;
+        background:
+            linear-gradient(to left, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+    }
+
+    &__input {
+        cursor: pointer;
+        margin-left: 1rem;
+        padding: 0;
+        width: 95%;
+        height: 1.56rem;
+        background-color: transparent;
+        border: 0;
+        outline: none;
+        position: relative;
+        top: 2px;
+
+        &[type=text] {
+            box-sizing: border-box;
+            border: none;
+            @include font-stack-list-light;
+        }
+
+        &::placeholder {
+            @include font-stack-list-light;
+        }
+    }
+
+    &__input-dark {
+        &[type=text] {
+
+            @include font-stack-list-dark;
+        }
+
+        &::placeholder {
+            @include font-stack-list-dark;
+        }
+    }
+}

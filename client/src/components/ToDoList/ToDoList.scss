@@ -1,0 +1,22 @@
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/variables" as *;
+
+.list {
+    padding-left: 0;
+    margin-top: 1rem;
+    width: 90%;
+    background-color: $bg-list-light;
+    border-radius: 4px 4px 0 0;
+    @include font-stack-list-light;
+    @include flex(space-between, center, column, nowrap);
+
+    @include tablet {
+        width: 50%;
+    }
+
+    &__dark {
+        background-color: $bg-list-dark;
+        @include font-stack-list-dark;
+    }
+}

@@ -1,0 +1,57 @@
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/variables" as *;
+
+.header {
+    &__light {
+        @include style-mode-mobile;
+        background-image: url('../../assets/images/bg-light.jpg');
+
+        @include tablet {
+            @include style-mode-tablet-desktop;
+        }
+    }
+
+    &__dark {
+        @include style-mode-mobile;
+        background-image: url('../../assets/images/bg-dark.jpg');
+
+        @include tablet {
+            @include style-mode-tablet-desktop;
+        }
+    }
+
+    &__container {
+        width: 90%;
+        @include flex(space-between, center, row, nowrap);
+
+        @include tablet {
+            width: 50%;
+            margin: 0 auto;
+        }
+    }
+
+    &__heading {
+        @include font-stack-heading-mobile;
+
+        @include tablet {
+            @include font-stack-heading-tablet;
+        }
+    }
+
+    &__button-mode {
+        width: 1.25rem;
+        height: 1.25rem;
+        cursor: pointer;
+
+        &:hover {
+            transform: scale(1.2);
+        }
+
+        @include tablet {
+            width: 1.75rem;
+            height: 1.75rem;
+        }
+    }
+
+}
