@@ -26,11 +26,17 @@ const ToDoPage = ({ isDark }) => {
     }, [])
 
 
-    // for submiting form 
+    // for adding new toDo task
     const submitHandler = (e) => {
         e.preventDefault();
-        setDataTasks([...dataTasks, { id: uuidv4(), name: inputText, completed: false }]);
-        setInputText('');
+        axios.post(`http://localhost:8080/`, { id: uuidv4(), name: inputText, completed: false })
+            .then((res) => {
+                setDataTasks(res.data);
+                setInputText('');
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     // for filter data
