@@ -53,7 +53,7 @@ app.post('/', (req, res) => {
     res.status(200).send(toDoData)
 })
 
-// update status of toDoTask
+// update status of task in json file
 app.put('/', (req, res) => {
     let toDoData = readFile();
     const { id, name, completed } = req.body;
@@ -80,6 +80,41 @@ app.put('/', (req, res) => {
 
     writeFile(toDoData);
     return res.status(200).send(toDoData);
+})
+
+
+// delete one task
+app.delete('/', (req, res) => {
+    let toDoData = readFile();
+    const { id } = req.body;
+    const selectedToDo = toDoData.find((task) => task.id === id);
+    const selectedToDoIndex = toDoData.indexOf(selectedToDo)
+
+    // delete todo with id
+    if (selectedToDoIndex < 0) {
+        return res.status(404).send("Task not found");
+    } else {
+        toDoData.splice(selectedToDoIndex, 1)
+        writeFile(toDoData);
+        return res.status(200).send(toDoData)
+    }
+})
+
+// delete all completed task from data.json
+app.delete('/', (req, res) => {
+    let toDoData = readFile();
+    const { id } = req.body;
+    const selectedToDo = toDoData.find((task) => task.id === id);
+    const selectedToDoIndex = toDoData.indexOf(selectedToDo)
+
+    // delete todo with id
+    if (selectedToDoIndex < 0) {
+        return res.status(404).send("Task not found");
+    } else {
+        toDoData.splice(selectedToDoIndex, 1)
+        writeFile(toDoData);
+        return res.status(200).send(toDoData)
+    }
 })
 
 

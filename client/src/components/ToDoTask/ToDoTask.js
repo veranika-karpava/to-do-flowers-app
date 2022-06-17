@@ -8,7 +8,13 @@ const ToDoTask = ({ isDark, task, dataTasks, setDataTasks }) => {
 
     // handler for delete one item
     const deleteHandlerTask = () => {
-        setDataTasks(dataTasks.filter((item) => item.id !== task.id))
+        axios.delete(`http://localhost:8080/`, { data: { id: task.id, name: task.name, completed: task.completed } })
+            .then((res) => {
+                setDataTasks(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     //handler for checked completed
