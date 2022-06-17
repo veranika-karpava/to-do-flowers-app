@@ -2,16 +2,16 @@
     {
         "id": "3456789",
         "name": "Do Workout",
-        "completed": "false"
+        "completed": false
     },
     {
         "id": "09886543",
         "name": "Prepare Shoping List",
-        "completed": "false"
+        "completed": false
     },
     {
         "id": "2368790",
         "name": "Drink Coffe",
-        "completed": "false"
+        "completed": false
     }
 ]
