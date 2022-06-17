@@ -2,6 +2,7 @@ import React from 'react';
 import './ToDoPage.scss';
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 import Form from '../../components/Form/Form';
 import ToDoList from '../../components/ToDoList/ToDoList';
 import Navigation from '../../components/Navigation/Navigation';
@@ -12,6 +13,17 @@ const ToDoPage = ({ isDark }) => {
     const [dataTasks, setDataTasks] = useState([]);
     const [status, setStatus] = useState('all');
     const [filteredTasks, setFilteredTasks] = useState([])
+
+
+    // get toDoData to set to DataTasks
+    useEffect(() => {
+        axios
+            .get(`http://localhost:8080/`)
+            .then((res) => {
+                setDataTasks(res.data)
+            })
+            .catch((err) => console.log(`Get request dataTasks: ${err}`))
+    }, [])
 
 
     // for submiting form 
