@@ -54,12 +54,11 @@ app.post('/', (req, res) => {
 })
 
 // update status of toDoTask
-app.post('/:toDoId', (req, res) => {
+app.put('/', (req, res) => {
     let toDoData = readFile();
-    const { name, completed } = req.body;
-    const selectedToDo = toDoData.find((task) => task.id === req.params.toDoId)
-
-    // check matches req.param.id with id from data.json
+    const { id, name, completed } = req.body;
+    const selectedToDo = toDoData.find((task) => task.id === id)
+    // check matches request id with id from data.json
     if (!selectedToDo) {
         return res.status(404).send("Task not found");
     }
@@ -80,7 +79,7 @@ app.post('/:toDoId', (req, res) => {
     });
 
     writeFile(toDoData);
-    return res.status(200).send(updatedToDo);
+    return res.status(200).send(toDoData);
 })
 
 

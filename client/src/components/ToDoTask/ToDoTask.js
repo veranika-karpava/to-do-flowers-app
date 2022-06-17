@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from "axios";
 import './ToDoTask.scss';
 import cross from '../../assets/icons/icon-cross.svg';
 
@@ -10,16 +11,21 @@ const ToDoTask = ({ isDark, task, dataTasks, setDataTasks }) => {
         setDataTasks(dataTasks.filter((item) => item.id !== task.id))
     }
 
-    // handler for checked completed
+    //handler for checked completed
     const completedHandlerTask = () => {
-        setDataTasks(dataTasks.map((item) => {
+        let taskCompleted = dataTasks.find((item) => {
             if (item.id === task.id) {
-                return {
-                    ...item, completed: !item.completed
-                }
+                item.completed = !item.completed;
+                return item
             }
-            return item;
-        }))
+        })
+        axios.put(`http://localhost:8080/`, taskCompleted)
+            .then((res) => {
+                setDataTasks(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     return (
