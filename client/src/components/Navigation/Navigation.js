@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from "axios";
 import './Navigation.scss';
 import Button from '../Button/Button';
 
@@ -14,14 +15,19 @@ const Navigation = ({ isDark, dataTasks, setDataTasks, setStatus, filteredTasks 
 
     // delete all completed tasks
     const deleteHandlerAllCompleted = () => {
-        setDataTasks(dataTasks.filter((task) => !task.completed));
+        axios.delete(`http://localhost:8080/`)
+            .then((res) => {
+                setDataTasks(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     // add filter features
     const filterHandler = (e) => {
         setStatus(e.target.value)
     }
-
 
     return (
         <nav className='navigation'>

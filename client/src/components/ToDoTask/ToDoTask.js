@@ -8,7 +8,7 @@ const ToDoTask = ({ isDark, task, dataTasks, setDataTasks }) => {
 
     // handler for delete one item
     const deleteHandlerTask = () => {
-        axios.delete(`http://localhost:8080/`, { data: { id: task.id, name: task.name, completed: task.completed } })
+        axios.delete(`http://localhost:8080/${task.id}`)
             .then((res) => {
                 setDataTasks(res.data)
             })

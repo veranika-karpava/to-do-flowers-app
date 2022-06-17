@@ -84,10 +84,10 @@ app.put('/', (req, res) => {
 
 
 // delete one task
-app.delete('/', (req, res) => {
+app.delete('/:id', (req, res) => {
     let toDoData = readFile();
-    const { id } = req.body;
-    const selectedToDo = toDoData.find((task) => task.id === id);
+    const taskId = req.params.id
+    const selectedToDo = toDoData.find((task) => task.id === taskId);
     const selectedToDoIndex = toDoData.indexOf(selectedToDo)
 
     // delete todo with id
@@ -101,23 +101,13 @@ app.delete('/', (req, res) => {
 })
 
 // delete all completed task from data.json
-app.delete('/', (req, res) => {
+app.delete('/', (_req, res) => {
     let toDoData = readFile();
-    const { id } = req.body;
-    const selectedToDo = toDoData.find((task) => task.id === id);
-    const selectedToDoIndex = toDoData.indexOf(selectedToDo)
-
-    // delete todo with id
-    if (selectedToDoIndex < 0) {
-        return res.status(404).send("Task not found");
-    } else {
-        toDoData.splice(selectedToDoIndex, 1)
-        writeFile(toDoData);
-        return res.status(200).send(toDoData)
-    }
-})
-
-
+    toDoData = toDoData.filter((item) => item.completed === false);
+    writeFile(toDoData);
+    return res.status(200).send(toDoData)
+}
+)
 
 
 // port 
