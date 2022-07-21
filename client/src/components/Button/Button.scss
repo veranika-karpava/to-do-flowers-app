@@ -6,20 +6,20 @@
     cursor: pointer;
     border: none;
     background-color: transparent;
-    @include font-stack-nav-main-light;
+    @include font-stack-nav-main;
 
     &:hover {
-        @include font-stack-nav-hover-light;
+        color: $text-color-main-light;
     }
 
     &:focus {
-        @include font-stack-nav-hover-dark;
+        color: $active-bright-blue;
         outline: 0px solid transparent;
     }
 
     &__dark {
         &:hover {
-            @include font-stack-nav-hover-dark;
+            color: $active-bright-blue;
         }
     }
 }

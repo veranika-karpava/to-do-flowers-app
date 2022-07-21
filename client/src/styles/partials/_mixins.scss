@@ -42,3 +42,13 @@
         height: 1.75rem;
     }
 }
+
+@mixin style-form-list {
+    width: 90%;
+    background-color: $bg-list-light;
+    border-radius: 4px 4px 0 0;
+
+    @include tablet {
+        width: 50%;
+    }
+}

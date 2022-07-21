@@ -48,19 +48,7 @@
     @include font-stack ('Josefin Sans', normal, 1.125rem, 400, 1.56rem, $text-color-main-light);
 }
 
-// for Navigation
-@mixin font-stack-nav-main-light {
+// navigation 
+@mixin font-stack-nav-main {
     @include font-stack ('Josefin Sans', normal, 0.8rem, 400, 1rem, $text-color-actived-light);
-}
-
-@mixin font-stack-nav-main-dark {
-    @include font-stack ('Josefin Sans', normal, 0.8rem, 400, 1rem, $text-color-completed-dark);
-}
-
-@mixin font-stack-nav-hover-light {
-    @include font-stack ('Josefin Sans', normal, 0.8rem, 400, 1rem, $text-color-main-light);
-}
-
-@mixin font-stack-nav-hover-dark {
-    @include font-stack ('Josefin Sans', normal, 0.8rem, 400, 1rem, $active-bright-blue);
 }

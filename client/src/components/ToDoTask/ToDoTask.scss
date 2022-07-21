@@ -10,7 +10,7 @@
     cursor: pointer;
 
     &__dark {
-        border-bottom: 1px solid $text-color-completed-dark;
+        border-color: 1px solid $text-color-completed-dark;
     }
 
     &__container {
