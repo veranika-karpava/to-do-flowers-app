@@ -10,7 +10,7 @@
     cursor: pointer;
 
     &__dark {
-        border-color: 1px solid $text-color-completed-dark;
+        border-bottom: 1px solid $text-color-completed-dark;
     }
 
     &__container {
@@ -46,20 +46,11 @@
         }
 
         &[type="checkbox"]:hover {
-            border: 1px solid transparent;
-            background:
-                linear-gradient(to left, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
-            background-clip: padding-box, border-box;
-            background-origin: padding-box, border-box;
+            @include style-checkbox;
         }
 
         &[type="checkbox"]:checked {
-            border: 1px solid transparent;
-            background:
-                linear-gradient(to left, hsl(192, 100%, 67%), hsl(280, 87%, 65%)),
-                linear-gradient(to left, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
-            background-clip: padding-box, border-box;
-            background-origin: padding-box, border-box;
+            @include style-checkbox;
         }
 
         &[type="checkbox"]:checked::before {

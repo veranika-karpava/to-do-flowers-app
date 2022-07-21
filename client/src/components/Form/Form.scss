@@ -3,16 +3,11 @@
 @use "../../styles/partials/variables" as *;
 
 .form {
+    @include style-form-list;
     margin-top: 1rem;
-    width: 90%;
     padding: 1rem;
-    background-color: $bg-list-light;
     border-radius: 4px 4px;
     @include flex(flex-start, center, row, nowrap);
-
-    @include tablet {
-        width: 50%;
-    }
 
     &__dark {
         background-color: $bg-list-dark;
@@ -57,6 +52,7 @@
 
         &::placeholder {
             color: $text-color-main-dark;
+            background-color: $bg-list-dark;
         }
     }
 }

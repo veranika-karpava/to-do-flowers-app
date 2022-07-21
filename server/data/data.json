@@ -2,11 +2,21 @@
   {
     "id": "f615198d-f628-42e0-a951-471daab9ce3f",
     "name": "Make coffee",
-    "completed": false
+    "completed": true
   },
   {
     "id": "818fdf4f-4c97-4ba0-b2af-67911f320813",
     "name": "Something New coffe ",
+    "completed": true
+  },
+  {
+    "id": "25f9c8e8-f6a2-492b-9faa-1be1028f3399",
+    "name": "jhgvbvvvvkfkfkf",
+    "completed": false
+  },
+  {
+    "id": "458a78d6-133c-436e-bf84-cd4f9171bc37",
+    "name": "Hello",
     "completed": false
   }
 ]
