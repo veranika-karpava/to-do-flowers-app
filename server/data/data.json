@@ -3,5 +3,10 @@
     "id": "f615198d-f628-42e0-a951-471daab9ce3f",
     "name": "Make coffee",
     "completed": false
+  },
+  {
+    "id": "818fdf4f-4c97-4ba0-b2af-67911f320813",
+    "name": "Something New coffe ",
+    "completed": false
   }
 ]

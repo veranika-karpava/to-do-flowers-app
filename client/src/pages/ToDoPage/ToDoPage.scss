@@ -4,12 +4,10 @@
 
 .to-do-section {
     background-color: $bg-main-light;
-    @include font-stack-nav-main-light;
     @include flex(space-between, center, column, nowrap);
 
     &__dark {
         background-color: $bg-main-dark;
-        @include font-stack-nav-main-dark;
     }
 }
 
@@ -17,10 +15,10 @@
     margin: 2rem 0rem;
     width: 90%;
     padding: 1rem;
-    @include font-stack-list-light;
+    @include font-stack-list;
     @include flex(space-between, center, column, nowrap);
 
     &__dark {
-        @include font-stack-list-dark;
+        color: $text-color-main-dark;
     }
 }

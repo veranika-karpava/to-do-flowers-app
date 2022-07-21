@@ -42,21 +42,21 @@
         &[type=text] {
             box-sizing: border-box;
             border: none;
-            @include font-stack-list-light;
+            @include font-stack-list;
         }
 
         &::placeholder {
-            @include font-stack-list-light;
+            @include font-stack-list;
         }
     }
 
     &__input-dark {
         &[type=text] {
-            @include font-stack-list-dark;
+            color: $text-color-main-dark;
         }
 
         &::placeholder {
-            @include font-stack-list-dark;
+            color: $text-color-main-dark;
         }
     }
 }

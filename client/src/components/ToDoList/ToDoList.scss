@@ -8,7 +8,6 @@
     width: 90%;
     background-color: $bg-list-light;
     border-radius: 4px 4px 0 0;
-    @include font-stack-list-light;
     @include flex(space-between, center, column, nowrap);
 
     @include tablet {
@@ -17,6 +16,6 @@
 
     &__dark {
         background-color: $bg-list-dark;
-        @include font-stack-list-dark;
+        color: $text-color-main-dark;
     }
 }
