@@ -4,7 +4,6 @@ $tablet-breakpoint: 48rem; // 768px
 
 // Primary colors
 $active-bright-blue: hsl(220, 98%, 61%); // for active navigation
-// - Check Background: linear-gradient hsl(192, 100%, 67%) to hsl(280, 87%, 65%)
 
 // light theme
 $bg-main-light: hsl(236, 33%, 92%); //background-main
@@ -18,6 +17,3 @@ $bg-main-dark: hsl(235, 21%, 11%); //background-main
 $bg-list-dark: hsl(235, 24%, 19%); //background-list
 $text-color-completed-dark: hsl(234, 11%, 52%); // text-color in completed list
 $text-color-main-dark: hsl(234, 39%, 85%); //text-list
-$text-color-hover-dark: hsl(236, 33%, 92%); //hover text in nav
-$text-color-nav: hsl(233, 14%, 35%); //????
-$text-color-nav: hsl(237, 14%, 26%); //????

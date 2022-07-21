@@ -28,16 +28,14 @@
 
 
 // Main Heading
-@mixin font-stack-heading-mobile {
+@mixin font-stack-header {
     @include font-stack ('Josefin Sans', normal, 1.25rem, 700, 1.25rem, $bg-list-light);
     letter-spacing: 0.4rem;
     text-transform: uppercase;
-}
 
-@mixin font-stack-heading-tablet {
-    @include font-stack ('Josefin Sans', normal, 1.75rem, 700, 1.75rem, $bg-list-light);
-    letter-spacing: 0.4rem;
-    text-transform: uppercase;
+    @include tablet {
+        @include font-stack ('Josefin Sans', normal, 1.75rem, 700, 1.75rem, $bg-list-light);
+    }
 }
 
 // Footer
@@ -55,7 +53,7 @@
 }
 
 @mixin font-stack-list-dark {
-    @include font-stack ('Josefin Sans', normal, 1.125rem, 400, normal, $text-color-main-dark);
+    @include font-stack ('Josefin Sans', normal, 1.125rem, 400, 1.56rem, $text-color-main-dark);
 }
 
 // for Navigation

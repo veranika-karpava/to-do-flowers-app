@@ -20,20 +20,25 @@
     flex-wrap: $flex-wrap;
 }
 
-@mixin style-mode-mobile {
+@mixin style-bg-image-header {
     @include flex(center, center, column, nowrap);
     padding: 2rem 1rem;
     height: 50vh;
     background-repeat: no-repeat;
     background-position: 50% 20%;
     background-size: cover;
+
+    @include tablet {
+        height: 40vh;
+    }
 }
 
-@mixin style-mode-tablet-desktop {
-    @include flex(center, center, column, nowrap);
-    padding: 2rem 1rem;
-    height: 40vh;
-    background-repeat: no-repeat;
-    background-position: 50% 20%;
-    background-size: cover;
+@mixin size-icon-mode {
+    width: 1.25rem;
+    height: 1.25rem;
+
+    @include tablet {
+        width: 1.75rem;
+        height: 1.75rem;
+    }
 }

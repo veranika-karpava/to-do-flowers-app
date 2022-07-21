@@ -75,12 +75,13 @@
         cursor: pointer;
         position: relative;
         top: 4px;
+
+        &--checked {
+            text-decoration: line-through;
+            color: $text-color-completed-light;
+        }
     }
 
-    &__label--checked {
-        text-decoration: line-through;
-        color: $text-color-completed-light;
-    }
 
     &__label-dark--checked {
         color: $text-color-completed-dark;
@@ -92,10 +93,10 @@
         border: none;
         background-color: transparent;
         cursor: pointer;
-    }
 
-    &__button-remove--checked {
-        display: none;
+        &--checked {
+            display: none;
+        }
     }
 
     &__button-icon {

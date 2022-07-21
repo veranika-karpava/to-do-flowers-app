@@ -1,12 +1,7 @@
 [
   {
-    "id": "cd5ec44b-e903-457f-9c7f-3d06b0d6443e",
-    "name": "Drink coffee",
-    "completed": true
-  },
-  {
-    "id": "b4a6b93a-d2cc-44a3-8f29-4e7ce4712fa9",
-    "name": "Call mom",
+    "id": "f615198d-f628-42e0-a951-471daab9ce3f",
+    "name": "Make coffee",
     "completed": false
   }
 ]

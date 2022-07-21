@@ -2,12 +2,12 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const fs = require('fs'); //for working with file system
-const PORT = 8080 || 5050;
+const PORT = 8080;
 
 //middleware
 //CORS
 app.use(cors({
-    origin: "http://localhost:3000"
+    origin: "http://localhost:3001"
 }));
 
 // for parsing data.json file
@@ -108,7 +108,6 @@ app.delete('/', (_req, res) => {
     return res.status(200).send(toDoData)
 }
 )
-
 
 // port 
 app.listen(PORT, () => {
