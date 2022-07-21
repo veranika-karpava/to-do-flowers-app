@@ -3,18 +3,34 @@
 @use "../../styles/partials/variables" as *;
 
 .footer {
-    padding: 12rem 1rem 2rem 1rem;
-    text-align: center;
-    @include font-stack-footer-light;
+    padding: 12rem 1rem 1rem 1rem;
+    @include flex(space-between, center, row, nowrap);
+    @include font-stack-footer;
     background-color: $bg-main-light;
 
     &__dark {
-        @include font-stack-footer-dark;
+        color: $text-color-completed-dark;
         background-color: $bg-main-dark;
     }
 
-    &__link {
-        text-decoration: none;
+    &__container-content {
+        width: 95%;
+        text-align: center;
+    }
+
+    &__container-link {
+        text-align: center;
+        width: 5%;
+
+    }
+
+    &__link,
+    &__link-github {
         color: inherit;
+    }
+
+    &__icon {
+        width: 1.25rem;
+        height: 1.25rem;
     }
 }
