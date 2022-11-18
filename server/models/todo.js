@@ -2,19 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // create schema
-const toDoSchema = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    completed: {
-        type: Boolean,
-        default: false
-    }
+const todoSchema = new Schema({
+    title: { type: String, required: true },
+    completed: { type: Boolean, default: false },
+    creator: { type: mongoose.Types.ObjectId, require: true, ref: 'User' }
 });
 
-// create model
-const ToDo = mongoose.model('ToDo', toDoSchema);
-
-
-module.exports = ToDo;
+module.exports = mongoose.model('ToDo', todoSchema);

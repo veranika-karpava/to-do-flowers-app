@@ -6,7 +6,7 @@ const userSchema = new Schema({
     name: { type: String, require: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, minlength: 6 },
-    todosId: [{ type: mongoose.Types.ObjectId, require: true, ref: 'Todo' }]
+    todosId: [{ type: mongoose.Types.ObjectId, require: true, ref: 'ToDo' }]
 });
 
 // check unique user email
