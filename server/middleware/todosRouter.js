@@ -3,20 +3,19 @@ const express = require('express');
 // create router
 const todosRouter = express.Router();
 
-// get a list of todos
+// get a list of todos specified user ID (uid)
 todosRouter.get('/user/:uid');
 
-// add new todo to the list of todos
+// add new task to the list of todos
 todosRouter.post('/');
 
-// update status of task in dataBase
+// update status of task specified task ID (tid)
 todosRouter.put('/:tid');
 
-
-// delete one task
+// delete a task specified task ID (tid)
 todosRouter.delete('/:tid');
 
-// delete all completed task from data.json
+// delete a list of completed tasks
 todosRouter.delete('/completed');
 
-module.exports = todosRouter;
+export default todosRouter;

@@ -1,13 +1,13 @@
 const express = require('express');
 
 // create router
-const usersRouter = express.Router();
+const userRouter = express.Router();
 
-// sign up for user
-usersRouter.post('/signup');
+// sign up new user
+userRouter.post('/signup');
 
-// login for user
-usersRouter.post('/login');
+// login existing user
+userRouter.post('/login');
 
 
-module.exports = usersRouter;
+export default userRouter;
