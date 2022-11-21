@@ -1,113 +1,70 @@
 const express = require('express');
 const app = express();
+require('dotenv').config();
 const cors = require('cors');
 const fs = require('fs'); //for working with file system
-const PORT = 8080;
+const PORT = process.env.PORT;
+
+
+// connection with database
+mongoose.connect('mongodb://localhost:27017/toDoDataBase')
+    .then(() => {
+        console.log("Mongo Connection open!");
+    })
+    .catch((err) => {
+        console.log("Oh no Mongo Connection error");
+        console.log(err)
+    })
 
 //middleware
 //CORS
 app.use(cors({
-    origin: "http://localhost:3001"
+    origin: process.env.CLIENT_URL
 }));
 
 // for parsing data.json file
 app.use(express.json());
 
-// function for reading data in data.json
-const readFile = () => {
-    const toDoData = fs.readFileSync('./data/data.json');
-    return JSON.parse(toDoData);
-}
+// // get toDo name from data.json file
+// app.get('/', async (_req, res) => {
+//     const toDoData = await ToDo.find();
+//     res.status(200).json(toDoData)
+// })
 
-// function for writing data in data.json
-const writeFile = (toDoData) => {
-    fs.writeFileSync('./data/data.json', JSON.stringify(toDoData, null, 2));
-}
+// // add new toDo to data.json file
+// app.post('/', async (req, res) => {
+//     const newToDo = new ToDo(req.body);
+//     await newToDo.save();
+//     const toDoData = await ToDo.find();
+//     res.status(200).json(toDoData);
+// })
 
-// get toDo name from data.json file
-app.get('/', (_req, res) => {
-    let toDoData = readFile();
-    toDoData = toDoData.map(task => {
-        return {
-            id: task.id,
-            name: task.name,
-            completed: task.completed
-        }
-    })
-    res.status(200).send(toDoData)
-})
-
-// add new toDo to data.json file
-app.post('/', (req, res) => {
-    let toDoData = readFile();
-    const { id, name, completed } = req.body;
-    // new task 
-    const newToDo = {
-        id: id,
-        name: name,
-        completed: completed
-    }
-    // add to data new task
-    toDoData.push(newToDo)
-    writeFile(toDoData)
-    res.status(200).send(toDoData)
-})
-
-// update status of task in json file
-app.put('/', (req, res) => {
-    let toDoData = readFile();
-    const { id, name, completed } = req.body;
-    const selectedToDo = toDoData.find((task) => task.id === id)
-    // check matches request id with id from data.json
-    if (!selectedToDo) {
-        return res.status(404).send("Task not found");
-    }
-    // which information will be udpated
-    const updatedToDo = {
-        id: selectedToDo.id,
-        name: name,
-        completed: completed
-    }
-
-    // update information in data.json
-    toDoData = toDoData.map((task) => {
-        if (task.id === selectedToDo.id) {
-            return updatedToDo
-        } else {
-            return task;
-        }
-    });
-
-    writeFile(toDoData);
-    return res.status(200).send(toDoData);
-})
+// // update status of task in dataBase
+// app.put('/:id', async (req, res) => {
+//     const { id } = req.params;
+//     const { completed } = req.body
+//     const updatedToDo = await ToDo.findByIdAndUpdate(id, { completed: completed }, { new: true });
+//     const toDoData = await ToDo.find();
+//     res.status(200).json(toDoData);
+// })
 
 
-// delete one task
-app.delete('/:id', (req, res) => {
-    let toDoData = readFile();
-    const taskId = req.params.id
-    const selectedToDo = toDoData.find((task) => task.id === taskId);
-    const selectedToDoIndex = toDoData.indexOf(selectedToDo)
+// // delete one task
+// app.delete('/:id', async (req, res) => {
+//     const { id } = req.params;
+//     const removedToDo = await ToDo.findByIdAndDelete(id);
+//     const toDoData = await ToDo.find();
+//     res.status(200).json(toDoData);
+// })
 
-    // delete todo with id
-    if (selectedToDoIndex < 0) {
-        return res.status(404).send("Task not found");
-    } else {
-        toDoData.splice(selectedToDoIndex, 1)
-        writeFile(toDoData);
-        return res.status(200).send(toDoData)
-    }
-})
-
-// delete all completed task from data.json
-app.delete('/', (_req, res) => {
-    let toDoData = readFile();
-    toDoData = toDoData.filter((item) => item.completed === false);
-    writeFile(toDoData);
-    return res.status(200).send(toDoData)
-}
-)
+// // delete all completed task from data.json
+// app.delete('/', async (req, res) => {
+//     const { id } = req.params;
+//     const completedDeleteToDo = await ToDo.deleteMany({ completed: true });
+//     const toDoData = await ToDo.find();
+//     res.status(200).json(toDoData);
+// }
+// )
 
 // port 
 app.listen(PORT, () => {

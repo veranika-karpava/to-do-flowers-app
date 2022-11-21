@@ -10,4 +10,4 @@ userRouter.post('/signup');
 userRouter.post('/login');
 
 
-export default userRouter;
+module.exports = userRouter;
