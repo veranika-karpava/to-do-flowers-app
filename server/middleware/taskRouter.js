@@ -14,7 +14,7 @@ taskRouter.post('/', tasksService.addNewTask);
 taskRouter.put('/:tid', tasksService.updateStatusTask);
 
 // delete a task specified task ID (tid)
-taskRouter.delete('/:tid', tasksService.deleteTask);
+taskRouter.delete('/user/:uid/:tid', tasksService.deleteTaskById);
 
 // delete a list of completed tasks
 taskRouter.delete('/completed', tasksService.deleteAllCompletedTasks);

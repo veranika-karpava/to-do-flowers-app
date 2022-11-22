@@ -93,13 +93,13 @@ const updateStatusTask = async (req, res, next) => {
     try {
         task = await Task.findById(taskId);
     } catch (err) {
-        return next(new HttpError('Something went wrong, could not update status of the specified task', 500));
+        return next(new HttpError('Something went wrong, could not update status of the specified task.', 500));
     };
 
     // check if this task belongs on this user
     // need change userId to req.userData.userId
     if (task.creator.toString() !== userId) {
-        return next(new HttpError('You are not allowed to edit status of this task. ', 401));
+        return next(new HttpError('You are not allowed to edit status of this task.', 401));
     };
 
     task.completed = completed;
@@ -114,7 +114,42 @@ const updateStatusTask = async (req, res, next) => {
 };
 
 // delete a task specified task ID (tid)
-const deleteTask = async (req, res, next) => {
+const deleteTaskById = async (req, res, next) => {
+    // change userId to req.userData.userId
+    const userId = req.params.uid;
+    const taskId = req.params.tid;
+    console.log(req.params)
+    console.log(userId)
+    let task;
+
+    // populate - to refer to a document stored in another collection;
+    try {
+        task = await Task.findById(taskId).populate('creator');
+    } catch (err) {
+        return next(new HttpError('Something went wrong, could not delete task specified id.', 500));
+    }
+
+    if (!task) {
+        return next(new HttpError('Could not find task for specified id.', 404));
+    }
+
+    // check if this task belongs on this user
+    if (task.creator.id !== userId) {
+        return next(new HttpError('You are not allowed to delete this task.', 401));
+    }
+
+    try {
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+        await task.remove({ session: sess });
+        task.creator.tasks.pull(task);
+        await task.creator.save({ session: sess });
+        await sess.commitTransaction();
+    } catch (err) {
+        return next(new HttpError('Something went wrong, could not delete task.', 500))
+    };
+
+    res.status(200).json({ message: "Deleted task." })
 
 };
 
@@ -126,7 +161,7 @@ const deleteAllCompletedTasks = async (req, res, next) => {
 exports.getListTasks = getListTasks;
 exports.addNewTask = addNewTask;
 exports.updateStatusTask = updateStatusTask;
-exports.deleteTask = deleteTask;
+exports.deleteTaskById = deleteTaskById;
 exports.deleteAllCompletedTasks = deleteAllCompletedTasks;
 
 
