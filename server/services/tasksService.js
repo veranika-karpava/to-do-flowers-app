@@ -1,13 +1,86 @@
+const mongoose = require('mongoose');
 
+const HttpError = require('../models/http-error');
+const User = require('../models/user');
+const Task = require('../models/task');
 
 // get a list of todos specified user ID (uid)
 const getListTasks = async (req, res, next) => {
+    // get userId from url params
+    const userId = req.params.uid;
+    let userWithTasks;
+    // get a list of tasks specified userId
+    try {
+        userWithTasks = await User.findById(userId).populate('tasks');
+    } catch (err) {
+        console.log(err)
+        return next(new HttpError('Fetching tasks failed, please try again later.', 500));
+    };
 
+    if (!userWithTasks) {
+        return next(new HttpError('Could not find user.', 404));
+    } else if (userWithTasks.tasks.length === 0) {
+        return next(new HttpError('Your list of tasks is empty.', 404));
+    } else {
+        res.status(200).json({ tasks: userWithTasks.tasks.map(task => task.toObject({ getters: true })) });
+    }
 };
 
 // add new task to the list of todos
 const addNewTask = async (req, res, next) => {
+    // userId have to change to req.userData.userId after change front end side
+    const { title, userId } = req.body
+    if (!title) {
+        return next(new HttpError('Please make sure to include input.', 422));
+    };
 
+    let createdNewTask;
+
+    try {
+        createdNewTask = new Task({
+            title: title,
+            completed: false,
+            creator: userId
+            // creator: req.userData.userId
+        });
+    } catch (err) { }
+
+    //find user that created a new task in database
+    let user;
+    try {
+        user = await User.findById(userId);
+        // user = await User.findById(req.userData.userId);
+    } catch (err) {
+        return next(new HttpError('Adding task failed, please try again.', 500));
+    }
+
+    // check existing user
+    if (!user) {
+        return next(new HttpError('Could not find user.', 404));
+    }
+
+    try {
+        // create session - start session when we want to create a place
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+
+        // place created w/t unique id and stored  on the current session
+        await createdNewTask.save({ session: sess });
+
+        // grabs the created place id and adds it to the place field of the user.
+        user.tasks.push(createdNewTask);
+
+        // save in users collection
+        await user.save({ session: sess });
+
+        // the session commits the transactions
+        await sess.commitTransaction();
+    }
+    catch (err) {
+        return next(new HttpError('Adding task failed, please try again.', 500));
+    }
+
+    res.status(201).json({ task: createdNewTask })
 };
 
 // update status of task specified task ID (tid)

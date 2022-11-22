@@ -113,14 +113,6 @@ const logIn = async (req, res, next) => {
     }
 
     res.status(200).json({ userId: existingUser.id, username: existingUser.username, jwtToken: jwtToken });
-
-
-
-
-
-
-
-
 };
 
 exports.signUp = signUp;
