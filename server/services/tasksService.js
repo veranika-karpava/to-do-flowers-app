@@ -85,7 +85,32 @@ const addNewTask = async (req, res, next) => {
 
 // update status of task specified task ID (tid)
 const updateStatusTask = async (req, res, next) => {
+    const { completed, userId } = req.body;
+    // get taskId from url as params
+    const taskId = req.params.tid;
 
+    let task;
+    try {
+        task = await Task.findById(taskId);
+    } catch (err) {
+        return next(new HttpError('Something went wrong, could not update status of the specified task', 500));
+    };
+
+    // check if this task belongs on this user
+    // need change userId to req.userData.userId
+    if (task.creator.toString() !== userId) {
+        return next(new HttpError('You are not allowed to edit status of this task. ', 401));
+    };
+
+    task.completed = completed;
+
+    try {
+        await task.save();
+    } catch (err) {
+        return next(new HttpError('Something went wrong, could not update of the specified task.', 500));
+    };
+
+    res.status(200).json({ task: task.toObject({ getters: true }) })
 };
 
 // delete a task specified task ID (tid)
