@@ -1,6 +1,6 @@
 const express = require('express');
 
-const tasksService = require('../services/tasksService');
+const tasksService = require('../services/tasksService_copy');
 // create router
 const taskRouter = express.Router();
 
@@ -14,7 +14,7 @@ taskRouter.post('/', tasksService.addNewTask);
 taskRouter.put('/:tid', tasksService.updateStatusTask);
 
 // delete a task specified task ID (tid)
-taskRouter.delete('/user/:uid/:tid', tasksService.deleteTaskById);
+taskRouter.delete('/:tid', tasksService.deleteTaskById);
 
 // delete a list of completed tasks
 taskRouter.delete('/completed', tasksService.deleteAllCompletedTasks);
