@@ -34,7 +34,7 @@ Check `.env.sample` in the client and the server directory to set up enviroment 
 3. Start the client
    * **`cd client`** - change project directory to client diretory
    * **`npm install`** - install all the node modules and dependecies
-   * **`npm start`** - start run UrFavPlace app on http://localhost:3000 in browser
+   * **`npm start`** - start run to-do app on http://localhost:3000 in browser
 
 # Link to the demo
 * Pending
