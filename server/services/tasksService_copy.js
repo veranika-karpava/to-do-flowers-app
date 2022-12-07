@@ -135,19 +135,24 @@ const deleteTaskById = async (req, res, next) => {
         return next(new HttpError('Could not find user specified id.', 404));
     }
 
-    console.log(task.id)
     try {
         const sess = await mongoose.startSession();
         sess.startTransaction();
-        await Task.deleteOne({ id: task._id }).session(sess);
-        // await user.tasks.remove({ id: task.id, session: sess });
-        await task.save({ session: sess });
-        // await user.save({ session: sess });
+        await Task.findOneAndRemove({ id: task._id, session: sess });
+
+        const userUpdateResults = await User.findOneAndUpdate(
+            { _id: user._id },
+            { $pull: { tasks: { $in: [task._id] } } },
+            { new: true, session: sess }
+        );
+        await userUpdateResults.save({ session: sess });
         await sess.commitTransaction();
+        await sess.endSession();
     } catch (err) {
         console.log(err)
-        // return next(new HttpError('Something went wrong, could not delete task.', 500))
+        return next(new HttpError('Something went wrong, could not delete task.', 500))
     };
+
 
     res.status(200).json({ message: "Deleted task." })
 
