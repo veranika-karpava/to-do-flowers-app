@@ -4,7 +4,7 @@ const HttpError = require('../models/http-error');
 const User = require('../models/user');
 const Task = require('../models/task');
 
-// get a list of todos specified user ID (uid)
+// get a list of tasks specified user ID (uid)
 const getListTasks = async (req, res, next) => {
     // get userId from url params
     const userId = req.params.uid;
@@ -13,12 +13,11 @@ const getListTasks = async (req, res, next) => {
     try {
         userWithTasks = await User.findById(userId).populate('tasks');
     } catch (err) {
-        console.log(err)
         return next(new HttpError('Fetching tasks failed, please try again later.', 500));
     };
 
     if (!userWithTasks) {
-        return next(new HttpError('Could not find user.', 404));
+        return next(new HttpError('Could not find user specified id.', 404));
     } else if (userWithTasks.tasks.length === 0) {
         return next(new HttpError('Your list of tasks is empty.', 404));
     } else {
@@ -31,7 +30,7 @@ const addNewTask = async (req, res, next) => {
     // userId have to change to req.userData.userId after change front end side
     const { title, userId } = req.body
     if (!title) {
-        return next(new HttpError('Please make sure to include input.', 422));
+        return next(new HttpError('Please make sure to include title of a new task.', 422));
     };
 
     let createdNewTask;
@@ -39,9 +38,7 @@ const addNewTask = async (req, res, next) => {
     try {
         createdNewTask = new Task({
             title: title,
-            completed: false,
-            creator: userId
-            // creator: req.userData.userId
+            completed: false
         });
     } catch (err) { }
 
@@ -56,18 +53,18 @@ const addNewTask = async (req, res, next) => {
 
     // check existing user
     if (!user) {
-        return next(new HttpError('Could not find user.', 404));
+        return next(new HttpError('Could not find user specified id.', 404));
     }
 
     try {
-        // create session - start session when we want to create a place
+        // create session - start session when we want to create a task
         const sess = await mongoose.startSession();
         sess.startTransaction();
 
-        // place created w/t unique id and stored  on the current session
+        // task created w/t unique id and stored  on the current session
         await createdNewTask.save({ session: sess });
 
-        // grabs the created place id and adds it to the place field of the user.
+        // grabs the created task id and adds it to the tasks field of the user.
         user.tasks.push(createdNewTask);
 
         // save in users collection
@@ -85,7 +82,7 @@ const addNewTask = async (req, res, next) => {
 
 // update status of task specified task ID (tid)
 const updateStatusTask = async (req, res, next) => {
-    const { completed, userId } = req.body;
+    const { completed } = req.body;
     // get taskId from url as params
     const taskId = req.params.tid;
 
@@ -95,13 +92,9 @@ const updateStatusTask = async (req, res, next) => {
     } catch (err) {
         return next(new HttpError('Something went wrong, could not update status of the specified task.', 500));
     };
-
-    // check if this task belongs on this user
-    // need change userId to req.userData.userId
-    if (task.creator.toString() !== userId) {
-        return next(new HttpError('You are not allowed to edit status of this task.', 401));
-    };
-
+    if (!task) {
+        return next(new HttpError('Could not find task specified id.', 404));
+    }
     task.completed = completed;
 
     try {
@@ -115,16 +108,13 @@ const updateStatusTask = async (req, res, next) => {
 
 // delete a task specified task ID (tid)
 const deleteTaskById = async (req, res, next) => {
-    // change userId to req.userData.userId
-    const userId = req.params.uid;
+    // change userId to req.userData.userId and in router as well
+    const { userId } = req.body;
     const taskId = req.params.tid;
-    console.log(req.params)
-    console.log(userId)
     let task;
 
-    // populate - to refer to a document stored in another collection;
     try {
-        task = await Task.findById(taskId).populate('creator');
+        task = await Task.findById(taskId);
     } catch (err) {
         return next(new HttpError('Something went wrong, could not delete task specified id.', 500));
     }
@@ -133,29 +123,84 @@ const deleteTaskById = async (req, res, next) => {
         return next(new HttpError('Could not find task for specified id.', 404));
     }
 
-    // check if this task belongs on this user
-    if (task.creator.id !== userId) {
-        return next(new HttpError('You are not allowed to delete this task.', 401));
+    let user;
+    try {
+        user = await User.findById(userId);
+        // user = await User.findById(req.userData.userId);
+    } catch (err) {
+        return next(new HttpError('Something went wrong, could not delete task specified id.', 500));
+    }
+    // check existing user
+    if (!user) {
+        return next(new HttpError('Could not find user specified id.', 404));
     }
 
     try {
         const sess = await mongoose.startSession();
         sess.startTransaction();
-        await task.remove({ session: sess });
-        task.creator.tasks.pull(task);
-        await task.creator.save({ session: sess });
+        await Task.findOneAndRemove({ id: task._id, session: sess });
+        const userUpdateResults = await User.findOneAndUpdate(
+            { _id: user._id },
+            { $pull: { tasks: { $in: [task._id] } } },
+            { new: true, session: sess }
+        );
+        await userUpdateResults.save({ session: sess });
         await sess.commitTransaction();
+        await sess.endSession();
     } catch (err) {
+        console.log(err)
         return next(new HttpError('Something went wrong, could not delete task.', 500))
     };
-
     res.status(200).json({ message: "Deleted task." })
-
 };
 
 // delete a list of completed tasks
 const deleteAllCompletedTasks = async (req, res, next) => {
+    const { userId } = req.body;
+    let tasks;
+    try {
+        tasks = await Task.find({ completed: true })
+    } catch (err) {
+        return next(new HttpError('Something went wrong, could not delete completed tasks.', 500));
+    }
+    if (!tasks || tasks.length === 0) {
+        return next(new HttpError('Could not find any completed tasks', 404));
+    };
 
+    let user;
+    try {
+        user = await User.findById(userId);
+        // user = await User.findById(req.userData.userId);
+    } catch (err) {
+        return next(new HttpError('Something went wrong, could not delete completed tasks.', 500));
+    }
+    // check existing user
+    if (!user) {
+        return next(new HttpError('Could not find user.', 404));
+    }
+
+
+    try {
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+        const idsToDelete = tasks.map((task) => task._id);
+        await Task.deleteMany({ _id: { $in: [...idsToDelete] } }).session(sess);
+        idsToDelete.forEach(async (id) => {
+            try {
+                await user.tasks.remove({ id: id, session: sess });
+            } catch (err) {
+                console.log(err)
+            }
+
+        })
+        await user.save({ session: sess });
+        await sess.commitTransaction();
+        await sess.endSession();
+    } catch (err) {
+        return next(new HttpError('Something went wrong, could not delete tasks.', 500))
+    }
+
+    res.status(200).json({ message: "Deleted tasks." })
 };
 
 exports.getListTasks = getListTasks;
@@ -205,3 +250,8 @@ exports.deleteAllCompletedTasks = deleteAllCompletedTasks;
 //     res.status(200).json(toDoData);
 // }
 // )
+
+// const { id } = req.params;
+    //     const completedDeleteToDo = await ToDo.deleteMany({ completed: true });
+    //     const toDoData = await ToDo.find();
+    //     res.status(200).json(toDoData);

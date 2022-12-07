@@ -1,6 +1,6 @@
 const express = require('express');
 
-const tasksService = require('../services/tasksService_copy');
+const tasksService = require('../services/tasksService');
 // create router
 const taskRouter = express.Router();
 
