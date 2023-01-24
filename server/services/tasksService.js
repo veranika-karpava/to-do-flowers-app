@@ -138,13 +138,15 @@ const deleteTaskById = async (req, res, next) => {
     try {
         const sess = await mongoose.startSession();
         sess.startTransaction();
-        await Task.findOneAndRemove({ id: task._id, session: sess });
-        const userUpdateResults = await User.findOneAndUpdate(
-            { _id: user._id },
-            { $pull: { tasks: { $in: [task._id] } } },
-            { new: true, session: sess }
-        );
-        await userUpdateResults.save({ session: sess });
+        await Task.findOneAndDelete({ id: task._id }, { session: sess });
+        await user.tasks.pull(task._id);
+        await user.save({ session: sess });
+        // const userUpdateResults = await User.findOneAndUpdate(
+        //     { _id: user._id },
+        //     { $pull: { tasks: { $in: [task._id] } } },
+        //     { new: true, session: sess }
+        // );
+        // await userUpdateResults.save({ session: sess });
         await sess.commitTransaction();
         await sess.endSession();
     } catch (err) {
@@ -179,7 +181,6 @@ const deleteAllCompletedTasks = async (req, res, next) => {
         return next(new HttpError('Could not find user.', 404));
     }
 
-
     try {
         const sess = await mongoose.startSession();
         sess.startTransaction();
@@ -187,7 +188,7 @@ const deleteAllCompletedTasks = async (req, res, next) => {
         await Task.deleteMany({ _id: { $in: [...idsToDelete] } }).session(sess);
         idsToDelete.forEach(async (id) => {
             try {
-                await user.tasks.remove({ id: id, session: sess });
+                await user.tasks.pull(id)
             } catch (err) {
                 console.log(err)
             }
@@ -208,50 +209,3 @@ exports.addNewTask = addNewTask;
 exports.updateStatusTask = updateStatusTask;
 exports.deleteTaskById = deleteTaskById;
 exports.deleteAllCompletedTasks = deleteAllCompletedTasks;
-
-
-// // get toDo name from data.json file
-// app.get('/', async (_req, res) => {
-//     const toDoData = await ToDo.find();
-//     res.status(200).json(toDoData)
-// })
-
-// // add new toDo to data.json file
-// app.post('/', async (req, res) => {
-//     const newToDo = new ToDo(req.body);
-//     await newToDo.save();
-//     const toDoData = await ToDo.find();
-//     res.status(200).json(toDoData);
-// })
-
-// // update status of task in dataBase
-// app.put('/:id', async (req, res) => {
-//     const { id } = req.params;
-//     const { completed } = req.body
-//     const updatedToDo = await ToDo.findByIdAndUpdate(id, { completed: completed }, { new: true });
-//     const toDoData = await ToDo.find();
-//     res.status(200).json(toDoData);
-// })
-
-
-// // delete one task
-// app.delete('/:id', async (req, res) => {
-//     const { id } = req.params;
-//     const removedToDo = await ToDo.findByIdAndDelete(id);
-//     const toDoData = await ToDo.find();
-//     res.status(200).json(toDoData);
-// })
-
-// // delete all completed task from data.json
-// app.delete('/', async (req, res) => {
-//     const { id } = req.params;
-//     const completedDeleteToDo = await ToDo.deleteMany({ completed: true });
-//     const toDoData = await ToDo.find();
-//     res.status(200).json(toDoData);
-// }
-// )
-
-// const { id } = req.params;
-    //     const completedDeleteToDo = await ToDo.deleteMany({ completed: true });
-    //     const toDoData = await ToDo.find();
-    //     res.status(200).json(toDoData);

@@ -13,3 +13,4 @@ const userSchema = new Schema({
 userSchema.plugin(uniqueValidatorMail);
 
 module.exports = mongoose.model('User', userSchema);
+
