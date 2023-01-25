@@ -1,7 +1,10 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
+
+
 import './App.scss';
 import Header from './components/Header/Header';
+import HomePage from './pages/HomePage/HomePage';
 import ToDoPage from './pages/ToDoPage/ToDoPage';
 import Footer from './components/Footer/Footer';
 import { ThemeContext } from './helpers/context/ThemeContext';
@@ -12,12 +15,6 @@ const App = () => {
   // state staff
   const [isDark, setIsDark] = useState(false);
 
-
-  // add event for changing backround of the app
-  const clickToggle = () => {
-    setIsDark(!isDark)
-  }
-
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light')
   }
@@ -25,13 +22,15 @@ const App = () => {
 
   return (
     <ThemeContext.Provider value={{ theme: theme, toggleTheme: toggleTheme }}>
-      <div className="App">
-        <Header clickToggle={clickToggle} isDark={isDark} />
-        <ToDoPage isDark={isDark} />
+      <BrowserRouter>
+        <Header />
+        <Switch>
+          <Route path="/" exact element={HomePage} />
+          <Route path='/tasks' element={ToDoPage} />
+        </Switch>
         <Footer isDark={isDark} />
-      </div>
+      </BrowserRouter>
     </ThemeContext.Provider>
-
   );
 }
 
