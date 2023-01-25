@@ -1,9 +1,9 @@
 // model for catching error
 class HttpError extends Error {
-    constructor(message, error) {
-        super(message);
-        this.code = error;
-    }
+  constructor(message, error) {
+    super(message);
+    this.code = error;
+  }
 }
 
 module.exports = HttpError;

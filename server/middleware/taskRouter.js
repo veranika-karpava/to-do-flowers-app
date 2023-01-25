@@ -1,6 +1,12 @@
 const express = require('express');
 
-const { getListTasks, addNewTask, updateStatusTask, deleteTaskById, deleteAllCompletedTasks } = require('../services/tasksService');
+const {
+  getListTasks,
+  addNewTask,
+  updateStatusTask,
+  deleteTaskById,
+  deleteAllCompletedTasks,
+} = require('../services/tasksService');
 // create router
 const taskRouter = express.Router();
 

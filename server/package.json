@@ -5,7 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "eslint:check": "eslint '**/*.{js,jsx}'",
+    "eslint:fix": "eslint --fix '**/*.{js,jsx}'",
+    "prettier:check": "prettier --check '**/*.{js,jsx,scss}'",
+    "prettier:write": "prettier --write '**/*.{js,jsx,scss}'",
+    "delint": "npm run eslint:fix; npm run prettier:write"
   },
   "author": "Veranika Karpava",
   "license": "ISC",
@@ -19,5 +24,43 @@
     "mongoose": "^6.4.6",
     "mongoose-unique-validator": "^3.1.0",
     "nodemon": "^2.0.16"
+  },
+  "devDependencies": {
+    "eslint": "^8.32.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "2.8.3"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "es2021": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "prettier"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prefer-destructuring": "off",
+      "camelcase": [
+        "error",
+        {
+          "ignoreDestructuring": true,
+          "properties": "never"
+        }
+      ],
+      "linebreak-style": "error"
+    }
+  },
+  "prettier": {
+    "arrowParens": "avoid",
+    "singleQuote": true
   }
 }
