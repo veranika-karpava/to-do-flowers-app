@@ -3,8 +3,10 @@
 @use "../../styles/partials/variables" as *;
 
 .footer {
-    padding: 12rem 1rem 1rem 1rem;
-    @include flex(space-between, center, row, nowrap);
+    width: 100%;
+    position: absolute;
+    bottom: -10%;
+    padding: 1rem;
     @include font-stack-footer;
     background-color: $bg-main-light;
 
@@ -13,20 +15,13 @@
         background-color: $bg-main-dark;
     }
 
-    &__container-content {
-        width: 95%;
+    &__content {
+        width: 100%;
         text-align: center;
     }
 
-    &__container-link {
-        text-align: center;
-        width: 5%;
-
-    }
-
-    &__link,
-    &__link-github {
-        color: inherit;
+    &__container-heart-icon {
+        margin: 0 0.5rem;
     }
 
     &__icon {
