@@ -21,26 +21,15 @@
 }
 
 @mixin style-bg-image-header {
-    @include flex(center, center, column, nowrap);
-    padding: 2rem 1rem;
     height: 50vh;
     background-repeat: no-repeat;
     background-position: 50% 20%;
     background-size: cover;
-
-    @include tablet {
-        height: 40vh;
-    }
 }
 
-@mixin size-icon-mode {
-    width: 1.25rem;
-    height: 1.25rem;
-
-    @include tablet {
-        width: 1.75rem;
-        height: 1.75rem;
-    }
+@mixin size-icon {
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
 @mixin style-form-list {

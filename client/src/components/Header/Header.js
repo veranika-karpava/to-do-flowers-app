@@ -1,14 +1,31 @@
-import React from 'react';
-import moon from '../../assets/icons/icon-moon.svg';
-import sun from '../../assets/icons/icon-sun.svg';
-import './Header.scss';
+import React, { useContext } from 'react';
+import { NavLink } from 'react-router-dom';
 
-const Header = ({ clickToggle, isDark }) => {
+import DynamicIcon from '../DynamicIcon/DynamicIcon';
+import './Header.scss';
+import { ThemeContext } from '../../helpers/context/ThemeContext';
+
+const Header = () => {
+    const theme = useContext(ThemeContext);
+
     return (
-        <header className={!isDark ? 'header header__light' : 'header header__dark'}>
+        <header className={`header header__${theme.theme}`}>
             <div className='header__container'>
-                <h1 className='header__heading'>todo</h1>
-                {!isDark ? <img className='header__button-mode' src={moon} alt='Moon button' onClick={clickToggle} /> : <img className='header__button-mode' src={sun} alt='Sun button' onClick={clickToggle} />}
+                <div className='header__nav-item'>
+                    <NavLink className='header__nav-link' exact to='/'>
+                        <DynamicIcon name='BiExit' className='header__icon' />
+                    </NavLink>
+                </div>
+                <div className='header__wrapper'>
+                    <h1 className='header__heading'>todo</h1>
+                    <button
+                        className='header__button-mode'
+                        onClick={theme.toggleTheme}>
+                        <DynamicIcon
+                            name={theme.theme === 'light' ? 'BsSunFill' : 'FaMoon'}
+                            className='header__icon' />
+                    </button>
+                </div>
             </div>
         </header>
     );

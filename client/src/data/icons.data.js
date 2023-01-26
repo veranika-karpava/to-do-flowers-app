@@ -1,13 +1,13 @@
-import { FaHeart } from 'react-icons/fa';
-import { BsMoon, BsSun } from 'react-icons/bs';
+import { FaHeart, FaMoon } from 'react-icons/fa';
+import { BsSunFill } from 'react-icons/bs';
 import { BiUser, BiExit } from 'react-icons/bi';
 import { AiFillGithub } from "react-icons/ai";
 
 export const icons = {
   FaHeart: FaHeart,
-  BsMoon: BsMoon,
-  BsSun: BsSun,
+  FaMoon: FaMoon,
   BiUser: BiUser,
   BiExit: BiExit,
-  AiFillGithub: AiFillGithub
+  AiFillGithub: AiFillGithub,
+  BsSunFill: BsSunFill,
 };
