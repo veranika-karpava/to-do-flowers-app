@@ -7,9 +7,12 @@ const JWT_KEY = process.env.JWT_SECRET_KEY;
 
 // for creating new user/sign up User
 const signUp = async (req, res, next) => {
-  const { name, username, password } = req.body;
+  const { username, email, password } = req.body;
+
+  console.log(username)
+
   // check if inputs are empty or not
-  if (!name || !username || !password) {
+  if (!username || !email || !password) {
     return next(new HttpError('Please make sure to include all inputs.', 422));
   }
 
@@ -17,7 +20,7 @@ const signUp = async (req, res, next) => {
   let existingUser;
 
   try {
-    existingUser = await User.findOne({ username: username });
+    existingUser = await User.findOne({ email: email });
   } catch (err) {
     return next(
       new HttpError('Signing up failed, please try again later.', 500)
@@ -45,8 +48,8 @@ const signUp = async (req, res, next) => {
   let createdNewUser;
   try {
     createdNewUser = new User({
-      name,
       username,
+      email,
       password: hashedPassword,
       tasks: [],
     });
@@ -67,7 +70,7 @@ const signUp = async (req, res, next) => {
   let jwtToken;
   try {
     jwtToken = jwt.sign(
-      { userId: createdNewUser.id, username: createdNewUser.username },
+      { userId: createdNewUser.id, email: createdNewUser.email },
       JWT_KEY,
       { expiresIn: '1h' }
     );
@@ -81,22 +84,22 @@ const signUp = async (req, res, next) => {
     .status(201)
     .json({
       userId: createdNewUser.id,
-      username: createdNewUser.username,
+      email: createdNewUser.email,
       jwtToken: jwtToken,
     });
 };
 
 // login existing user
 const logIn = async (req, res, next) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!username || !password) {
+  if (!email || !password) {
     return next(new HttpError('Please make sure to include all inputs.', 422));
   }
 
   let existingUser;
   try {
-    existingUser = await User.findOne({ username: username });
+    existingUser = await User.findOne({ email: email });
   } catch (err) {
     return next(
       new HttpError('Logging in failed, please try again later.', 500)
@@ -105,7 +108,7 @@ const logIn = async (req, res, next) => {
 
   if (!existingUser) {
     return next(
-      new HttpError('User is not found, please check your username', 422)
+      new HttpError('User is not found, please check your email', 422)
     );
   }
 
@@ -138,7 +141,7 @@ const logIn = async (req, res, next) => {
     .status(200)
     .json({
       userId: existingUser.id,
-      username: existingUser.username,
+      email: existingUser.email,
       jwtToken: jwtToken,
     });
 };
