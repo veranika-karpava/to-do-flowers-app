@@ -9,8 +9,6 @@ const JWT_KEY = process.env.JWT_SECRET_KEY;
 const signUp = async (req, res, next) => {
   const { username, email, password } = req.body;
 
-  console.log(username)
-
   // check if inputs are empty or not
   if (!username || !email || !password) {
     return next(new HttpError('Please make sure to include all inputs.', 422));
