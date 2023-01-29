@@ -1,0 +1,48 @@
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/variables" as *;
+
+.form {
+    &__container {
+        width: 100%;
+        padding: 1rem;
+        border-bottom: 1px solid $text-color-completed-light;
+
+        &--dark {
+            border-bottom: 1px solid $text-color-completed-dark;
+        }
+    }
+
+    &__input {
+        width: 100%;
+        cursor: pointer;
+        background-color: transparent;
+        border: 0;
+        outline: none;
+        height: 1.56rem;
+        @include font-stack-main;
+        font-family: 'Josefin Sans', sans-serif;
+
+        &--light {
+
+            &:-webkit-autofill {
+                -webkit-box-shadow: 0 0 0px 1000px $bg-list-light inset;
+                -webkit-text-fill-color: $text-color-main-light;
+            }
+        }
+
+        &--dark {
+
+            &[type=text],
+            &[type=email],
+            &[type=password] {
+                color: $text-color-main-dark !important;
+            }
+
+            &:-webkit-autofill {
+                -webkit-box-shadow: 0 0 0px 1000px $bg-list-dark inset;
+                -webkit-text-fill-color: $text-color-main-dark;
+            }
+        }
+    }
+}
