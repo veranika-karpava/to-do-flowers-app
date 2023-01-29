@@ -1,0 +1,51 @@
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/variables" as *;
+
+.auth {
+    background-color: $bg-main-light;
+
+    &__dark {
+        background-color: $bg-main-dark;
+        color: $text-color-main-dark;
+    }
+
+    &__container-title {
+        @include flex(space-between, center, column, nowrap);
+        padding: 1rem;
+
+        &--light {
+            border-bottom: 1px solid $text-color-completed-light;
+        }
+
+        &--dark {
+            border-bottom: 1px solid $text-color-completed-dark;
+        }
+    }
+
+    &__container-button {
+        padding: 1rem;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    &__wrapper {
+        width: 100%;
+        padding: 1rem;
+        @include flex(flex-start, center, row, nowrap);
+
+        &--light {
+            border-top: 1px solid $text-color-completed-light;
+        }
+
+        &--dark {
+            border-top: 1px solid $text-color-completed-dark;
+        }
+    }
+
+    &__switch-content {
+        margin-right: 0.5rem;
+    }
+
+}
