@@ -73,6 +73,28 @@ const App = () => {
     }
   }, [login]);
 
+  let routes;
+
+  if (token) {
+    routes = (
+      <Switch>
+        <Route path='/tasks' exact>
+          <TasksPage />
+        </Route>
+        <Redirect to='/tasks' />
+      </Switch>
+    )
+  } else {
+    routes = (
+      <Switch>
+        <Route path='/' exact>
+          <HomePage />
+        </Route>
+        <Redirect to='/' />
+      </Switch>
+    )
+  }
+
 
   return (
     <ThemeContext.Provider value={{ theme: theme, toggleTheme: toggleTheme }}>
@@ -87,21 +109,9 @@ const App = () => {
       >
         <BrowserRouter>
           <Header />
-          <Switch>
-            <Route path='/' exact>
-              <HomePage />
-            </Route>
-            {token ?
-              <Route path='/tasks'>
-                <TasksPage />
-              </Route>
-              :
-              <Route path='/' exact>
-                <HomePage />
-              </Route>
-            }
-            <Redirect to='/' />
-          </Switch>
+          <main>
+            {routes}
+          </main>
           <Footer />
         </BrowserRouter>
       </AuthContext.Provider>
