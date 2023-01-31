@@ -11,7 +11,7 @@ const {
 const taskRouter = express.Router();
 
 // get a list of todos specified user ID (uid)
-taskRouter.get('/user/:uid', getListTasks);
+taskRouter.get('/:uid', getListTasks);
 
 // add new task to the list of todos
 taskRouter.post('/', addNewTask);

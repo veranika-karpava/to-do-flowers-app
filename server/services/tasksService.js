@@ -18,6 +18,8 @@ const getListTasks = async (req, res, next) => {
     );
   }
 
+
+
   if (!userWithTasks) {
     return next(new HttpError('Could not find user specified id.', 404));
   } else if (userWithTasks.tasks.length === 0) {
