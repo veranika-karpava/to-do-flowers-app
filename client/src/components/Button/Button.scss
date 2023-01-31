@@ -4,22 +4,81 @@
 
 .button {
     cursor: pointer;
-    border: none;
-    background-color: transparent;
-    @include font-stack-nav-main;
+    // @include font-stack-nav-main;
 
-    &:hover {
-        color: $text-color-main-light;
-    }
+    // border: none;
+    // background-color: transparent;
+    // @include font-stack-nav-main;
 
-    &:focus {
-        color: $active-bright-blue;
-        outline: 0px solid transparent;
-    }
+    // &:hover {
+    //     color: $text-color-main-light;
+    // }
 
-    &__dark {
+    // &:focus {
+    //     color: $active-bright-blue;
+    //     outline: 0px solid transparent;
+    // }
+
+    // &__dark {
+    //     &:hover {
+    //         color: $active-bright-blue;
+    //     }
+    // }
+
+
+    &__circle {
+        @include flex(center, center, row, nowrap);
+        border: 1px solid $text-color-completed-light;
+        border-radius: 50%;
+        height: 1.7rem;
+        width: 1.7rem;
+        background: linear-gradient(to left, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+
         &:hover {
-            color: $active-bright-blue;
+            transform: scale(1.1);
+        }
+    }
+
+    &__noborder {
+        @include font-stack-main;
+        border: none;
+        background-color: transparent;
+        color: $active-bright-blue;
+        font-family: 'Josefin Sans', sans-serif;
+
+    }
+
+    &__delete {
+        height: 1.7rem;
+        width: 1.7rem;
+        border: none;
+        background-color: transparent;
+        color: $text-color-completed-dark;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+
+    &__rectangle {
+        height: 2rem;
+        width: 6rem;
+        @include font-stack-main;
+        background: linear-gradient(to left, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+        border-radius: 4px;
+        color: $bg-list-light;
+        border: 1px solid;
+
+        &--light {
+            border-color: linear-gradient(to left, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+        }
+
+        &--dark {
+            border-color: $bg-list-light
+        }
+
+        &:disabled {
+            opacity: 0.5;
         }
     }
 }
