@@ -1,0 +1,46 @@
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/variables" as *;
+
+.tasks {
+    background-color: $bg-main-light;
+    @include flex(flex-start, center, column, nowrap);
+
+    &__dark {
+        background-color: $bg-main-dark;
+    }
+
+    &__form {
+        padding-left: 1rem;
+        width: 100%;
+        @include flex(space-between, center, row, nowrap);
+    }
+
+    &__icon-button {
+        @include size-icon;
+        color: $bg-list-light;
+    }
+
+    &__container {
+        margin-top: 1rem;
+        width: 100%;
+
+        @include tablet {
+            @include flex(center, center, row, nowrap);
+        }
+    }
+
+    &__message {
+        height: 150px;
+        padding: 1rem;
+        @include flex(center, center, row, nowrap);
+    }
+
+    &__content-message {
+        width: 100%;
+
+        &--light {
+            color: $text-color-actived-light;
+        }
+    }
+}

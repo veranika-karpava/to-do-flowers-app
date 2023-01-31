@@ -1,0 +1,19 @@
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/variables" as *;
+
+.tasks {
+    &__list {
+        @include flex(space-between, center, column, nowrap);
+        width: 100%;
+    }
+
+    // @include style-form-list;
+    // padding-left: 0;
+    // // @include flex(space-between, center, column, nowrap);
+
+    // &__dark {
+    //     background-color: $bg-list-dark;
+    //     color: $text-color-main-dark;
+    // }
+}
