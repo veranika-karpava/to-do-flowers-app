@@ -7,6 +7,7 @@ import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import Card from '../../components/Card/Card';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import { useForm } from '../../helpers/hooks/FormHook';
 import { useHttpClient } from '../../helpers/hooks/HttpHook';
 import { ThemeContext } from '../../helpers/context/ThemeContext';
@@ -95,7 +96,9 @@ const HomePage = () => {
 
     return (
         <section className={`auth auth__${theme.theme}`}>
+            {isLoading && <LoadingSpinner />}
             <Card className={`auth auth__${theme.theme}`}>
+
                 <div className={`auth__container-title auth__container-title--${theme.theme}`}>
                     <h2 className='auth__title'>
                         {isLoginMode ? 'Log In' : 'Sign Up'}
@@ -113,6 +116,7 @@ const HomePage = () => {
                             errorText="Please enter an Username."
                             validators={[VALIDATOR_REQUIRE()]}
                             onInput={handleInputSubmit}
+                            border='border'
                         />)}
                     <Input
                         id='email'
@@ -122,6 +126,7 @@ const HomePage = () => {
                         errorText="Please enter a valid email address."
                         validators={[VALIDATOR_EMAIL()]}
                         onInput={handleInputSubmit}
+                        border='border'
                     />
                     <Input
                         id='password'
@@ -131,6 +136,7 @@ const HomePage = () => {
                         errorText="Please enter a valid password, at least 6 characteres."
                         validators={[VALIDATOR_MINLENGTH(6)]}
                         onInput={handleInputSubmit}
+                        border='border'
                     />
                     <div className='auth__container-button'>
                         <Button
