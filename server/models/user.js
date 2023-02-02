@@ -6,7 +6,6 @@ const userSchema = new Schema({
   username: { type: String, require: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, minlength: 6 },
-  tasks: [{ type: mongoose.Types.ObjectId, require: true, ref: 'Task' }],
 });
 
 // check unique user email
