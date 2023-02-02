@@ -4,27 +4,6 @@
 
 .button {
     cursor: pointer;
-    // @include font-stack-nav-main;
-
-    // border: none;
-    // background-color: transparent;
-    // @include font-stack-nav-main;
-
-    // &:hover {
-    //     color: $text-color-main-light;
-    // }
-
-    // &:focus {
-    //     color: $active-bright-blue;
-    //     outline: 0px solid transparent;
-    // }
-
-    // &__dark {
-    //     &:hover {
-    //         color: $active-bright-blue;
-    //     }
-    // }
-
 
     &__circle {
         @include flex(center, center, row, nowrap);
@@ -44,8 +23,6 @@
         border: none;
         background-color: transparent;
         color: $active-bright-blue;
-        font-family: 'Josefin Sans', sans-serif;
-
     }
 
     &__delete {
@@ -74,11 +51,25 @@
         }
 
         &--dark {
-            border-color: $bg-list-light
+            border-color: $bg-list-light;
         }
 
         &:disabled {
             opacity: 0.5;
+        }
+    }
+
+    &__nav {
+        border: none;
+        background-color: transparent;
+        @include font-stack-nav-main;
+
+        &:hover {
+            color: $active-bright-blue;
+        }
+
+        &--active {
+            color: $active-bright-blue;
         }
     }
 }
