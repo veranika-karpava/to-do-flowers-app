@@ -1,16 +1,14 @@
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 
+import './Header.scss';
 import DynamicIcon from '../DynamicIcon/DynamicIcon';
 import { ThemeContext } from '../../helpers/context/ThemeContext';
 import { AuthContext } from '../../helpers/context/AuthContext';
-import './Header.scss';
-
 
 const Header = () => {
     const theme = useContext(ThemeContext);
     const auth = useContext(AuthContext);
-    console.log(auth)
 
     return (
         <header className={`header header__${theme.theme}`}>

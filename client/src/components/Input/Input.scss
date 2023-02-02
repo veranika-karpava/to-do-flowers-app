@@ -3,9 +3,10 @@
 @use "../../styles/partials/variables" as *;
 
 .form {
-    &__container {
+    &__container-border {
         width: 100%;
         padding: 1rem;
+
         border-bottom: 1px solid $text-color-completed-light;
 
         &--dark {
@@ -13,21 +14,30 @@
         }
     }
 
-    &__input {
+    &__container-none {
         width: 100%;
+        padding: 1rem;
+    }
+
+    &__input {
+        padding-top: 1.5%;
+        width: 100%;
+        border: none;
         cursor: pointer;
         background-color: transparent;
-        border: 0;
         outline: none;
-        height: 1.56rem;
+        height: 1.58rem;
         @include font-stack-main;
-        font-family: 'Josefin Sans', sans-serif;
 
         &--light {
 
             &:-webkit-autofill {
                 -webkit-box-shadow: 0 0 0px 1000px $bg-list-light inset;
                 -webkit-text-fill-color: $text-color-main-light;
+            }
+
+            &::placeholder {
+                color: $text-color-actived-light;
             }
         }
 
@@ -42,6 +52,10 @@
             &:-webkit-autofill {
                 -webkit-box-shadow: 0 0 0px 1000px $bg-list-dark inset;
                 -webkit-text-fill-color: $text-color-main-dark;
+            }
+
+            &::placeholder {
+                color: $text-color-main-light;
             }
         }
     }

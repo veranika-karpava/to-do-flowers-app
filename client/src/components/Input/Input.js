@@ -25,7 +25,7 @@ const inputReducer = (state, action) => {
     }
 };
 
-const Input = ({ id, type, placeholder, validators, errorText, maxlength, onInput, initialValue, initialValid, }) => {
+const Input = ({ id, type, placeholder, validators, errorText, onInput, initialValue, initialValid, border }) => {
     const theme = useContext(ThemeContext);
     const [inputState, dispatch] = useReducer(inputReducer, {
         value: initialValue || '',
@@ -33,7 +33,7 @@ const Input = ({ id, type, placeholder, validators, errorText, maxlength, onInpu
         isTouched: false,
     });
 
-    // new value from input filed back to the place where we use Input component
+    // new value from input filed back from the task list where use Input component
     useEffect(() => {
         onInput(id, inputState.value, inputState.isValid);
     }, [id, inputState.value, inputState.isValid, onInput]);
@@ -52,7 +52,7 @@ const Input = ({ id, type, placeholder, validators, errorText, maxlength, onInpu
 
 
     return (
-        <div className={`form__container form__container--${theme.theme}`}>
+        <div className={`form__container-${border} form__container-${border}--${theme.theme}`}>
             <label
                 className='form__label'
                 htmlFor={id}
