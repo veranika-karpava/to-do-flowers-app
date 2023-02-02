@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
 
 import './TasksPage.scss';
 import { VALIDATOR_REQUIRE } from '../../helpers/util/validators';
@@ -12,29 +11,48 @@ import Card from '../../components/Card/Card';
 import Button from '../../components/Button/Button';
 import DynamicIcon from '../../components/DynamicIcon/DynamicIcon';
 import Input from '../../components/Input/Input';
-
-
-
-import { v4 as uuidv4 } from 'uuid';
 import TasksList from '../../components/TasksList/TasksList';
-import Navigation from '../../components/Navigation/Navigation';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
+
 
 const TasksPage = () => {
     const theme = useContext(ThemeContext);
     const auth = useContext(AuthContext);
-    const { isLoading, error, setError, sendRequest } = useHttpClient();
-    const [loadedTasks, setLoadedTasks] = useState();
-    // state stuff
-    const [inputText, setInputText] = useState('');
-    const [dataTasks, setDataTasks] = useState([]);
-    const [status, setStatus] = useState('all');
-    const [filteredTasks, setFilteredTasks] = useState([])
+    const { isLoading, sendRequest } = useHttpClient();
+    const [loadedTasks, setLoadedTasks] = useState([]);
+    const [activeTasks, setActiveTasks] = useState([]);
+    const [isFiltered, setIsFiltred] = useState('');
+    const [filteredTasks, setFilteredTasks] = useState([]);
 
     const userId = auth.userId;
 
+    const [formState, handleInputSubmit, setFormData] = useForm({
+        title: {
+            value: '',
+            isValid: false,
+        },
+    },
+        true
+    );
 
+    // for creating new task and to the existing list
+    const submitHandler = async e => {
+        e.preventDefault();
+        try {
+            const response = await sendRequest(
+                `${API_URL}/tasks/new`,
+                'POST',
+                {
+                    title: formState.inputs.title.value,
+                    userId: auth.userId
+                },
+            );
+            setLoadedTasks(response.tasks);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     // for getting list of task specified user ID
     useEffect(() => {
@@ -45,73 +63,107 @@ const TasksPage = () => {
                 );
                 setLoadedTasks(response.tasks);
             } catch (err) {
-                console.log(`Get request dataTasks: ${err}`)
+                console.log(`Get request loadedTask: ${err}`)
             }
         };
         fetchListTasks();
-    }, [sendRequest, userId])
+    }, [sendRequest, userId]);
 
-    console.log(loadedTasks)
-
-    //     axios
-    //         .get(`http://localhost:8080/tasks/637c3510576fd93502c28e4c`)
-    //         .then((res) => {
-    //             console.log(res.data)
-    //             setDataTasks(res.data.tasks)
-    //         })
-    //         .catch((err) => console.log(`Get request dataTasks: ${err}`))
-    // }, [])
-
-
-
-    // for adding new toDo task
-    const submitHandler = (e) => {
-        e.preventDefault();
-        axios.post(`http://localhost:8080/tasks`, { id: uuidv4(), name: inputText, completed: false })
-            .then((res) => {
-                setDataTasks(res.data);
-                setInputText('');
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }
-
-    // for filter data
-
-    useEffect(() => {
-        filterHandlerForUseEffect();
-    }, [dataTasks, status]);
-
-    const filterHandlerForUseEffect = () => {
-        switch (status) {
-            case "Completed":
-                setFilteredTasks(dataTasks.filter((task) => task.completed === true))
-                break;
-            case "Active":
-                setFilteredTasks(dataTasks.filter((task) => task.completed === false))
-                break;
-            default:
-                setFilteredTasks(dataTasks);
-                break;
+    //for removing task from the list of tasks
+    const onDeleteHandler = async (taskId) => {
+        try {
+            const response = await sendRequest(
+                `${API_URL}/tasks/${taskId}`,
+                'DELETE',
+                {
+                    userId: userId,
+                },
+            );
+            setLoadedTasks(response.tasks)
+        } catch (err) {
+            console.log(err)
         }
-    }
+    };
 
-    const handleInputSubmit = () => {
+    // for updating status of the task specified Id
+    const updateStatusTask = async (tid, status) => {
+        try {
+            const response = await sendRequest(
+                `${API_URL}/tasks/${tid}`,
+                'PUT',
+                {
+                    userId: auth.userId,
+                    completed: !status,
+                }
+            );
 
+            setLoadedTasks(response.tasks);
+        } catch (err) {
+            console.log(`Get request dataTasks: ${err}`)
+        }
+    };
+
+    // for counting active tasks
+    useEffect(() => {
+        if (!isLoading && loadedTasks) {
+            const activeDataTasks = loadedTasks.filter((task) => {
+                return task.completed === false
+            });
+            setActiveTasks(activeDataTasks);
+        }
+    }, [loadedTasks, isLoading]);
+
+    //for removing all completed tasks from the list of tasks
+    const onDeleteCompletedHandler = async () => {
+        try {
+            const response = await sendRequest(
+                `${API_URL}/tasks/completed/true`,
+                'DELETE',
+                {
+                    userId: userId,
+                },
+            );
+            setLoadedTasks(response.tasks)
+        } catch (err) {
+            console.log(err)
+        }
+    };
+
+    // for filtering data
+    useEffect(() => {
+        const filterHandlerForUseEffect = () => {
+            switch (isFiltered) {
+                case "Completed":
+                    setFilteredTasks(loadedTasks.filter((task) => task.completed === true))
+                    break;
+                case "Active":
+                    setFilteredTasks(loadedTasks.filter((task) => task.completed === false))
+                    break;
+                default:
+                    setFilteredTasks(loadedTasks);
+                    break;
+            }
+        }
+        filterHandlerForUseEffect();
+    }, [loadedTasks, isFiltered]);
+
+
+
+    const onfilterHandler = (e) => {
+        setIsFiltred(e.target.value)
     }
 
     return (
         <section className={`tasks tasks__${theme.theme}`}>
             <Card>
-                <form className={`tasks__form tasks__form--${theme.theme}`}>
+                <form className={`tasks__form tasks__form--${theme.theme}`} onSubmit={submitHandler}>
                     <Button type='submit' shape='circle'>
                         <DynamicIcon name='RiAddFill' className='tasks__icon-button' />
                     </Button>
                     <Input
-                        id='newTask'
+                        id='title'
                         type='text'
-                        label='New task'
+                        label='title'
                         placeholder='Create a new task...'
                         validators={[VALIDATOR_REQUIRE]}
                         onInput={handleInputSubmit}
@@ -120,38 +172,36 @@ const TasksPage = () => {
                 </form>
             </Card>
             {isLoading && <LoadingSpinner />}
-
             <div className={`tasks__container tasks__container--${theme.theme}`}>
                 <Card>
-                    {!isLoading && !loadedTasks &&
+                    {!isLoading && loadedTasks.length === 0 &&
                         <div className='tasks__message'>
                             <p className={`tasks__content-message tasks__content-message--${theme.theme}`}>Your TO-DO list is empty</p>
                         </div>}
-                    {!isLoading && loadedTasks && <>
-                        <TasksList loadedTasks={loadedTasks} setLoadedTasks={setLoadedTasks} filteredTasks={filteredTasks} />
-
-                        <nav className='navigation'>
-                            <div className='navigation__container'>
-                                <div className='navigation__wrap-container'>
-                                    <p className='navigation__left-items'>{`${loadedTasks.length} items left`}</p>
-                                    <Button />
+                    {!isLoading && loadedTasks &&
+                        <>
+                            <TasksList
+                                onDeleteHandler={onDeleteHandler}
+                                filteredTasks={filteredTasks}
+                                onCompletedHandler={updateStatusTask}
+                            />
+                            <div className='tasks__action-container'>
+                                <div className='tasks__container-nav'>
+                                    <p className='tasks__left-items'>{`${activeTasks.length} items left`}</p>
+                                    <Button type='button' title='Clear Completed' shape='nav' onClick={onDeleteCompletedHandler} />
                                 </div>
-                                {/* <div className={!isDark ? 'navigation__wrap-filter' : 'navigation__wrap-filter navigation__wrap-filter-dark'}>
-                                    <Button title='All' isDark={isDark} onClick={filterHandler} value='All' type='button' />
-                                    <Button title='Active' isDark={isDark} onClick={filterHandler} value='Active' type='button' />
-                                    <Button title='Completed' isDark={isDark} onClick={filterHandler} value='Completed' type='button' />
-                                </div> */}
                             </div>
-                        </nav>
-                        {/* <Navigation
-                            isDark={theme.theme}
-                            dataTasks={loadedTasks}
-                            setDataTasks={setDataTasks}
-                            setStatus={setStatus}
-                            filteredTasks={filteredTasks}
-                        /> */}
-                    </>}
+                        </>}
                 </Card>
+                <div className='tasks__navigation'>
+                    <Card>
+                        <div className='tasks__wrapper-container'>
+                            <Button type='button' title='All' shape='nav' onClick={onfilterHandler} value='' active={isFiltered === '' && 'active'} />
+                            <Button type='button' title='Active' shape='nav' onClick={onfilterHandler} value='Active' active={isFiltered === 'Active' && 'active'} />
+                            <Button type='button' title='Completed' shape='nav' onClick={onfilterHandler} value='Completed' active={isFiltered === 'Completed' && 'active'} />
+                        </div >
+                    </Card>
+                </div>
             </div>
         </section>
     );

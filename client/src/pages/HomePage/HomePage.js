@@ -111,8 +111,8 @@ const HomePage = () => {
                         <Input
                             id='username'
                             type='text'
-                            label='UserName'
-                            placeholder='Please enter your Username'
+                            label='Usermane'
+                            placeholder='username'
                             errorText="Please enter an Username."
                             validators={[VALIDATOR_REQUIRE()]}
                             onInput={handleInputSubmit}
@@ -122,7 +122,7 @@ const HomePage = () => {
                         id='email'
                         type='email'
                         label='Email'
-                        placeholder='Please enter your email'
+                        placeholder='example@example.com'
                         errorText="Please enter a valid email address."
                         validators={[VALIDATOR_EMAIL()]}
                         onInput={handleInputSubmit}
@@ -132,7 +132,7 @@ const HomePage = () => {
                         id='password'
                         type='password'
                         label='Password'
-                        placeholder='Please enter your password'
+                        placeholder='******'
                         errorText="Please enter a valid password, at least 6 characteres."
                         validators={[VALIDATOR_MINLENGTH(6)]}
                         onInput={handleInputSubmit}
