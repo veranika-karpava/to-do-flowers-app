@@ -1,75 +1,87 @@
-@use "../../styles/partials/typography" as *;
-@use "../../styles/partials/mixins" as *;
-@use "../../styles/partials/variables" as *;
+@use '../../styles/partials/typography' as *;
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
 
 .button {
-    cursor: pointer;
+  cursor: pointer;
 
-    &__circle {
-        @include flex(center, center, row, nowrap);
-        border: 1px solid $text-color-completed-light;
-        border-radius: 50%;
-        height: 1.7rem;
-        width: 1.7rem;
-        background: linear-gradient(to left, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+  &__circle {
+    @include flex(center, center, row, nowrap);
+    border: 1px solid $text-color-completed-light;
+    border-radius: 50%;
+    height: 1.7rem;
+    width: 1.7rem;
+    background: linear-gradient(
+      to left,
+      hsl(192, 100%, 67%),
+      hsl(280, 87%, 65%)
+    );
 
-        &:hover {
-            transform: scale(1.1);
-        }
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &__noborder {
+    @include font-stack-main;
+    border: none;
+    background-color: transparent;
+    color: $active-bright-blue;
+  }
+
+  &__delete {
+    height: 1.7rem;
+    width: 1.7rem;
+    border: none;
+    background-color: transparent;
+    color: $text-color-completed-dark;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &__rectangle {
+    height: 2rem;
+    width: 6rem;
+    @include font-stack-main;
+    background: linear-gradient(
+      to left,
+      hsl(192, 100%, 67%),
+      hsl(280, 87%, 65%)
+    );
+    border-radius: 4px;
+    color: $bg-list-light;
+    border: 1px solid;
+
+    &--light {
+      border-color: linear-gradient(
+        to left,
+        hsl(192, 100%, 67%),
+        hsl(280, 87%, 65%)
+      );
     }
 
-    &__noborder {
-        @include font-stack-main;
-        border: none;
-        background-color: transparent;
-        color: $active-bright-blue;
+    &--dark {
+      border-color: $bg-list-light;
     }
 
-    &__delete {
-        height: 1.7rem;
-        width: 1.7rem;
-        border: none;
-        background-color: transparent;
-        color: $text-color-completed-dark;
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
 
-        &:hover {
-            transform: scale(1.1);
-        }
+  &__nav {
+    border: none;
+    background-color: transparent;
+    @include font-stack-nav-main;
+
+    &:hover {
+      color: $active-bright-blue;
     }
 
-    &__rectangle {
-        height: 2rem;
-        width: 6rem;
-        @include font-stack-main;
-        background: linear-gradient(to left, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
-        border-radius: 4px;
-        color: $bg-list-light;
-        border: 1px solid;
-
-        &--light {
-            border-color: linear-gradient(to left, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
-        }
-
-        &--dark {
-            border-color: $bg-list-light;
-        }
-
-        &:disabled {
-            opacity: 0.5;
-        }
+    &--active {
+      color: $active-bright-blue;
     }
-
-    &__nav {
-        border: none;
-        background-color: transparent;
-        @include font-stack-nav-main;
-
-        &:hover {
-            color: $active-bright-blue;
-        }
-
-        &--active {
-            color: $active-bright-blue;
-        }
-    }
+  }
 }

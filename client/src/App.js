@@ -18,8 +18,8 @@ const App = () => {
   const [userId, setUserId] = useState(false);
 
   const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light')
-  }
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
 
   const login = useCallback((uid, token, expirationDate) => {
     setToken(token);
@@ -78,23 +78,22 @@ const App = () => {
   if (token) {
     routes = (
       <Switch>
-        <Route path='/tasks' exact>
+        <Route path="/tasks" exact>
           <TasksPage />
         </Route>
-        <Redirect to='/tasks' />
+        <Redirect to="/tasks" />
       </Switch>
-    )
+    );
   } else {
     routes = (
       <Switch>
-        <Route path='/' exact>
+        <Route path="/" exact>
           <HomePage />
         </Route>
-        <Redirect to='/' />
+        <Redirect to="/" />
       </Switch>
-    )
+    );
   }
-
 
   return (
     <ThemeContext.Provider value={{ theme: theme, toggleTheme: toggleTheme }}>
@@ -109,14 +108,12 @@ const App = () => {
       >
         <BrowserRouter>
           <Header />
-          <main>
-            {routes}
-          </main>
+          <main>{routes}</main>
           <Footer />
         </BrowserRouter>
       </AuthContext.Provider>
-    </ThemeContext.Provider >
+    </ThemeContext.Provider>
   );
-}
+};
 
 export default App;

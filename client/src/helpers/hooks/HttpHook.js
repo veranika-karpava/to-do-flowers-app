@@ -14,7 +14,7 @@ export const useHttpClient = () => {
           url,
           method,
           data,
-          headers
+          headers,
         });
         const responseData = response.data;
         setIsLoading(false);

@@ -14,20 +14,40 @@
     "react-router-dom": "^5.3.3",
     "react-scripts": "5.0.1",
     "sass": "^1.52.3",
-    "uuid": "^8.3.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "eslint:check": "eslint 'src/**/*.{js,jsx}'",
+    "eslint:fix": "eslint --fix 'src/**/*.{js,jsx}'",
+    "prettier:check": "prettier --check 'src/**/*.{js,jsx,scss}'",
+    "prettier:write": "prettier --write 'src/**/*.{js,jsx,scss}'",
+    "delint": "npm run eslint:fix; npm run prettier:write"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
-    ]
+      "react-app/jest",
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:jsx-a11y/recommended",
+      "plugin:react-hooks/recommended"
+    ],
+    "rules": {
+      "react/prop-types": "off",
+      "prefer-destructuring": "error",
+      "camelcase": [
+        "error",
+        {
+          "ignoreDestructuring": true,
+          "properties": "never"
+        }
+      ],
+      "linebreak-style": "error"
+    }
   },
   "browserslist": {
     "production": [
@@ -40,5 +60,18 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "2.8.3",
+    "prettier-eslint": "^15.0.1"
+  },
+  "prettier": {
+    "bracketSpacing": true,
+    "semi": true,
+    "arrowParens": "avoid",
+    "singleQuote": true
   }
 }

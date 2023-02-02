@@ -1,62 +1,60 @@
-@use "../../styles/partials/typography" as *;
-@use "../../styles/partials/mixins" as *;
-@use "../../styles/partials/variables" as *;
+@use '../../styles/partials/typography' as *;
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
 
 .form {
-    &__container-border {
-        width: 100%;
-        padding: 1rem;
+  &__container-border {
+    width: 100%;
+    padding: 1rem;
 
-        border-bottom: 1px solid $text-color-completed-light;
+    border-bottom: 1px solid $text-color-completed-light;
 
-        &--dark {
-            border-bottom: 1px solid $text-color-completed-dark;
-        }
+    &--dark {
+      border-bottom: 1px solid $text-color-completed-dark;
+    }
+  }
+
+  &__container-none {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  &__input {
+    padding-top: 1.5%;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    outline: none;
+    height: 1.58rem;
+    @include font-stack-main;
+
+    &--light {
+      &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px $bg-list-light inset;
+        -webkit-text-fill-color: $text-color-main-light;
+      }
+
+      &::placeholder {
+        color: $text-color-actived-light;
+      }
     }
 
-    &__container-none {
-        width: 100%;
-        padding: 1rem;
+    &--dark {
+      &[type='text'],
+      &[type='email'],
+      &[type='password'] {
+        color: $text-color-main-dark !important;
+      }
+
+      &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px $bg-list-dark inset;
+        -webkit-text-fill-color: $text-color-main-dark;
+      }
+
+      &::placeholder {
+        color: $text-color-main-light;
+      }
     }
-
-    &__input {
-        padding-top: 1.5%;
-        width: 100%;
-        border: none;
-        cursor: pointer;
-        background-color: transparent;
-        outline: none;
-        height: 1.58rem;
-        @include font-stack-main;
-
-        &--light {
-
-            &:-webkit-autofill {
-                -webkit-box-shadow: 0 0 0px 1000px $bg-list-light inset;
-                -webkit-text-fill-color: $text-color-main-light;
-            }
-
-            &::placeholder {
-                color: $text-color-actived-light;
-            }
-        }
-
-        &--dark {
-
-            &[type=text],
-            &[type=email],
-            &[type=password] {
-                color: $text-color-main-dark !important;
-            }
-
-            &:-webkit-autofill {
-                -webkit-box-shadow: 0 0 0px 1000px $bg-list-dark inset;
-                -webkit-text-fill-color: $text-color-main-dark;
-            }
-
-            &::placeholder {
-                color: $text-color-main-light;
-            }
-        }
-    }
+  }
 }

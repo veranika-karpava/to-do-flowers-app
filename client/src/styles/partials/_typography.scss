@@ -1,56 +1,56 @@
-@use "../partials/variables" as *;
-@use "../partials/mixins" as *;
+@use '../partials/variables' as *;
+@use '../partials/mixins' as *;
 
 @font-face {
-    font-family: 'Josefin Sans';
-    src: url('../../assets/fonts/JosefinSans-Bold.woff2') format ("woff2"),
-        url('../../assets/fonts/JosefinSans-Bold.woff2') format ("woff");
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Josefin Sans';
+  src: url('../../assets/fonts/JosefinSans-Bold.woff2') format ('woff2'),
+    url('../../assets/fonts/JosefinSans-Bold.woff2') format ('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Josefin Sans';
-    src: url('../../assets/fonts/JosefinSans-Regular.woff2') format("woff2"),
-        url('../../assets/fonts/JosefinSans-Regular.woff') format("woff");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Josefin Sans';
+  src: url('../../assets/fonts/JosefinSans-Regular.woff2') format('woff2'),
+    url('../../assets/fonts/JosefinSans-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
-@mixin font-stack ($font-style, $font-size, $font-weight, $line-height, $color) {
-    font-style: $font-style;
-    font-size: $font-size;
-    font-weight: $font-weight;
-    line-height: $line-height;
-    color: $color;
+@mixin font-stack($font-style, $font-size, $font-weight, $line-height, $color) {
+  font-style: $font-style;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  line-height: $line-height;
+  color: $color;
 }
 
 // Header
 @mixin font-stack-header {
-    @include font-stack (normal, 1.25rem, 700, 1.25rem, $bg-list-light);
-    letter-spacing: 0.4rem;
-    text-transform: uppercase;
+  @include font-stack(normal, 1.25rem, 700, 1.25rem, $bg-list-light);
+  letter-spacing: 0.4rem;
+  text-transform: uppercase;
 
-    @include tablet {
-        @include font-stack (normal, 1.75rem, 700, 1.75rem, $bg-list-light);
-    }
+  @include tablet {
+    @include font-stack(normal, 1.75rem, 700, 1.75rem, $bg-list-light);
+  }
 }
 
 // Footer
 @mixin font-stack-footer {
-    @include font-stack (normal, 0.8rem, 400, 0.9rem, $text-color-actived-light);
+  @include font-stack(normal, 0.8rem, 400, 0.9rem, $text-color-actived-light);
 }
 
 // for list of todos
 @mixin font-stack-main {
-    font-family: 'Josefin Sans', sans-serif;
-    @include font-stack (normal, 1.125rem, 400, 1.56rem, $text-color-main-light);
+  font-family: 'Josefin Sans', sans-serif;
+  @include font-stack(normal, 1.125rem, 400, 1.56rem, $text-color-main-light);
 }
 
-// navigation 
+// navigation
 @mixin font-stack-nav-main {
-    font-family: 'Josefin Sans', sans-serif;
-    @include font-stack (normal, 0.8rem, 400, 1rem, $text-color-actived-light);
+  font-family: 'Josefin Sans', sans-serif;
+  @include font-stack(normal, 0.8rem, 400, 1rem, $text-color-actived-light);
 }

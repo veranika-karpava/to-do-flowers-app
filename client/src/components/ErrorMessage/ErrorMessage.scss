@@ -1,9 +1,9 @@
-@use "../../styles/partials/typography" as *;
-@use "../../styles/partials/mixins" as *;
-@use "../../styles/partials/variables" as *;
+@use '../../styles/partials/typography' as *;
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
 
 .error-message {
-    width: 100%;
-    color: $active-bright-blue;
-    font-size: 0.8rem;
+  width: 100%;
+  color: $active-bright-blue;
+  font-size: 0.8rem;
 }

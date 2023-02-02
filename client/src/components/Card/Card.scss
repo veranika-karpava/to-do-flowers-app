@@ -1,19 +1,19 @@
-@use "../../styles/partials/typography" as *;
-@use "../../styles/partials/mixins" as *;
-@use "../../styles/partials/variables" as *;
+@use '../../styles/partials/typography' as *;
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
 
 .card {
-    @include flex(space-between, center, column, nowrap);
-    width: 100%;
-    height: inherit;
-    border-radius: 4px;
-    background-color: $bg-list-light;
+  @include flex(space-between, center, column, nowrap);
+  width: 100%;
+  height: inherit;
+  border-radius: 4px;
+  background-color: $bg-list-light;
 
-    &__dark {
-        background-color: $bg-list-dark;
-    }
+  &__dark {
+    background-color: $bg-list-dark;
+  }
 
-    @include tablet {
-        width: 50%;
-    }
+  @include tablet {
+    width: 50%;
+  }
 }

@@ -1,60 +1,59 @@
-@use "../../styles/partials/typography" as *;
-@use "../../styles/partials/mixins" as *;
-@use "../../styles/partials/variables" as *;
-
+@use '../../styles/partials/typography' as *;
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
 
 .tasks {
-    &__item {
-        width: 100%;
+  &__item {
+    width: 100%;
 
-        &--dark {
-            color: $text-color-main-dark;
-        }
+    &--dark {
+      color: $text-color-main-dark;
+    }
+  }
+
+  &__item-container {
+    width: 100%;
+    padding: 1rem;
+    @include flex(space-between, center, row, nowrap);
+    gap: 1rem;
+    border-bottom: 1px solid $text-color-completed-light;
+
+    &--dark {
+      border-color: $text-color-completed-dark;
+    }
+  }
+
+  &__content-wrapper {
+    width: 90%;
+    @include flex(flex-start, center, row, nowrap);
+  }
+
+  &__item-content {
+    margin-left: 0.5rem;
+    padding-top: 1.5%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+    &--completed-light {
+      text-decoration: line-through;
+      color: $text-color-completed-light;
     }
 
-    &__item-container {
-        width: 100%;
-        padding: 1rem;
-        @include flex(space-between, center, row, nowrap);
-        gap: 1rem;
-        border-bottom: 1px solid $text-color-completed-light;
-
-        &--dark {
-            border-color: $text-color-completed-dark;
-        }
+    &--completed-dark {
+      text-decoration: line-through;
+      color: $text-color-main-light;
     }
+  }
 
-    &__content-wrapper {
-        width: 90%;
-        @include flex(flex-start, center, row, nowrap);
-    }
+  &__icon-cross {
+    width: inherit;
+    height: inherit;
+  }
 
-    &__item-content {
-        margin-left: 0.5rem;
-        padding-top: 1.5%;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-
-        &--completed-light {
-            text-decoration: line-through;
-            color: $text-color-completed-light;
-        }
-
-        &--completed-dark {
-            text-decoration: line-through;
-            color: $text-color-main-light;
-        }
-    }
-
-    &__icon-cross {
-        width: inherit;
-        height: inherit;
-    }
-
-    &__icon-status {
-        width: 1.2rem;
-        height: 1.2rem;
-        color: $bg-list-light;
-    }
+  &__icon-status {
+    width: 1.2rem;
+    height: 1.2rem;
+    color: $bg-list-light;
+  }
 }

@@ -1,27 +1,26 @@
-@use "../../styles/partials/typography" as *;
-@use "../../styles/partials/mixins" as *;
-@use "../../styles/partials/variables" as *;
+@use '../../styles/partials/typography' as *;
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
 
 .loading {
-    width: 100%;
-    @include flex(space-between, center, column, nowrap);
+  width: 100%;
+  @include flex(space-between, center, column, nowrap);
 
-    @include keyframes(spin) {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
+  @include keyframes(spin) {
+    0% {
+      transform: rotate(0deg);
     }
 
-    @include animate(spin, 1.2s, linear, infinite);
-
-
-    &__icon {
-        width: 3rem;
-        height: 3rem;
-        color: $text-color-actived-light;
+    100% {
+      transform: rotate(360deg);
     }
+  }
+
+  @include animate(spin, 1.2s, linear, infinite);
+
+  &__icon {
+    width: 3rem;
+    height: 3rem;
+    color: $text-color-actived-light;
+  }
 }

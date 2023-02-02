@@ -4,7 +4,7 @@ import { BiUser, BiExit } from 'react-icons/bi';
 import { RiAddFill } from 'react-icons/ri';
 import { VscLoading } from 'react-icons/vsc';
 import { RxCross2 } from 'react-icons/rx';
-import { AiOutlineCheck } from 'react-icons/ai'
+import { AiOutlineCheck } from 'react-icons/ai';
 
 export const icons = {
   FaHeart: FaHeart,
@@ -15,5 +15,5 @@ export const icons = {
   RiAddFill: RiAddFill,
   VscLoading: VscLoading,
   RxCross2: RxCross2,
-  AiOutlineCheck: AiOutlineCheck
+  AiOutlineCheck: AiOutlineCheck,
 };
