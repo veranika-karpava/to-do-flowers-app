@@ -49,7 +49,6 @@ const signUp = async (req, res, next) => {
       username,
       email,
       password: hashedPassword,
-      tasks: [],
     });
   } catch (err) {
     console.log(err);
