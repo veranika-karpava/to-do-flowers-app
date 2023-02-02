@@ -11,7 +11,6 @@ const {
 // create router
 const taskRouter = express.Router();
 
-
 // get a list of todos specified user ID (uid)
 taskRouter.get('/:uid', getListTasks);
 

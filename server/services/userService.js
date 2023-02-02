@@ -77,13 +77,11 @@ const signUp = async (req, res, next) => {
     );
   }
 
-  res
-    .status(201)
-    .json({
-      userId: createdNewUser.id,
-      email: createdNewUser.email,
-      jwtToken: jwtToken,
-    });
+  res.status(201).json({
+    userId: createdNewUser.id,
+    email: createdNewUser.email,
+    jwtToken: jwtToken,
+  });
 };
 
 // login existing user
@@ -134,13 +132,11 @@ const logIn = async (req, res, next) => {
     return next(new HttpError('Logging in failed, please try again', 500));
   }
 
-  res
-    .status(200)
-    .json({
-      userId: existingUser.id,
-      email: existingUser.email,
-      jwtToken: jwtToken,
-    });
+  res.status(200).json({
+    userId: existingUser.id,
+    email: existingUser.email,
+    jwtToken: jwtToken,
+  });
 };
 
 exports.signUp = signUp;

@@ -5,34 +5,40 @@ const User = require('../models/user');
 const Task = require('../models/task');
 
 // helpers for getting list of tasks
-const getListTasksByUserId = async (uid) => {
+const getListTasksByUserId = async uid => {
   let tasksList;
   try {
     tasksList = await Task.find({ owner: uid });
   } catch (err) {
-    return next(
-      new HttpError('Fetching tasks failed, please try again later.', 500)
+    const error = new HttpError(
+      'Fetching tasks failed, please try again later.',
+      500
     );
+    throw error;
   }
   return tasksList;
 };
 
 // for checking existing user
-const checkExistingUser = async (uid) => {
+const checkExistingUser = async uid => {
   let user;
   try {
     user = await User.findById(uid);
   } catch (err) {
-    return next(
-      new HttpError('Fetching tasks failed, please try again later.', 500));
+    const error = new HttpError(
+      'Fetching tasks failed, please try again later.',
+      500
+    );
+    throw error;
   }
 
   if (!user) {
-    return next(new HttpError('Could not find user specified id.', 404));
+    const error = new HttpError('Could not find user specified id.', 404);
+    throw error;
   }
 
   return user;
-}
+};
 
 // for getting a list of tasks specified user ID (uid)
 const getListTasks = async (req, res, next) => {
@@ -52,19 +58,17 @@ const getListTasks = async (req, res, next) => {
   try {
     userWithTasks = await getListTasksByUserId(user.id);
   } catch (err) {
-    return next(new HttpError('Fetching tasks failed, please try again later.', 500));
+    return next(
+      new HttpError('Fetching tasks failed, please try again later.', 500)
+    );
   }
 
   if (userWithTasks.length === 0) {
     return next(new HttpError('Your list of tasks is empty.', 404));
   } else {
-    res
-      .status(200)
-      .json({
-        tasks: userWithTasks.map(task =>
-          task.toObject({ getters: true })
-        ),
-      });
+    res.status(200).json({
+      tasks: userWithTasks.map(task => task.toObject({ getters: true })),
+    });
   }
 };
 
@@ -92,7 +96,7 @@ const addNewTask = async (req, res, next) => {
     createdNewTask = new Task({
       title,
       completed: false,
-      owner: user.id
+      owner: user.id,
     });
   } catch (err) {
     console.log(err);
@@ -114,16 +118,15 @@ const addNewTask = async (req, res, next) => {
   try {
     userWithTasks = await getListTasksByUserId(user.id);
   } catch (err) {
-    return next(new HttpError('Fetching tasks failed, please try again later.', 500));
+    return next(
+      new HttpError('Fetching tasks failed, please try again later.', 500)
+    );
   }
-
 
   res.status(201).json({
     message: 'New task created',
     task: createdNewTask,
-    tasks: userWithTasks.map(task =>
-      task.toObject({ getters: true })
-    ),
+    tasks: userWithTasks.map(task => task.toObject({ getters: true })),
   });
 };
 
@@ -143,7 +146,11 @@ const updateStatusTask = async (req, res, next) => {
 
   let task;
   try {
-    task = await Task.findByIdAndUpdate({ _id: taskId }, { completed: completed }, { new: true });
+    task = await Task.findByIdAndUpdate(
+      { _id: taskId },
+      { completed: completed },
+      { new: true }
+    );
   } catch (err) {
     return next(
       new HttpError(
@@ -154,22 +161,22 @@ const updateStatusTask = async (req, res, next) => {
   }
   if (!task) {
     return next(new HttpError('Could not find task specified id.', 404));
-  };
+  }
 
   let userWithTasks;
 
   try {
     userWithTasks = await getListTasksByUserId(user.id);
   } catch (err) {
-    return next(new HttpError('Fetching tasks failed, please try again later.', 500));
+    return next(
+      new HttpError('Fetching tasks failed, please try again later.', 500)
+    );
   }
 
   res.status(200).json({
     message: 'Task updated successefully',
-    tasks: userWithTasks.map(task =>
-      task.toObject({ getters: true })
-    ),
-  })
+    tasks: userWithTasks.map(task => task.toObject({ getters: true })),
+  });
 };
 
 // for deleting a task specified task ID (tid)
@@ -191,7 +198,7 @@ const deleteTaskById = async (req, res, next) => {
     const sess = await mongoose.startSession();
     sess.startTransaction();
     try {
-      task = await Task.findOneAndDelete({ id: taskId, owner: user.id });
+      task = await Task.findByIdAndDelete({ _id: taskId, owner: user.id });
     } catch (err) {
       return next(
         new HttpError(
@@ -218,15 +225,15 @@ const deleteTaskById = async (req, res, next) => {
   try {
     userWithTasks = await getListTasksByUserId(user.id);
   } catch (err) {
-    return next(new HttpError('Fetching tasks failed, please try again later.', 500));
+    return next(
+      new HttpError('Fetching tasks failed, please try again later.', 500)
+    );
   }
 
   res.status(200).json({
     message: 'Deleted task',
     task: task,
-    tasks: userWithTasks.map(task =>
-      task.toObject({ getters: true })
-    ),
+    tasks: userWithTasks.map(task => task.toObject({ getters: true })),
   });
 };
 
@@ -275,14 +282,14 @@ const deleteAllCompletedTasks = async (req, res, next) => {
   try {
     userWithTasks = await getListTasksByUserId(user.id);
   } catch (err) {
-    return next(new HttpError('Fetching tasks failed, please try again later.', 500));
+    return next(
+      new HttpError('Fetching tasks failed, please try again later.', 500)
+    );
   }
 
   res.status(200).json({
     message: 'Deleted tasks.',
-    tasks: userWithTasks.map(task =>
-      task.toObject({ getters: true })
-    ),
+    tasks: userWithTasks.map(task => task.toObject({ getters: true })),
   });
 };
 
