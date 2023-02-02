@@ -32,16 +32,6 @@
     height: 1.5rem;
 }
 
-@mixin style-form-list {
-    width: 100%;
-    border-radius: 4px;
-    background-color: $bg-list-light;
-
-    @include tablet {
-        width: 50%;
-    }
-}
-
 @mixin animate($animation, $duration, $method, $times) {
     animation: $animation $duration $method $times;
 }
@@ -50,13 +40,4 @@
     @keyframes #{$name} {
         @content;
     }
-}
-
-@mixin style-checkbox {
-    border: 1px solid transparent;
-    background:
-        linear-gradient(to left, hsl(192, 100%, 67%), hsl(280, 87%, 65%)),
-        linear-gradient(to left, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
-    background-clip: padding-box, border-box;
-    background-origin: padding-box, border-box;
 }

@@ -5,6 +5,7 @@
 .card {
     @include flex(space-between, center, column, nowrap);
     width: 100%;
+    height: inherit;
     border-radius: 4px;
     background-color: $bg-list-light;
 
