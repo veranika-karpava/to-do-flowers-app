@@ -10,8 +10,8 @@ Current functionality:
 * log out
 
 # Project Structure
-* Pending
-
+* * `/` - login/sign-up page
+* `/tasks` - tasks page where user can create, update status, delete and sort by category tasks.
 
 # Enviroment Variables
 Check `.env.sample` in the client and the server directory to set up enviroment variables file (.env). 
