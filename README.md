@@ -37,5 +37,5 @@ Check `.env.sample` in the client and the server directory to set up enviroment 
    * **`npm start`** - start run to-do app on http://localhost:3000 in browser
 
 # Link to the demo
-* Pending
+* https://to-do-flowers-app.herokuapp.com/
 

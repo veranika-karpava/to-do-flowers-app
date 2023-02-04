@@ -1,6 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
-require('dotenv').config();
+const path = require('path');
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+// require('dotenv').config();
 const cors = require('cors');
 
 const HttpError = require('./models/http-error');
@@ -9,6 +13,8 @@ const taskRouter = require('./middleware/taskRouter');
 
 const app = express();
 
+// for deploying - handle error not existing routes if any js file 
+app.use(express.static(path.join('public')));
 // middlewares
 // for handling CORS(cross-origin resource sharing) error
 app.use(
@@ -26,10 +32,16 @@ app.use(express.json());
 app.use('/user', userRouter);
 app.use('/tasks', taskRouter);
 
+// for deploying  - anything else return index.html
+app.use((_req, res, next) => {
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+})
+
 // for handling error when router isn't define
-app.use(async (_req, _res, next) => {
-  return next(new HttpError('The requested resource does not exist', 404));
-});
+// don't need for deploying
+// app.use(async (_req, _res, next) => {
+//   return next(new HttpError('The requested resource does not exist', 404));
+// });
 
 // for catching error
 app.use((error, _req, res, next) => {
@@ -49,7 +61,7 @@ mongoose
     `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.lhybrvz.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
   )
   .then(() => {
-    app.listen(`${process.env.PORT || 8080}`, () => {
+    app.listen(`${process.env.PORT || 5050}`, () => {
       console.log(`🚀 Server listening on ${process.env.PORT}`);
     });
   })
