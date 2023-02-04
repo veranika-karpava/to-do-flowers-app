@@ -52,7 +52,6 @@ const Input = ({
   const onChangeHandler = e => {
     dispatch({ type: 'CHANGE', val: e.target.value, validators: validators });
   };
-
   // for call reducer and pass current state
   const touchHandler = () => {
     dispatch({

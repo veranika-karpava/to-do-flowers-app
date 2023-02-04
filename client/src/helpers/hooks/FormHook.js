@@ -29,6 +29,12 @@ const formReducer = (state, action) => {
         isValid: action.formIsValid,
       };
     }
+    case 'RESET_DATA': {
+      return {
+        inputs: action.inputs,
+        isValid: action.formIsValid,
+      };
+    }
     default:
       return state;
   }

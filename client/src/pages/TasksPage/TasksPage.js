@@ -146,7 +146,7 @@ const TasksPage = () => {
           className={`tasks__form tasks__form--${theme.theme}`}
           onSubmit={submitHandler}
         >
-          <Button type="submit" shape="circle">
+          <Button type="submit" shape="circle" onSubmit={submitHandler}>
             <DynamicIcon name="RiAddFill" className="tasks__icon-button" />
           </Button>
           <Input
