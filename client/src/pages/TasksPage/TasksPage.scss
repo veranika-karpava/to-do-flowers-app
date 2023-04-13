@@ -6,7 +6,7 @@
   background-color: $bg-main-light;
   @include flex(flex-start, center, column, nowrap);
 
-  &__dark {
+  &.dark {
     background-color: $bg-main-dark;
   }
 
@@ -14,11 +14,6 @@
     padding-left: 1rem;
     width: 100%;
     @include flex(space-between, center, row, nowrap);
-  }
-
-  &__icon-button {
-    @include size-icon;
-    color: $bg-list-light;
   }
 
   &__container {
@@ -31,6 +26,7 @@
   }
 
   &__message {
+    width: 100%;
     height: 150px;
     padding: 1rem;
     @include flex(center, center, row, nowrap);
@@ -38,8 +34,10 @@
 
   &__content-message {
     width: 100%;
+    text-align: center;
+    background-color: transparent;
 
-    &--light {
+    &.light {
       color: $text-color-actived-light;
     }
   }

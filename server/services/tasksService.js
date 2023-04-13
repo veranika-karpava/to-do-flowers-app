@@ -139,6 +139,7 @@ const updateStatusTask = async (req, res, next) => {
   let user;
 
   try {
+    // eslint-disable-next-line no-unused-vars
     user = await checkExistingUser(userId);
   } catch (err) {
     return next(new HttpError('Could not find user specified id.', 404));
@@ -163,19 +164,9 @@ const updateStatusTask = async (req, res, next) => {
     return next(new HttpError('Could not find task specified id.', 404));
   }
 
-  let userWithTasks;
-
-  try {
-    userWithTasks = await getListTasksByUserId(user.id);
-  } catch (err) {
-    return next(
-      new HttpError('Fetching tasks failed, please try again later.', 500)
-    );
-  }
-
   res.status(200).json({
     message: 'Task updated successefully',
-    tasks: userWithTasks.map(task => task.toObject({ getters: true })),
+    task: task,
   });
 };
 
@@ -220,20 +211,9 @@ const deleteTaskById = async (req, res, next) => {
     );
   }
 
-  let userWithTasks;
-
-  try {
-    userWithTasks = await getListTasksByUserId(user.id);
-  } catch (err) {
-    return next(
-      new HttpError('Fetching tasks failed, please try again later.', 500)
-    );
-  }
-
   res.status(200).json({
-    message: 'Deleted task',
-    task: task,
-    tasks: userWithTasks.map(task => task.toObject({ getters: true })),
+    message: 'Task deleted successfully',
+    task: task
   });
 };
 

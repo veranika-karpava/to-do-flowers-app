@@ -4,7 +4,8 @@
 
 .loading {
   width: 100%;
-  @include flex(space-between, center, column, nowrap);
+  @include flex(center, center, column, nowrap);
+  @include animate(spin, 1.2s, linear, infinite);
 
   @include keyframes(spin) {
     0% {
@@ -15,8 +16,6 @@
       transform: rotate(360deg);
     }
   }
-
-  @include animate(spin, 1.2s, linear, infinite);
 
   &__icon {
     width: 3rem;

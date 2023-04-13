@@ -5,6 +5,7 @@ import { RiAddFill } from 'react-icons/ri';
 import { VscLoading } from 'react-icons/vsc';
 import { RxCross2 } from 'react-icons/rx';
 import { AiOutlineCheck } from 'react-icons/ai';
+import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md';
 
 export const icons = {
   FaHeart: FaHeart,
@@ -16,4 +17,6 @@ export const icons = {
   VscLoading: VscLoading,
   RxCross2: RxCross2,
   AiOutlineCheck: AiOutlineCheck,
+  MdOutlineVisibility: MdOutlineVisibility,
+  MdOutlineVisibilityOff: MdOutlineVisibilityOff,
 };

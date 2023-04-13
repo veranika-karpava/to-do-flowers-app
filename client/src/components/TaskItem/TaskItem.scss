@@ -11,7 +11,7 @@
     }
   }
 
-  &__item-container {
+  &__item-wrapper {
     width: 100%;
     padding: 1rem;
     @include flex(space-between, center, row, nowrap);
@@ -23,7 +23,7 @@
     }
   }
 
-  &__content-wrapper {
+  &__content {
     width: 90%;
     @include flex(flex-start, center, row, nowrap);
   }
@@ -35,25 +35,14 @@
     overflow: hidden;
     white-space: nowrap;
 
-    &--completed-light {
+    &.completed-light {
       text-decoration: line-through;
       color: $text-color-completed-light;
     }
 
-    &--completed-dark {
+    &.completed-dark {
       text-decoration: line-through;
       color: $text-color-main-light;
     }
-  }
-
-  &__icon-cross {
-    width: inherit;
-    height: inherit;
-  }
-
-  &__icon-status {
-    width: 1.2rem;
-    height: 1.2rem;
-    color: $bg-list-light;
   }
 }

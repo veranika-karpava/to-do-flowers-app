@@ -1,38 +1,38 @@
 import React, { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import cn from 'classnames';
 
 import './Header.scss';
-import DynamicIcon from '../DynamicIcon/DynamicIcon';
+import Button from '../Button/Button';
 import { ThemeContext } from '../../helpers/context/ThemeContext';
 import { AuthContext } from '../../helpers/context/AuthContext';
 
 const Header = () => {
-  const theme = useContext(ThemeContext);
-  const auth = useContext(AuthContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { isLoggedIn, userName, logout } = useContext(AuthContext);
 
   return (
-    <header className={`header header__${theme.theme}`}>
+    <header className={cn('header', { [theme]: theme })}>
       <div className="header__container">
         <div className="header__nav-item">
-          {auth.isLoggedIn && (
-            <NavLink
-              className="header__nav-link"
-              exact
+          {isLoggedIn && (
+            <Button
               to="/"
-              onClick={auth.logout}
-            >
-              <DynamicIcon name="BiExit" className="header__icon" />
-            </NavLink>
+              onClick={logout}
+              icon="BiExit"
+              classNameIcon="btn-circle__icon"
+            />
           )}
         </div>
         <div className="header__wrapper">
-          <h1 className="header__heading">todo</h1>
-          <button className="header__button-mode" onClick={theme.toggleTheme}>
-            <DynamicIcon
-              name={theme.theme === 'light' ? 'BsSunFill' : 'FaMoon'}
-              className="header__icon"
-            />
-          </button>
+          <h1 className="header__heading">
+            {isLoggedIn ? `Welcome,${userName}` : 'todo'}
+          </h1>
+          <Button
+            icon={theme === 'light' ? 'BsSunFill' : 'FaMoon'}
+            classNameIcon="btn-circle__icon"
+            onClick={toggleTheme}
+            mode
+          />
         </div>
       </div>
     </header>

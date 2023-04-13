@@ -5,7 +5,7 @@
 .form {
   &__container-border {
     width: 100%;
-    padding: 1rem;
+    padding: 1rem 1rem 0.8rem 1rem;
 
     border-bottom: 1px solid $text-color-completed-light;
 
@@ -19,8 +19,11 @@
     padding: 1rem;
   }
 
+  &__label {
+    position: relative;
+  }
+
   &__input {
-    padding-top: 1.5%;
     width: 100%;
     border: none;
     cursor: pointer;
@@ -37,6 +40,7 @@
 
       &::placeholder {
         color: $text-color-actived-light;
+        vertical-align: middle;
       }
     }
 

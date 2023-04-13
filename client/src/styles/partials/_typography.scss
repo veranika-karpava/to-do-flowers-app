@@ -29,28 +29,28 @@
 
 // Header
 @mixin font-stack-header {
-  @include font-stack(normal, 1.25rem, 700, 1.25rem, $bg-list-light);
-  letter-spacing: 0.4rem;
+  @include font-stack(normal, 1.25rem, 700, normal, $bg-list-light);
+  letter-spacing: 0.3rem;
   text-transform: uppercase;
 
   @include tablet {
-    @include font-stack(normal, 1.75rem, 700, 1.75rem, $bg-list-light);
+    @include font-stack(normal, 1.75rem, 700, normal, $bg-list-light);
   }
 }
 
 // Footer
 @mixin font-stack-footer {
-  @include font-stack(normal, 0.8rem, 400, 0.9rem, $text-color-actived-light);
+  @include font-stack(normal, 0.8rem, 400, normal, $text-color-actived-light);
 }
 
 // for list of todos
 @mixin font-stack-main {
   font-family: 'Josefin Sans', sans-serif;
-  @include font-stack(normal, 1.125rem, 400, 1.56rem, $text-color-main-light);
+  @include font-stack(normal, 1.125rem, 400, normal, $text-color-main-light);
 }
 
 // navigation
 @mixin font-stack-nav-main {
   font-family: 'Josefin Sans', sans-serif;
-  @include font-stack(normal, 0.8rem, 400, 1rem, $text-color-actived-light);
+  @include font-stack(normal, 0.8rem, 400, normal, $text-color-actived-light);
 }

@@ -13,27 +13,32 @@ let logoutTimer;
 
 const App = () => {
   const [theme, setTheme] = useState('light');
-  const [token, setToken] = useState(false);
-  const [tokenExpirationDate, setTokenExpirationDate] = useState();
-  const [userId, setUserId] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [userName, setUserName] = useState(null);
+  const [token, setToken] = useState(null);
+  const [tokenExpirationDate, setTokenExpirationDate] = useState(null);
 
   const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
+    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
-  const login = useCallback((uid, token, expirationDate) => {
-    setToken(token);
+  // for logging user
+  const login = useCallback((name, uid, token, expirationDate) => {
+    setUserName(name);
     setUserId(uid);
+    setToken(token);
     // token expiration date
     // new date obj that based on current date plus one hour
     const tokenExpirationDate =
       expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
+
     setTokenExpirationDate(tokenExpirationDate);
 
     // store token in local storage
     localStorage.setItem(
       'userData',
       JSON.stringify({
+        userName: name,
         userId: uid,
         token: token,
         expiration: tokenExpirationDate.toISOString(),
@@ -41,10 +46,12 @@ const App = () => {
     );
   }, []);
 
+  // for logout user
   const logout = useCallback(() => {
+    setUserName(null);
+    setUserId(null);
     setToken(null);
     setTokenExpirationDate(null);
-    setUserId(null);
     localStorage.removeItem('userData');
   }, []);
 
@@ -66,6 +73,7 @@ const App = () => {
       new Date(storedData.expiration) > new Date()
     ) {
       login(
+        storedData.userName,
         storedData.userId,
         storedData.token,
         new Date(storedData.expiration)
@@ -73,42 +81,33 @@ const App = () => {
     }
   }, [login]);
 
-  let routes;
-
-  if (token) {
-    routes = (
-      <Switch>
-        <Route path="/tasks" exact>
-          <TasksPage />
-        </Route>
-        <Redirect to="/tasks" />
-      </Switch>
-    );
-  } else {
-    routes = (
-      <Switch>
-        <Route path="/" exact>
-          <HomePage />
-        </Route>
-        <Redirect to="/" />
-      </Switch>
-    );
-  }
-
   return (
-    <ThemeContext.Provider value={{ theme: theme, toggleTheme: toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <AuthContext.Provider
         value={{
           isLoggedIn: !!token,
-          token: token,
-          userId: userId,
-          login: login,
-          logout: logout,
+          token,
+          userName,
+          userId,
+          login,
+          logout,
         }}
       >
         <BrowserRouter>
           <Header />
-          <main>{routes}</main>
+          <Switch>
+            {token ? (
+              <>
+                <Route path="/tasks" exact component={TasksPage} />
+                <Redirect to="/tasks" />
+              </>
+            ) : (
+              <>
+                <Route path="/" exact component={HomePage} />
+                <Redirect to="/" />
+              </>
+            )}
+          </Switch>
           <Footer />
         </BrowserRouter>
       </AuthContext.Provider>

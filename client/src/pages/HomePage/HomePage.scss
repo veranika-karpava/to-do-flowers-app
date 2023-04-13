@@ -5,9 +5,16 @@
 .auth {
   background-color: $bg-main-light;
 
-  &__dark {
+  &.dark {
     background-color: $bg-main-dark;
     color: $text-color-main-dark;
+  }
+
+  &__message {
+    width: 100%;
+    height: 150px;
+    padding: 1rem;
+    @include flex(center, center, row, nowrap);
   }
 
   &__container-title {

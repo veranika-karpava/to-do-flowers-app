@@ -18,6 +18,14 @@ body {
 
 section {
   min-height: 50vh;
-  padding: 1rem;
-  @include flex(space-between, center, column, nowrap);
+  padding: 2rem 1rem 1rem 1rem;
+  @include flex(flex-start, center, column, nowrap);
+}
+
+.dark {
+  background-color: $bg-main-dark;
+}
+
+.light {
+  background-color: $bg-main-light;
 }

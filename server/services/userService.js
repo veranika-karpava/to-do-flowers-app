@@ -18,7 +18,7 @@ const signUp = async (req, res, next) => {
   let existingUser;
 
   try {
-    existingUser = await User.findOne({ email: email });
+    existingUser = await User.findOne({ $or: [{ username: username }, { email: email }] });
   } catch (err) {
     return next(
       new HttpError('Signing up failed, please try again later.', 500)
@@ -26,12 +26,21 @@ const signUp = async (req, res, next) => {
   }
 
   if (existingUser) {
-    return next(
-      new HttpError(
-        'User exists already, please use a diffrent one or login.',
-        422
-      )
-    );
+    if (existingUser.username === username) {
+      return next(
+        new HttpError(
+          'Username already taken, please choose a different one.',
+          422
+        )
+      );
+    } else if (existingUser.email === email) {
+      return next(
+        new HttpError(
+          'Email address already registered, please use a different one or login.',
+          422
+        )
+      );
+    }
   }
 
   // for hashing password of new User
@@ -78,6 +87,7 @@ const signUp = async (req, res, next) => {
   }
 
   res.status(201).json({
+    userName: createdNewUser.username,
     userId: createdNewUser.id,
     email: createdNewUser.email,
     jwtToken: jwtToken,
@@ -131,8 +141,8 @@ const logIn = async (req, res, next) => {
   } catch (err) {
     return next(new HttpError('Logging in failed, please try again', 500));
   }
-
   res.status(200).json({
+    userName: existingUser.username,
     userId: existingUser.id,
     email: existingUser.email,
     jwtToken: jwtToken,

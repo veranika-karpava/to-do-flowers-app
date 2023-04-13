@@ -4,8 +4,21 @@
 
 .button {
   cursor: pointer;
+  border: none;
 
-  &__circle {
+  &.dark {
+    border-color: $bg-list-light;
+  }
+
+  &.light {
+    border-color: linear-gradient(
+      to left,
+      hsl(192, 100%, 67%),
+      hsl(280, 87%, 65%)
+    );
+  }
+
+  &.circle {
     @include flex(center, center, row, nowrap);
     border: 1px solid $text-color-completed-light;
     border-radius: 50%;
@@ -20,16 +33,50 @@
     &:hover {
       transform: scale(1.1);
     }
+
+    &__icon-status {
+      width: 1.2rem;
+      height: 1.2rem;
+      color: $bg-list-light;
+    }
+
+    &__icon-add {
+      @include size-icon;
+      color: $bg-list-light;
+    }
   }
 
-  &__noborder {
+  &.noborder {
     @include font-stack-main;
-    border: none;
     background-color: transparent;
     color: $active-bright-blue;
   }
 
-  &__delete {
+  &.nav {
+    border: none;
+    background-color: transparent;
+    @include font-stack-nav-main;
+
+    &:hover {
+      color: $active-bright-blue;
+    }
+  }
+
+  &.rectangle {
+    padding: 0.5rem 1rem;
+    width: 8rem;
+    @include font-stack-main;
+    background: linear-gradient(
+      to left,
+      hsl(192, 100%, 67%),
+      hsl(280, 87%, 65%)
+    );
+    border-radius: 8px;
+    color: $bg-list-light;
+    border: 1px solid;
+  }
+
+  &.delete {
     height: 1.7rem;
     width: 1.7rem;
     border: none;
@@ -39,49 +86,48 @@
     &:hover {
       transform: scale(1.1);
     }
-  }
 
-  &__rectangle {
-    height: 2rem;
-    width: 6rem;
-    @include font-stack-main;
-    background: linear-gradient(
-      to left,
-      hsl(192, 100%, 67%),
-      hsl(280, 87%, 65%)
-    );
-    border-radius: 4px;
-    color: $bg-list-light;
-    border: 1px solid;
-
-    &--light {
-      border-color: linear-gradient(
-        to left,
-        hsl(192, 100%, 67%),
-        hsl(280, 87%, 65%)
-      );
-    }
-
-    &--dark {
-      border-color: $bg-list-light;
-    }
-
-    &:disabled {
-      opacity: 0.5;
+    &.icon-cross {
+      width: inherit;
+      height: inherit;
     }
   }
 
-  &__nav {
+  &.visibility {
+    height: 1.7rem;
+    width: 1.7rem;
     border: none;
     background-color: transparent;
-    @include font-stack-nav-main;
+    color: $text-color-completed-dark;
+    position: absolute;
+    right: 0;
+    top: -2px;
+
+    &.icon-visibility {
+      width: inherit;
+      height: inherit;
+    }
+  }
+
+  &.active {
+    color: $active-bright-blue;
+  }
+
+  &.btn-circle {
+    @include flex(center, center, row, nowrap);
+    padding: 0.5rem;
+    border-radius: 50%;
+    border: 2px solid $bg-list-light;
+    cursor: pointer;
+    background: transparent;
 
     &:hover {
-      color: $active-bright-blue;
+      transform: scale(1.1);
     }
 
-    &--active {
-      color: $active-bright-blue;
+    &__icon {
+      @include size-icon;
+      color: $bg-list-light;
     }
   }
 }

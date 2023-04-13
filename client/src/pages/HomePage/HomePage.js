@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
+import cn from 'classnames';
 import { useHistory } from 'react-router-dom';
 
 import './HomePage.scss';
-import {
-  VALIDATOR_EMAIL,
-  VALIDATOR_MINLENGTH,
-  VALIDATOR_REQUIRE,
-} from '../../helpers/util/validators';
+import { ValidationType } from '../../helpers/util/validators';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import Card from '../../components/Card/Card';
@@ -19,13 +16,12 @@ import { AuthContext } from '../../helpers/context/AuthContext';
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
 const HomePage = () => {
-  const theme = useContext(ThemeContext);
-  const auth = useContext(AuthContext);
-  const history = useHistory();
+  const { theme } = useContext(ThemeContext);
+  const { login } = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const { isLoading, error, setError, sendRequest } = useHttpClient();
-
-  const [formState, handleInputSubmit, setFormData] = useForm(
+  const [formState, inputHandler, setFormData] = useForm(
     {
       email: {
         value: '',
@@ -39,8 +35,10 @@ const HomePage = () => {
     false
   );
 
+  const history = useHistory();
+
   const switchModeHandler = () => {
-    if (!isLoginMode) {
+    if (isLoginMode) {
       setFormData(
         { ...formState.inputs, username: undefined },
         formState.inputs.email.isValid && formState.inputs.password.isValid
@@ -57,8 +55,8 @@ const HomePage = () => {
     setIsLoginMode(prevMode => !prevMode);
   };
 
-  const authSubmitHandler = async event => {
-    event.preventDefault();
+  const authSubmitHandler = async e => {
+    e.preventDefault();
 
     if (isLoginMode) {
       try {
@@ -73,7 +71,11 @@ const HomePage = () => {
             'Content-Type': 'application/json',
           }
         );
-        auth.login(responseData.userId, responseData.jwtToken);
+        login(
+          responseData.userName,
+          responseData.userId,
+          responseData.jwtToken
+        );
         history.push('/tasks');
       } catch (err) {
         console.log(err);
@@ -89,7 +91,11 @@ const HomePage = () => {
             username: formState.inputs.username.value,
           }
         );
-        auth.login(responseData.userId, responseData.jwtToken);
+        login(
+          responseData.userName,
+          responseData.userId,
+          responseData.jwtToken
+        );
         history.push('/tasks');
       } catch (err) {
         console.log(err);
@@ -101,12 +107,23 @@ const HomePage = () => {
     setError(null);
   }, [formState.inputs]);
 
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
-    <section className={`auth auth__${theme.theme}`}>
-      {isLoading && <LoadingSpinner />}
-      <Card className={`auth auth__${theme.theme}`}>
+    <section className={cn('auth', theme)}>
+      <Card>
+        {isLoading && (
+          <div className="auth__message">
+            <LoadingSpinner />
+          </div>
+        )}
         <div
-          className={`auth__container-title auth__container-title--${theme.theme}`}
+          className={cn(
+            'auth__container-title',
+            `auth__container-title--${theme}`
+          )}
         >
           <h2 className="auth__title">{isLoginMode ? 'Log In' : 'Sign Up'}</h2>
           {error && <ErrorMessage errorText={error} textAlign="center" />}
@@ -117,11 +134,11 @@ const HomePage = () => {
             <Input
               id="username"
               type="text"
-              label="Usermane"
-              placeholder="username"
-              errorText="Please enter an Username."
-              validators={[VALIDATOR_REQUIRE()]}
-              onInput={handleInputSubmit}
+              label="Username"
+              placeholder="User name"
+              errorText="Please enter your Username"
+              validators={[ValidationType.REQUIRE]}
+              onInput={inputHandler}
               border="border"
             />
           )}
@@ -129,32 +146,35 @@ const HomePage = () => {
             id="email"
             type="email"
             label="Email"
-            placeholder="example@example.com"
-            errorText="Please enter a valid email address."
-            validators={[VALIDATOR_EMAIL()]}
-            onInput={handleInputSubmit}
+            placeholder="Email"
+            errorText="Please enter a valid email address example@example.com"
+            validators={[ValidationType.EMAIL]}
+            onInput={inputHandler}
             border="border"
           />
           <Input
             id="password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             label="Password"
-            placeholder="******"
-            errorText="Please enter a valid password, at least 6 characteres."
-            validators={[VALIDATOR_MINLENGTH(6)]}
-            onInput={handleInputSubmit}
+            placeholder="Password"
+            errorText="Please enter a valid password, at least 8 characteres, at least one letter and a number from 0 to 99"
+            validators={[ValidationType.PASSWORD]}
+            onInput={inputHandler}
             border="border"
+            rightIcon={
+              showPassword ? 'MdOutlineVisibility' : 'MdOutlineVisibilityOff'
+            }
+            onClickButton={handleClickShowPassword}
           />
           <div className="auth__container-button">
             <Button
               shape="rectangle"
               type="submit"
               title={isLoginMode ? 'Log In' : 'Sign Up'}
-              disabled={!formState.isValid}
             />
           </div>
         </form>
-        <div className={`auth__wrapper auth__wrapper--${theme.theme}`}>
+        <div className={cn('auth__wrapper', `auth__wrapper--${theme}`)}>
           <p className="auth__switch-content">
             {isLoginMode ? `Don't have an account?` : 'Do you have an account?'}{' '}
           </p>

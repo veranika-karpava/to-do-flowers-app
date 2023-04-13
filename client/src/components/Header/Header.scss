@@ -7,11 +7,11 @@
   width: 100%;
   @include style-bg-image-header;
 
-  &__light {
+  &.light {
     background-image: url('../../assets/images/bg-light.jpg');
   }
 
-  &__dark {
+  &.dark {
     background-image: url('../../assets/images/bg-dark.jpg');
   }
 
@@ -26,46 +26,16 @@
     @include flex(flex-end, center, row, nowrap);
   }
 
-  &__nav-link {
-    @include flex(center, center, row, nowrap);
-    padding: 0.5rem;
-    border-radius: 50%;
-    border: 2px solid $bg-list-light;
-    cursor: pointer;
-
-    &:hover {
-      transform: scale(1.1);
-    }
-  }
-
-  &__icon {
-    @include size-icon;
-    color: $bg-list-light;
-  }
-
   &__wrapper {
     width: inherit;
     @include flex(space-between, center, row, nowrap);
 
     @include tablet {
-      width: 50%;
+      width: 60%;
     }
   }
 
   &__heading {
     @include font-stack-header;
-  }
-
-  &__button-mode {
-    @include flex(center, center, row, nowrap);
-    background-color: transparent;
-    padding: 0.5rem;
-    border-radius: 50%;
-    border: 2px solid $bg-list-light;
-    cursor: pointer;
-
-    &:hover {
-      transform: scale(1.1);
-    }
   }
 }

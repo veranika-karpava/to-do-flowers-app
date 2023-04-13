@@ -1,24 +1,32 @@
 import React, { useContext, useReducer, useEffect } from 'react';
+import cn from 'classnames';
 
 import './Input.scss';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
-import { validate } from '../../helpers/util/validators';
+import Button from '../Button/Button';
+import { validateInput } from '../../helpers/util/validators';
 import { ThemeContext } from '../../helpers/context/ThemeContext';
 
-// reducer
+// Define the reducer function - spread state allows not to lose data
 const inputReducer = (state, action) => {
   switch (action.type) {
     case 'CHANGE':
       return {
         ...state,
-        value: action.val,
-        isValid: validate(action.val, action.validators),
+        value: action.value,
+        isValid: validateInput(action.value, action.validators),
       };
     case 'TOUCH':
       return {
-        // allows not to lose data
         ...state,
         isTouched: true,
+      };
+    case 'CLEAR':
+      return {
+        ...state,
+        value: '',
+        isValid: false,
+        isTouched: false,
       };
     default:
       return state;
@@ -32,14 +40,19 @@ const Input = ({
   validators,
   errorText,
   onInput,
-  initialValue,
-  initialValid,
+  initialValue = '',
+  initialValid = false,
   border,
+  clearInput,
+  setClearInput,
+  rightIcon,
+  onClickButton,
 }) => {
-  const theme = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
+  // Initialize the state using useReducer()
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: initialValue || '',
-    isValid: initialValid || false,
+    value: initialValue,
+    isValid: initialValid,
     isTouched: false,
   });
 
@@ -48,12 +61,21 @@ const Input = ({
     onInput(id, inputState.value, inputState.isValid);
   }, [id, inputState.value, inputState.isValid, onInput]);
 
-  // for calling reducer and pass current state
-  const onChangeHandler = e => {
-    dispatch({ type: 'CHANGE', val: e.target.value, validators: validators });
+  // for clear input field
+  useEffect(() => {
+    if (clearInput) {
+      dispatch({ type: 'CLEAR' });
+      setClearInput(false);
+    }
+  }, [clearInput]);
+
+  // Define the event handlers that call dispatch with action type change
+  const handleInputChange = e => {
+    dispatch({ type: 'CHANGE', value: e.target.value, validators: validators });
   };
-  // for call reducer and pass current state
-  const touchHandler = () => {
+
+  // Define the event handlers that call dispatch with action type touch
+  const handleInputTouch = () => {
     dispatch({
       type: 'TOUCH',
     });
@@ -61,19 +83,29 @@ const Input = ({
 
   return (
     <div
-      className={`form__container-${border} form__container-${border}--${theme.theme}`}
+      className={`form__container-${border} form__container-${border}--${theme}`}
     >
       <label className="form__label" htmlFor={id}>
         <input
-          className={`form__input form__input--${theme.theme}`}
+          className={`form__input form__input--${theme}`}
           id={id}
           type={type}
           placeholder={placeholder}
-          onChange={onChangeHandler}
+          onChange={handleInputChange}
           value={inputState.value}
-          onBlur={touchHandler}
+          onBlur={handleInputTouch}
         />
+        {rightIcon && (
+          <Button
+            type="button"
+            shape="visibility"
+            onClick={onClickButton}
+            icon={rightIcon}
+            classNameIcon={cn('visibility', 'icon-visibility')}
+          />
+        )}
       </label>
+
       {!inputState.isValid && inputState.isTouched && (
         <ErrorMessage errorText={errorText} textAlign="left" />
       )}

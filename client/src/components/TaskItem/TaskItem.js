@@ -1,46 +1,48 @@
 import React, { useContext } from 'react';
+import cn from 'classnames';
 
 import './TaskItem.scss';
 import { ThemeContext } from '../../helpers/context/ThemeContext';
 import Button from '../Button/Button';
-import DynamicIcon from '../DynamicIcon/DynamicIcon';
 
-const TaskItem = ({ title, status, onDelete, taskId, onCompletedHandler }) => {
-  const theme = useContext(ThemeContext);
+const TaskItem = ({
+  title,
+  status,
+  taskId,
+  handleTaskDelete,
+  handleStatusChanged,
+}) => {
+  const { theme } = useContext(ThemeContext);
 
   return (
-    <li className={`tasks__item tasks__item--${theme.theme}`}>
+    <li className={cn('tasks__item', `tasks__item--${theme}`)}>
       <div
-        className={`tasks__item-container tasks__item-container--${theme.theme}`}
+        className={cn('tasks__item-wrapper', `tasks__item-wrapper--${theme}`)}
       >
-        <div className="tasks__content-wrapper">
+        <div className="tasks__content">
           <Button
             type="button"
             shape="circle"
-            onClick={() => onCompletedHandler(taskId, status)}
-          >
-            {status && (
-              <DynamicIcon
-                name="AiOutlineCheck"
-                className="tasks__icon-status"
-              />
-            )}
-          </Button>
+            onClick={() => handleStatusChanged(taskId, status)}
+            icon={status && 'AiOutlineCheck'}
+            classNameIcon={cn({ 'circle__icon-status': status })}
+          ></Button>
           <p
-            className={
-              status
-                ? `tasks__item-content tasks__item-content--completed-${theme.theme}`
-                : 'tasks__item-content '
-            }
+            className={cn('tasks__item-content', {
+              [`completed-${theme}`]: status,
+            })}
           >
             {title}
           </p>
         </div>
-
         {!status && (
-          <Button type="button" shape="delete" onClick={() => onDelete(taskId)}>
-            <DynamicIcon name="RxCross2" className="tasks__icon-cross" />
-          </Button>
+          <Button
+            type="button"
+            shape="delete"
+            onClick={() => handleTaskDelete(taskId)}
+            icon="RxCross2"
+            classNameIcon={cn('delete', 'icon-cross')}
+          ></Button>
         )}
       </div>
     </li>

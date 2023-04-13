@@ -7,7 +7,6 @@ if (process.env.NODE_ENV !== 'production') {
 // require('dotenv').config();
 const cors = require('cors');
 
-const HttpError = require('./models/http-error');
 const userRouter = require('./middleware/userRouter');
 const taskRouter = require('./middleware/taskRouter');
 
@@ -33,7 +32,7 @@ app.use('/user', userRouter);
 app.use('/tasks', taskRouter);
 
 // for deploying  - anything else return index.html
-app.use((_req, res, next) => {
+app.use((_req, res) => {
   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 })
 

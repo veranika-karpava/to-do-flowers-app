@@ -4,15 +4,11 @@
 
 .footer {
   width: 100%;
-  position: absolute;
-  // bottom: -5%;
   padding: 1rem;
   @include font-stack-footer;
-  background-color: $bg-main-light;
 
-  &__dark {
+  &.dark {
     color: $text-color-completed-dark;
-    background-color: $bg-main-dark;
   }
 
   &__content {

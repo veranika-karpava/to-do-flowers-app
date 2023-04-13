@@ -1,11 +1,12 @@
 import React from 'react';
+import cn from 'classnames';
 
 import './ErrorMessage.scss';
 
 const ErrorMessage = ({ errorText, textAlign }) => {
   return (
-    <div className="error-message" style={{ textAlign: textAlign }}>
-      <p className="error__message__content">{errorText}</p>
+    <div className={cn('error-message')} style={{ textAlign: textAlign }}>
+      <p>{errorText}</p>
     </div>
   );
 };

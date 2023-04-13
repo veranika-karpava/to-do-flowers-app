@@ -9,11 +9,11 @@
   border-radius: 4px;
   background-color: $bg-list-light;
 
-  &__dark {
-    background-color: $bg-list-dark;
-  }
-
   @include tablet {
     width: 50%;
+  }
+
+  &.dark {
+    background-color: $bg-list-dark;
   }
 }

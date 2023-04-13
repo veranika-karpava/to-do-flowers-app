@@ -1,33 +1,54 @@
 import React, { useContext } from 'react';
+import { NavLink } from 'react-router-dom';
+import cn from 'classnames';
 
 import './Button.scss';
+import DynamicIcon from '../DynamicIcon/DynamicIcon';
 import { ThemeContext } from '../../helpers/context/ThemeContext';
 
 const Button = ({
+  to,
+  mode,
   shape,
   type,
   title,
   onClick,
   children,
-  disabled,
-  value,
   active,
+  icon,
+  classNameIcon,
 }) => {
-  const theme = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
-  return (
+  return to ? (
+    <NavLink
+      exact
+      to={to}
+      onClick={onClick}
+      className={cn('button', { 'btn-circle': to || mode })}
+    >
+      {icon && (
+        <DynamicIcon name={icon} className={cn('button', classNameIcon)} />
+      )}
+      {children}
+    </NavLink>
+  ) : (
     <button
       type={type}
-      className={`button button__${shape} ${
-        active && `button__${shape}--${active}`
-      } button__${shape}--${theme.theme}`}
+      className={cn(
+        'button',
+        { [theme]: theme },
+        { [shape]: shape },
+        { [active]: active },
+        { 'btn-circle': to || mode }
+      )}
       onClick={onClick}
-      disabled={disabled}
-      value={value}
     >
       {title}
       {children}
-      {disabled}
+      {icon && (
+        <DynamicIcon name={icon} className={cn('button', classNameIcon)} />
+      )}
     </button>
   );
 };
