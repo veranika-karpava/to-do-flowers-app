@@ -89,6 +89,9 @@ const HomePage = () => {
             email: formState.inputs.email.value,
             password: formState.inputs.password.value,
             username: formState.inputs.username.value,
+          },
+          {
+            'Content-Type': 'application/json',
           }
         );
         login(
@@ -105,6 +108,7 @@ const HomePage = () => {
 
   useEffect(() => {
     setError(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState.inputs]);
 
   const handleClickShowPassword = () => {

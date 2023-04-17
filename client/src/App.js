@@ -27,8 +27,6 @@ const App = () => {
     setUserName(name);
     setUserId(uid);
     setToken(token);
-    // token expiration date
-    // new date obj that based on current date plus one hour
     const tokenExpirationDate =
       expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
 
