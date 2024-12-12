@@ -9,16 +9,16 @@ const JWT_KEY = process.env.JWT_SECRET_KEY;
 const signUp = async (req, res, next) => {
   const { username, email, password } = req.body;
 
-  // check if inputs are empty or not
   if (!username || !email || !password) {
     return next(new HttpError('Please make sure to include all inputs.', 422));
   }
 
-  // check existing User in database
   let existingUser;
 
   try {
-    existingUser = await User.findOne({ $or: [{ username: username }, { email: email }] });
+    existingUser = await User.findOne({
+      $or: [{ username: username }, { email: email }],
+    });
   } catch (err) {
     return next(
       new HttpError('Signing up failed, please try again later.', 500)

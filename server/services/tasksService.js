@@ -213,7 +213,7 @@ const deleteTaskById = async (req, res, next) => {
 
   res.status(200).json({
     message: 'Task deleted successfully',
-    task: task
+    task: task,
   });
 };
 
