@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import cn from 'classnames';
 import { useHistory } from 'react-router-dom';
 
+import { LABEL_AUTH_MODE, LABEL_AUTH_TITLE, LABEL_AUTH_TEXT, LABEL_AUTH_INPUT,  ERROR_AUTH_TEXT } from '../../constants';
+
 import './HomePage.scss';
 import { ValidationType } from '../../helpers/util/validators';
 import Input from '../../components/Input/Input';
@@ -20,6 +22,7 @@ const HomePage = () => {
   const { login } = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+
   const { isLoading, error, setError, sendRequest } = useHttpClient();
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -129,42 +132,35 @@ const HomePage = () => {
             `auth__container-title--${theme}`
           )}
         >
-          <h2 className="auth__title">{isLoginMode ? 'Log In' : 'Sign Up'}</h2>
+          <h2 className="auth__title">{isLoginMode ? LABEL_AUTH_TITLE.LOGIN : LABEL_AUTH_TITLE.SIGNUP}</h2>
           {error && <ErrorMessage errorText={error} textAlign="center" />}
         </div>
 
         <form className="auth__form" onSubmit={authSubmitHandler}>
           {!isLoginMode && (
             <Input
-              id="username"
-              type="text"
-              label="Username"
-              placeholder="User name"
-              errorText="Please enter your Username"
+              id={LABEL_AUTH_INPUT.USERNAME.toLowerCase()}
+              placeholder={LABEL_AUTH_INPUT.USERNAME}
+              errorText={ERROR_AUTH_TEXT.USERNAME}
               validators={[ValidationType.REQUIRE]}
               onInput={inputHandler}
-              border="border"
             />
           )}
           <Input
-            id="email"
+            id={LABEL_AUTH_INPUT.EMAIL.toLowerCase()}
             type="email"
-            label="Email"
-            placeholder="Email"
-            errorText="Please enter a valid email address example@example.com"
+            placeholder={LABEL_AUTH_INPUT.EMAIL}
+            errorText={ERROR_AUTH_TEXT.EMAIL}
             validators={[ValidationType.EMAIL]}
             onInput={inputHandler}
-            border="border"
           />
           <Input
-            id="password"
+            id={LABEL_AUTH_INPUT.PASSWORD.toLowerCase()}
             type={showPassword ? 'text' : 'password'}
-            label="Password"
-            placeholder="Password"
-            errorText="Please enter a valid password, at least 8 characteres, at least one letter and a number from 0 to 99"
+            placeholder={LABEL_AUTH_INPUT.PASSWORD}
+            errorText={ERROR_AUTH_TEXT.PASSWORD}
             validators={[ValidationType.PASSWORD]}
             onInput={inputHandler}
-            border="border"
             rightIcon={
               showPassword ? 'MdOutlineVisibility' : 'MdOutlineVisibilityOff'
             }
@@ -174,16 +170,16 @@ const HomePage = () => {
             <Button
               shape="rectangle"
               type="submit"
-              title={isLoginMode ? 'Log In' : 'Sign Up'}
+              title={isLoginMode ? LABEL_AUTH_MODE.LOGIN : LABEL_AUTH_MODE.SIGNUP}
             />
           </div>
         </form>
         <div className={cn('auth__wrapper', `auth__wrapper--${theme}`)}>
           <p className="auth__switch-content">
-            {isLoginMode ? `Don't have an account?` : 'Do you have an account?'}{' '}
+            {isLoginMode ? LABEL_AUTH_TEXT.SIGNUP : LABEL_AUTH_TEXT.LOGIN }
           </p>
           <Button onClick={switchModeHandler} shape="noborder">
-            {isLoginMode ? 'Sign Up' : 'Log In'}
+            {isLoginMode ? LABEL_AUTH_MODE.SIGNUP : LABEL_AUTH_MODE.LOGIN }
           </Button>
         </div>
       </Card>

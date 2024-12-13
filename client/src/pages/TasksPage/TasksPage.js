@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import cn from 'classnames';
 
+import { LABEL_TASK_INPUT, EMPTY_LIST, ITEMS_LEFT, LABEL_BUTTON } from '../../constants';
+
 import './TasksPage.scss';
 import { ValidationType } from '../../helpers/util/validators';
 import { ThemeContext } from '../../helpers/context/ThemeContext';
@@ -12,6 +14,7 @@ import Card from '../../components/Card/Card';
 import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
 import TasksList from '../../components/TasksList/TasksList';
+import Navigation from '../../components/Navigation/Navigation';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -19,9 +22,13 @@ const TasksPage = () => {
   const [clearInput, setClearInput] = useState(false);
   const [loadedTasks, setLoadedTasks] = useState([]);
   const [activeTasks, setActiveTasks] = useState([]);
+
   const [filter, setFilter] = useState('all');
+
   const [filteredTasks, setFilteredTasks] = useState([]);
+
   const { isLoading, sendRequest } = useHttpClient();
+
   const { theme } = useContext(ThemeContext);
   const { userId } = useContext(AuthContext);
 
@@ -140,6 +147,10 @@ const TasksPage = () => {
     setFilteredTasks(filteredTasks);
   }, [filter, loadedTasks]);
 
+  const handleSetFilter = (filterTask) => {
+    setFilter(filterTask);
+  };
+
   return (
     <section className={cn('tasks', theme)}>
       <Card>
@@ -151,10 +162,8 @@ const TasksPage = () => {
             classNameIcon="circle__icon-add"
           />
           <Input
-            id="title"
-            type="text"
-            label="title"
-            placeholder="Create a new task..."
+            id={LABEL_TASK_INPUT.TITLE}
+            placeholder={LABEL_TASK_INPUT.PLACEHOLDER}
             validators={[ValidationType.REQUIRE]}
             onInput={inputHandler}
             border="none"
@@ -173,9 +182,7 @@ const TasksPage = () => {
           )}
           {!isLoading && loadedTasks.length === 0 && (
             <div className="tasks__message">
-              <p className={cn('tasks__content-message', theme)}>
-                Your TO-DO list is empty
-              </p>
+              <p className={cn('tasks__content-message', theme)}>{EMPTY_LIST.TEXT}</p>
             </div>
           )}
 
@@ -188,10 +195,9 @@ const TasksPage = () => {
               />
               <div className="tasks__action-container">
                 <div className="tasks__container-nav">
-                  <p className="tasks__left-items">{`${activeTasks.length} items left`}</p>
+                  <p className="tasks__left-items">{`${activeTasks.length} ${ITEMS_LEFT.TEXT}`}</p>
                   <Button
-                    type="button"
-                    title="Clear Completed"
+                    title={LABEL_BUTTON.CLEAR}
                     shape="nav"
                     onClick={deleteAllCompletedHandler}
                   />
@@ -200,33 +206,7 @@ const TasksPage = () => {
             </>
           )}
         </Card>
-        <div className="tasks__navigation">
-          <Card>
-            <div className="tasks__wrapper-container">
-              <Button
-                type="button"
-                title="All"
-                shape="nav"
-                onClick={() => setFilter('all')}
-                active={filter === 'all' && 'active'}
-              />
-              <Button
-                type="button"
-                title="Active"
-                shape="nav"
-                onClick={() => setFilter('active')}
-                active={filter === 'active' && 'active'}
-              />
-              <Button
-                type="button"
-                title="Completed"
-                shape="nav"
-                onClick={() => setFilter('completed')}
-                active={filter === 'completed' && 'active'}
-              />
-            </div>
-          </Card>
-        </div>
+        <Navigation filter={filter} onClick={handleSetFilter}/>
       </div>
     </section>
   );

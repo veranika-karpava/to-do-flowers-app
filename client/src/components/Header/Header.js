@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import cn from 'classnames';
 
+import { TITLE_HEADER } from '../../constants';
+
 import './Header.scss';
 import Button from '../Button/Button';
 import { ThemeContext } from '../../helpers/context/ThemeContext';
@@ -9,6 +11,8 @@ import { AuthContext } from '../../helpers/context/AuthContext';
 const Header = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { isLoggedIn, userName, logout } = useContext(AuthContext);
+
+  const mainHeader = isLoggedIn ? `${TITLE_HEADER.LOGIN}${userName}` : TITLE_HEADER.LOGIN;
 
   return (
     <header className={cn('header', { [theme]: theme })}>
@@ -24,9 +28,7 @@ const Header = () => {
           )}
         </div>
         <div className="header__wrapper">
-          <h1 className="header__heading">
-            {isLoggedIn ? `Welcome,${userName}` : 'todo'}
-          </h1>
+          <h1 className="header__heading">{mainHeader}</h1>
           <Button
             icon={theme === 'light' ? 'BsSunFill' : 'FaMoon'}
             classNameIcon="btn-circle__icon"

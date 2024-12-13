@@ -35,14 +35,13 @@ const inputReducer = (state, action) => {
 
 const Input = ({
   id,
-  type,
+  type='text',
+  border ='border', // border or none
   placeholder,
   validators,
   errorText,
   onInput,
-  initialValue = '',
-  initialValid = false,
-  border,
+
   clearInput,
   setClearInput,
   rightIcon,
@@ -50,11 +49,7 @@ const Input = ({
 }) => {
   const { theme } = useContext(ThemeContext);
   // Initialize the state using useReducer()
-  const [inputState, dispatch] = useReducer(inputReducer, {
-    value: initialValue,
-    isValid: initialValid,
-    isTouched: false,
-  });
+  const [inputState, dispatch] = useReducer(inputReducer, { value: '', isValid: false, isTouched: false,});
 
   // new value from input filed back from the task list where use Input component
   useEffect(() => {
@@ -70,16 +65,12 @@ const Input = ({
   }, [clearInput]);
 
   // Define the event handlers that call dispatch with action type change
-  const handleInputChange = e => {
-    dispatch({ type: 'CHANGE', value: e.target.value, validators: validators });
-  };
+  const handleInputChange = (e) => dispatch({ type: 'CHANGE', value: e.target.value, validators: validators });
 
   // Define the event handlers that call dispatch with action type touch
-  const handleInputTouch = () => {
-    dispatch({
-      type: 'TOUCH',
-    });
-  };
+  const handleInputTouch = () => dispatch({ type: 'TOUCH' });
+
+
 
   return (
     <div
@@ -88,12 +79,14 @@ const Input = ({
       <label className="form__label" htmlFor={id}>
         <input
           className={`form__input form__input--${theme}`}
+          autoComplete="off"
           id={id}
           type={type}
           placeholder={placeholder}
-          onChange={handleInputChange}
           value={inputState.value}
+          onChange={handleInputChange}
           onBlur={handleInputTouch}
+
         />
         {rightIcon && (
           <Button
@@ -105,7 +98,6 @@ const Input = ({
           />
         )}
       </label>
-
       {!inputState.isValid && inputState.isTouched && (
         <ErrorMessage errorText={errorText} textAlign="left" />
       )}

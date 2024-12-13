@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 
+import { LABEL_THEME_MODE  } from './constants';
+
 import './App.scss';
 import Header from './components/Header/Header';
 import HomePage from './pages/HomePage/HomePage';
@@ -12,14 +14,14 @@ import { AuthContext } from './helpers/context/AuthContext';
 let logoutTimer;
 
 const App = () => {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState(LABEL_THEME_MODE.LIGHT);
   const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState(null);
   const [token, setToken] = useState(null);
   const [tokenExpirationDate, setTokenExpirationDate] = useState(null);
 
   const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+    setTheme(prevTheme => (prevTheme === LABEL_THEME_MODE.LIGHT ? LABEL_THEME_MODE.DARK : LABEL_THEME_MODE.LIGHT));
   };
 
   // for logging user

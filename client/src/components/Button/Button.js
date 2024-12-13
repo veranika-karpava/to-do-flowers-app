@@ -10,7 +10,8 @@ const Button = ({
   to,
   mode,
   shape,
-  type,
+  type = 'button',
+  id,
   title,
   onClick,
   children,
@@ -35,6 +36,8 @@ const Button = ({
   ) : (
     <button
       type={type}
+      id={id}
+
       className={cn(
         'button',
         { [theme]: theme },
@@ -46,6 +49,7 @@ const Button = ({
     >
       {title}
       {children}
+      
       {icon && (
         <DynamicIcon name={icon} className={cn('button', classNameIcon)} />
       )}
