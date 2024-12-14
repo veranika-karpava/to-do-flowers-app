@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
 import { LABEL_TASK_INPUT, EMPTY_LIST, ITEMS_LEFT, LABEL_BUTTON } from '../../constants';
 
 import './TasksPage.scss';
 import { ValidationType } from '../../helpers/util/validators';
-import { ThemeContext } from '../../helpers/context/ThemeContext';
 import { AuthContext } from '../../helpers/context/AuthContext';
 import { useForm } from '../../helpers/hooks/FormHook';
 import { useHttpClient } from '../../helpers/hooks/HttpHook';
@@ -19,6 +19,8 @@ import Navigation from '../../components/Navigation/Navigation';
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
 const TasksPage = () => {
+  const theme = useSelector(state => state.ui.theme);
+
   const [clearInput, setClearInput] = useState(false);
   const [loadedTasks, setLoadedTasks] = useState([]);
   const [activeTasks, setActiveTasks] = useState([]);
@@ -29,7 +31,6 @@ const TasksPage = () => {
 
   const { isLoading, sendRequest } = useHttpClient();
 
-  const { theme } = useContext(ThemeContext);
   const { userId } = useContext(AuthContext);
 
   const [formState, inputHandler] = useForm(
@@ -196,6 +197,7 @@ const TasksPage = () => {
               <div className="tasks__action-container">
                 <div className="tasks__container-nav">
                   <p className="tasks__left-items">{`${activeTasks.length} ${ITEMS_LEFT.TEXT}`}</p>
+
                   <Button
                     title={LABEL_BUTTON.CLEAR}
                     shape="nav"

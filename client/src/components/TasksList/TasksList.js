@@ -5,7 +5,6 @@ import TaskItem from '../TaskItem/TaskItem';
 
 const TasksList = ({ onDeleteHandler, onCompletedHandler, filteredTasks }) => {
 
-
   return (
     <ul className="tasks__list">
       {filteredTasks.map(task => {

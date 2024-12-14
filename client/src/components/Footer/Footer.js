@@ -1,14 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
-import { TITLE_FOOTER } from '../../constants'
+import { TITLE_FOOTER } from '../../constants';
 
 import './Footer.scss';
 import DynamicIcon from '../DynamicIcon/DynamicIcon';
-import { ThemeContext } from '../../helpers/context/ThemeContext';
 
 const Footer = () => {
-  const { theme } = useContext(ThemeContext);
+  const theme = useSelector(state => state.ui.theme);
 
   return (
     <footer className={cn('footer', { [theme]: theme })}>

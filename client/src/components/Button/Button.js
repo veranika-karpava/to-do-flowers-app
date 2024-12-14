@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import cn from 'classnames';
 
 import './Button.scss';
 import DynamicIcon from '../DynamicIcon/DynamicIcon';
-import { ThemeContext } from '../../helpers/context/ThemeContext';
 
 const Button = ({
   to,
@@ -19,7 +19,7 @@ const Button = ({
   icon,
   classNameIcon,
 }) => {
-  const { theme } = useContext(ThemeContext);
+  const theme = useSelector(state => state.ui.theme);
 
   return to ? (
     <NavLink

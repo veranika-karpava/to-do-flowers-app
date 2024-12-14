@@ -1,11 +1,11 @@
-import React, { useContext, useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
 import './Input.scss';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Button from '../Button/Button';
 import { validateInput } from '../../helpers/util/validators';
-import { ThemeContext } from '../../helpers/context/ThemeContext';
 
 // Define the reducer function - spread state allows not to lose data
 const inputReducer = (state, action) => {
@@ -47,7 +47,7 @@ const Input = ({
   rightIcon,
   onClickButton,
 }) => {
-  const { theme } = useContext(ThemeContext);
+  const theme = useSelector(state => state.ui.theme);
   // Initialize the state using useReducer()
   const [inputState, dispatch] = useReducer(inputReducer, { value: '', isValid: false, isTouched: false,});
 
