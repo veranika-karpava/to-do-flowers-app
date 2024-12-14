@@ -1,8 +1,4 @@
-export const ValidationType = {
-  REQUIRE: 'REQUIRE',
-  EMAIL: 'EMAIL',
-  PASSWORD: 'PASSWORD',
-};
+import { VALIDATION_TYPE } from "../../constants";
 
 export const validateInput = (value, validators) => {
   // If validators is not an array, return false by default
@@ -14,13 +10,13 @@ export const validateInput = (value, validators) => {
 
   for (const validator of validators) {
     switch (validator) {
-      case ValidationType.REQUIRE:
+      case VALIDATION_TYPE.REQUIRE:
         isValid = isValid && value.toString().trim().length > 0;
         break;
-      case ValidationType.EMAIL:
+      case VALIDATION_TYPE.EMAIL:
         isValid = isValid && /^\S+@\S+\.\S+$/.test(value.toString());
         break;
-      case ValidationType.PASSWORD:
+      case VALIDATION_TYPE.PASSWORD:
         isValid =
           isValid &&
           /[a-zA-Z]/.test(value) && // contains at least one letter

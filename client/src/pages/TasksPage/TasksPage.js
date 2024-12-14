@@ -2,10 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
-import { LABEL_TASK_INPUT, EMPTY_LIST, ITEMS_LEFT, LABEL_BUTTON } from '../../constants';
+import { VALIDATION_TYPE, LABEL_TASK_INPUT, EMPTY_LIST, ITEMS_LEFT, LABEL_BUTTON } from '../../constants';
 
 import './TasksPage.scss';
-import { ValidationType } from '../../helpers/util/validators';
 import { AuthContext } from '../../helpers/context/AuthContext';
 import { useForm } from '../../helpers/hooks/FormHook';
 import { useHttpClient } from '../../helpers/hooks/HttpHook';
@@ -165,7 +164,7 @@ const TasksPage = () => {
           <Input
             id={LABEL_TASK_INPUT.TITLE}
             placeholder={LABEL_TASK_INPUT.PLACEHOLDER}
-            validators={[ValidationType.REQUIRE]}
+            validators={[VALIDATION_TYPE.REQUIRE]}
             onInput={inputHandler}
             border="none"
             clearInput={clearInput}

@@ -3,17 +3,9 @@ import { useSelector } from 'react-redux';
 import cn from 'classnames';
 import { useHistory } from 'react-router-dom';
 
-import { 
-  LABEL_AUTH_MODE, 
-  LABEL_AUTH_TITLE, 
-  LABEL_AUTH_TEXT, 
-  LABEL_AUTH_INPUT,  
-  ERROR_AUTH_TEXT
-} from '../../constants';
-
+import { VALIDATION_TYPE, LABEL_AUTH_MODE, LABEL_AUTH_TITLE, LABEL_AUTH_TEXT, LABEL_AUTH_INPUT,  ERROR_AUTH_TEXT } from '../../constants';
 
 import './HomePage.scss';
-import { ValidationType } from '../../helpers/util/validators';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import Card from '../../components/Card/Card';
@@ -154,7 +146,7 @@ const HomePage = () => {
               id={LABEL_AUTH_INPUT.USERNAME.toLowerCase()}
               placeholder={LABEL_AUTH_INPUT.USERNAME}
               errorText={ERROR_AUTH_TEXT.USERNAME}
-              validators={[ValidationType.REQUIRE]}
+              validators={[VALIDATION_TYPE.REQUIRE]}
               onInput={inputHandler}
             />
           )}
@@ -163,7 +155,7 @@ const HomePage = () => {
             type="email"
             placeholder={LABEL_AUTH_INPUT.EMAIL}
             errorText={ERROR_AUTH_TEXT.EMAIL}
-            validators={[ValidationType.EMAIL]}
+            validators={[VALIDATION_TYPE.EMAIL]}
             onInput={inputHandler}
           />
           <Input
@@ -171,7 +163,7 @@ const HomePage = () => {
             type={passwordIsVisiable ? 'text' : 'password'}
             placeholder={LABEL_AUTH_INPUT.PASSWORD}
             errorText={ERROR_AUTH_TEXT.PASSWORD}
-            validators={[ValidationType.PASSWORD]}
+            validators={[VALIDATION_TYPE.PASSWORD]}
             onInput={inputHandler}
             rightIcon={passwordIsVisiable ? 'MdOutlineVisibility' : 'MdOutlineVisibilityOff'}
             onClickButton={handlePasswordIsVisiable}
