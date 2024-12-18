@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 
 import './App.scss';
@@ -6,21 +7,21 @@ import Header from './components/Header/Header';
 import HomePage from './pages/HomePage/HomePage';
 import TasksPage from './pages/TasksPage/TasksPage';
 import Footer from './components/Footer/Footer';
-import { AuthContext } from './helpers/context/AuthContext';
 
 let logoutTimer;
 
 const App = () => {
-  const [userId, setUserId] = useState(null);
-  const [userName, setUserName] = useState(null);
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  // const [userId, setUserId] = useState(null);
+  // const [userName, setUserName] = useState(null);
   const [token, setToken] = useState(null);
   const [tokenExpirationDate, setTokenExpirationDate] = useState(null);
 
 
   // for logging user
   const login = useCallback((name, uid, token, expirationDate) => {
-    setUserName(name);
-    setUserId(uid);
+    // setUserName(name);
+    // setUserId(uid);
     setToken(token);
     const tokenExpirationDate =
       expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
@@ -31,8 +32,8 @@ const App = () => {
     localStorage.setItem(
       'userData',
       JSON.stringify({
-        userName: name,
-        userId: uid,
+        // userName: name,
+        // userId: uid,
         token: token,
         expiration: tokenExpirationDate.toISOString(),
       })
@@ -41,8 +42,8 @@ const App = () => {
 
   // for logout user
   const logout = useCallback(() => {
-    setUserName(null);
-    setUserId(null);
+    // setUserName(null);
+    // setUserId(null);
     setToken(null);
     setTokenExpirationDate(null);
     localStorage.removeItem('userData');
@@ -75,20 +76,10 @@ const App = () => {
   }, [login]);
 
   return (
-      <AuthContext.Provider
-        value={{
-          isLoggedIn: !!token,
-          token,
-          userName,
-          userId,
-          login,
-          logout,
-        }}
-      >
         <BrowserRouter>
           <Header />
           <Switch>
-            {token ? (
+            {isAuthenticated ? (
               <>
                 <Route path="/tasks" exact component={TasksPage} />
                 <Redirect to="/tasks" />
@@ -102,7 +93,6 @@ const App = () => {
           </Switch>
           <Footer />
         </BrowserRouter>
-      </AuthContext.Provider>
   );
 };
 

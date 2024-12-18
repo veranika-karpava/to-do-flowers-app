@@ -70,8 +70,6 @@ const Input = ({
   // Define the event handlers that call dispatch with action type touch
   const handleInputTouch = () => dispatch({ type: 'TOUCH' });
 
-
-
   return (
     <div
       className={`form__container-${border} form__container-${border}--${theme}`}

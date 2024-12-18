@@ -16,10 +16,13 @@ export const useHttpClient = () => {
           data,
           headers,
         });
+        
         const responseData = response.data;
+        console.log(response)
         setIsLoading(false);
         return responseData;
       } catch (err) {
+        console.log(err);
         setError(err.response.data.message);
         setIsLoading(false);
         throw err;

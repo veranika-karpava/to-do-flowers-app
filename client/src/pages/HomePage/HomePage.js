@@ -1,9 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { useHistory } from 'react-router-dom';
 
 import { VALIDATION_TYPE, LABEL_AUTH_MODE, LABEL_AUTH_TITLE, LABEL_AUTH_TEXT, LABEL_AUTH_INPUT,  ERROR_AUTH_TEXT } from '../../constants';
+
+import { authActions } from '../../store/auth-slice';
 
 import './HomePage.scss';
 import Input from '../../components/Input/Input';
@@ -13,20 +15,15 @@ import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import { useForm } from '../../helpers/hooks/FormHook';
 import { useHttpClient } from '../../helpers/hooks/HttpHook';
-import { AuthContext } from '../../helpers/context/AuthContext';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
 const HomePage = () => {
   const theme = useSelector(state => state.ui.theme);
-
-  
-  const { login } = useContext(AuthContext);
+  const dispatch = useDispatch();
 
   const [passwordIsVisiable, setPasswordIsVisiable] = useState(false)
   const [isLoginMode, setIsLoginMode] = useState(true);
-
-  const { isLoading, error, setError, sendRequest } = useHttpClient();
   const [formState, inputHandler, setFormData] = useForm(
     {
       email: {
@@ -40,6 +37,8 @@ const HomePage = () => {
     },
     false
   );
+
+  const { isLoading, error, setError, sendRequest } = useHttpClient();
 
   const history = useHistory();
 
@@ -62,65 +61,31 @@ const HomePage = () => {
     setPasswordIsVisiable(prevPasswordIsisiable => !prevPasswordIsisiable);
   };
 
-
-
-  const authSubmitHandler = async e => {
+  const authSubmitHandler = async (e) => {
     e.preventDefault();
 
-    if (isLoginMode) {
-      try {
-        const responseData = await sendRequest(
-          `${API_URL}/user/login`,
-          'POST',
-          {
-            email: formState.inputs.email.value,
-            password: formState.inputs.password.value,
-          },
-          {
-            'Content-Type': 'application/json',
-          }
-        );
-        login(
-          responseData.userName,
-          responseData.userId,
-          responseData.jwtToken
-        );
+    try {
+      const url = `${API_URL}/user/${isLoginMode ? 'login' : 'signup' }`;
+      const payload = isLoginMode 
+        ? { email: formState.inputs.email.value, password: formState.inputs.password.value,}
+        : { email: formState.inputs.email.value, password: formState.inputs.password.value, username: formState.inputs.username.value,};
+
+        const responseData = await sendRequest(url, 'POST', payload, { 'Content-Type': 'application/json' });
+        dispatch(authActions.login({
+          userId: responseData.userId,
+          userName: responseData.userName,
+          userToken: responseData.jwtToken
+        }))
         history.push('/tasks');
-      } catch (err) {
-        console.log(err);
-      }
-    } else {
-      try {
-        const responseData = await sendRequest(
-          `${API_URL}/user/signup`,
-          'POST',
-          {
-            email: formState.inputs.email.value,
-            password: formState.inputs.password.value,
-            username: formState.inputs.username.value,
-          },
-          {
-            'Content-Type': 'application/json',
-          }
-        );
-        login(
-          responseData.userName,
-          responseData.userId,
-          responseData.jwtToken
-        );
-        history.push('/tasks');
-      } catch (err) {
-        console.log(err);
-      }
+    } catch(err) {
+      setError('An error occurred. Please try again later.');
     }
-  };
+  }
 
   useEffect(() => {
     setError(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState.inputs]);
-
-
 
   return (
     <section className={cn('auth', theme)}>

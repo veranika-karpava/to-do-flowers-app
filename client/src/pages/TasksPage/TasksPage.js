@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
 import { VALIDATION_TYPE, LABEL_TASK_INPUT, EMPTY_LIST, ITEMS_LEFT, LABEL_BUTTON } from '../../constants';
 
 import './TasksPage.scss';
-import { AuthContext } from '../../helpers/context/AuthContext';
 import { useForm } from '../../helpers/hooks/FormHook';
 import { useHttpClient } from '../../helpers/hooks/HttpHook';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
@@ -19,6 +18,9 @@ const API_URL = process.env.REACT_APP_BACKEND_URL;
 
 const TasksPage = () => {
   const theme = useSelector(state => state.ui.theme);
+  const userId = useSelector(state => state.auth.userId);
+
+  console.log(userId)
 
   const [clearInput, setClearInput] = useState(false);
   const [loadedTasks, setLoadedTasks] = useState([]);
@@ -29,8 +31,6 @@ const TasksPage = () => {
   const [filteredTasks, setFilteredTasks] = useState([]);
 
   const { isLoading, sendRequest } = useHttpClient();
-
-  const { userId } = useContext(AuthContext);
 
   const [formState, inputHandler] = useForm(
     {
@@ -47,6 +47,7 @@ const TasksPage = () => {
     const fetchListTasks = async () => {
       try {
         const response = await sendRequest(`${API_URL}/tasks/${userId}`);
+        console.log()
         setLoadedTasks(response.tasks);
       } catch (err) {
         console.log(`Get request loadedTask: ${err}`);
