@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { useHistory } from 'react-router-dom';
@@ -38,7 +38,7 @@ const HomePage = () => {
     false
   );
 
-  const { isLoading, error, setError, sendRequest } = useHttpClient();
+  const { isLoading, error, sendRequest } = useHttpClient();
 
   const history = useHistory();
 
@@ -71,6 +71,7 @@ const HomePage = () => {
         : { email: formState.inputs.email.value, password: formState.inputs.password.value, username: formState.inputs.username.value,};
 
         const responseData = await sendRequest(url, 'POST', payload, { 'Content-Type': 'application/json' });
+
         dispatch(authActions.login({
           userId: responseData.userId,
           userName: responseData.userName,
@@ -78,14 +79,16 @@ const HomePage = () => {
         }))
         history.push('/tasks');
     } catch(err) {
-      setError('An error occurred. Please try again later.');
+      console.log(err)
     }
-  }
+  };
 
-  useEffect(() => {
-    setError(null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formState.inputs]);
+  // useEffect(() => {
+  //   setError(null);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [formState.inputs]);
+
+  console.log('form',formState.isFormValid)
 
   return (
     <section className={cn('auth', theme)}>
@@ -145,7 +148,7 @@ const HomePage = () => {
           <p className="auth__switch-content">
             {isLoginMode ? LABEL_AUTH_TEXT.SIGNUP : LABEL_AUTH_TEXT.LOGIN }
           </p>
-          <Button onClick={toggleLoginModeHandler} shape="noborder">
+          <Button onClick={toggleLoginModeHandler} shape="noborder" >
             {isLoginMode ? LABEL_AUTH_MODE.SIGNUP : LABEL_AUTH_MODE.LOGIN }
           </Button>
         </div>
