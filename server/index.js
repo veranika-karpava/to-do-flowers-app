@@ -1,4 +1,5 @@
 const express = require('express');
+const cookiesParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 if (process.env.NODE_ENV !== 'production') {
@@ -19,10 +20,14 @@ app.use(express.static(path.join('public')));
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
-    methods: 'GET, PUT, POST, PATCH, DELETE',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
     credentials: true,
   })
 );
+
+// for cookies
+app.use(cookiesParser());
 
 // for parsing/convert incoming data/JSON obj to JS obj and parsed to req.body
 app.use(express.json());

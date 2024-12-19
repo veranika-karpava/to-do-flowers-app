@@ -15,6 +15,7 @@ export const useHttpClient = () => {
           method,
           data,
           headers,
+          withCredentials: true, 
         });
         
         const responseData = response.data;

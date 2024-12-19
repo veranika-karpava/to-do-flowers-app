@@ -5,98 +5,78 @@ const HttpError = require('../models/http-error');
 const User = require('../models/user');
 const JWT_KEY = process.env.JWT_SECRET_KEY;
 
-// for creating new user/sign up User
-const signUp = async (req, res, next) => {
-  const { username, email, password } = req.body;
+const generateJWT = (user) => {
+  return jwt.sign(
+    { userId: user.id, email: user.email },
+    JWT_KEY,
+    { expiresIn: '1h'}
+  );
+};
 
+// for creating the new user
+const signUp = async (req, res, next) => {
+  let { username, email, password } = req.body;
+
+  username = username.toLowerCase();
+  email = email.toLowerCase();
+  password = password.trim();
+
+  // check all inputs have value
   if (!username || !email || !password) {
     return next(new HttpError('Please make sure to include all inputs.', 422));
-  }
-
-  let existingUser;
+  };
 
   try {
-    existingUser = await User.findOne({
-      $or: [{ username: username }, { email: email }],
-    });
-  } catch (err) {
-    return next(
-      new HttpError('Signing up failed, please try again later.', 500)
-    );
-  }
+    // check for existing user
+    const existingUser = await User.findOne({$or: [{ username: username }, { email: email }],});
 
-  if (existingUser) {
-    if (existingUser.username === username) {
-      return next(
-        new HttpError(
-          'Username already taken, please choose a different one.',
-          422
-        )
-      );
-    } else if (existingUser.email === email) {
-      return next(
-        new HttpError(
-          'Email address already registered, please use a different one or login.',
-          422
-        )
-      );
-    }
-  }
+    if (existingUser) {
+      const message = existingUser.username === username
+        ? 'Username is already taken. Please choose a different one.'
+        : 'Email address is already registered. Please use a different one or login.';
+      return next(new HttpError(message, 422));
+    };
 
-  // for hashing password of new User
-  let hashedPassword;
-  try {
-    hashedPassword = await bcrypt.hash(password, 12);
-  } catch (err) {
-    return next(new HttpError('Could not create user, please try again.', 500));
-  }
+    // hash password
+    const hashedPassword = await bcrypt.hash(password, 12);
 
-  // create new User
-  let createdNewUser;
-  try {
-    createdNewUser = new User({
+    // create and save the new user
+    const newUser = new User({
       username,
       email,
       password: hashedPassword,
     });
-  } catch (err) {
-    console.log(err);
-  }
 
-  // save in database
-  try {
-    await createdNewUser.save();
-  } catch (err) {
-    return next(
-      new HttpError('Signing up failed, please try again later.', 500)
-    );
-  }
+    await newUser.save();
 
-  // generate jwt token
-  let jwtToken;
-  try {
-    jwtToken = jwt.sign(
-      { userId: createdNewUser.id, email: createdNewUser.email },
-      JWT_KEY,
-      { expiresIn: '1h' }
-    );
-  } catch (err) {
-    return next(
-      new HttpError('Signing up failed, please try again later.', 500)
-    );
-  }
+    // generate and send JWT
+    const token = generateJWT(newUser);
 
-  res.status(201).json({
-    userName: createdNewUser.username,
-    userId: createdNewUser.id,
-    email: createdNewUser.email,
-    jwtToken: jwtToken,
-  });
+    // set cookies
+    res.cookie('token', token, {
+      httpOnly: true,
+      withCredentials: true,
+      // secure: process.env.NODE_ENV === 'production',
+      maxAge: 3600 * 1000, // 1 hour
+    });
+
+    return res.status(201).json({
+      userName: newUser.username,
+      userId: newUser.id,
+      email:newUser.email,
+      jwtToken: token,
+    });
+  } catch {
+    return next(new HttpError('Signing up failed, please try again later.', 500));
+  }
 };
 
 // login existing user
 const logIn = async (req, res, next) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
+
+  email = email.toLowerCase();
+  password = password.trim();
 
   if (!email || !password) {
     return next(new HttpError('Please make sure to include all inputs.', 422));
