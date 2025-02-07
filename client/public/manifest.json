@@ -1,26 +1,26 @@
 {
-  "short_name": "To-Do",
-  "name": "My To-Do App",
-  "description": "A fully responsive full-stack To-Do app to manage tasks efficiently. Add, delete, complete, and filter tasks effortlessly.",
+  "short_name": "Flourish",
+  "name": "Flourish - Task Management App",
+  "description": "Flourish is a fully responsive task management web app that lets you manage your tasks effortlessly. Add, delete, update, and filter tasks while enjoying light/dark mode and secure user authentication.",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "flower.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "flower.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "flower.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#FFFFF",
+  "background_color": "#1d3557"
 }
