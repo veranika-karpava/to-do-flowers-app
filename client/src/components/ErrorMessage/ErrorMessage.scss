@@ -3,7 +3,22 @@
 @use '../../styles/partials/variables' as *;
 
 .error-message {
+  @include font-stack-sm($active-bright-blue);
   width: 100%;
-  color: $active-bright-blue;
-  font-size: 0.8rem;
+
+  &.new {
+    padding: 0 $space-md $space-md $space-md;
+  }
+
+  &.update {
+    padding-top: $space-md;
+  }
+
+  &.login {
+    text-align: center;
+  }
+
+  &.form {
+    text-align: left;
+  }
 }

@@ -1,0 +1,12 @@
+@use '../../styles/partials/typography' as *;
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
+
+.tasks {
+  &__action-container {
+    width: 100%;
+    @include flex(space-between, center);
+    @include font-stack-sm;
+    padding: 1.5rem $space-md;
+  }
+}

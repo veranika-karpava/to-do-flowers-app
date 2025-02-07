@@ -1,14 +1,13 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
 import './Input.scss';
-import ErrorMessage from '../ErrorMessage/ErrorMessage';
-import Button from '../Button/Button';
-import { validateInput } from '../../helpers/util/validators';
+import ErrorMessage from '../ErrorMessage/ErrorMessage.js';
+import Button from '../Button/Button.js';
+import { validateInput } from '../../helpers/util/validators.js';
 
-// Define the reducer function - spread state allows not to lose data
-const inputReducer = (state, action) => {
+export const inputReducer = (state, action) => {
   switch (action.type) {
     case 'CHANGE':
       return {
@@ -35,69 +34,67 @@ const inputReducer = (state, action) => {
 
 const Input = ({
   id,
-  type='text',
-  border ='border', // border or none
+  type = 'text',
+  border = 'border', // border, noborder
   placeholder,
   validators,
   errorText,
   onInput,
-
   clearInput,
-  setClearInput,
-  rightIcon,
-  onClickButton,
 }) => {
-  const theme = useSelector(state => state.ui.theme);
-  // Initialize the state using useReducer()
-  const [inputState, dispatch] = useReducer(inputReducer, { value: '', isValid: false, isTouched: false,});
+  const { theme } = useSelector((state) => state.ui);
+  const [inputState, dispatch] = useReducer(inputReducer, {
+    value: '',
+    isValid: false,
+    isTouched: false,
+  });
+  const [inputType, setInputType] = useState(type);
 
-  // new value from input filed back from the task list where use Input component
   useEffect(() => {
     onInput(id, inputState.value, inputState.isValid);
   }, [id, inputState.value, inputState.isValid, onInput]);
 
-  // for clear input field
   useEffect(() => {
     if (clearInput) {
       dispatch({ type: 'CLEAR' });
-      setClearInput(false);
     }
   }, [clearInput]);
 
-  // Define the event handlers that call dispatch with action type change
-  const handleInputChange = (e) => dispatch({ type: 'CHANGE', value: e.target.value, validators: validators });
+  const handleInputChange = (e) =>
+    dispatch({ type: 'CHANGE', value: e.target.value, validators: validators });
 
-  // Define the event handlers that call dispatch with action type touch
   const handleInputTouch = () => dispatch({ type: 'TOUCH' });
 
+  const togglePasswordVisibility = () => {
+    setInputType((prevType) => (prevType === 'password' ? 'text' : 'password'));
+  };
+
+  const icon = inputType === 'password' ? 'MdOutlineVisibilityOff' : 'MdOutlineVisibility';
+
   return (
-    <div
-      className={`form__container-${border} form__container-${border}--${theme}`}
-    >
+    <div className={cn('form__container', { [border]: border }, { [theme]: theme })}>
       <label className="form__label" htmlFor={id}>
         <input
-          className={`form__input form__input--${theme}`}
+          className={cn('form__input', { [theme]: theme })}
           autoComplete="off"
           id={id}
-          type={type}
+          type={inputType}
           placeholder={placeholder}
           value={inputState.value}
           onChange={handleInputChange}
           onBlur={handleInputTouch}
-
         />
-        {rightIcon && (
+        {type === 'password' && (
           <Button
-            type="button"
-            shape="visibility"
-            onClick={onClickButton}
-            icon={rightIcon}
-            classNameIcon={cn('visibility', 'icon-visibility')}
+            variant="visible"
+            onClick={togglePasswordVisibility}
+            icon={icon}
+            classNameIcon={cn('visible', 'icon-visible')}
           />
         )}
       </label>
       {!inputState.isValid && inputState.isTouched && (
-        <ErrorMessage errorText={errorText} textAlign="left" />
+        <ErrorMessage errorText={errorText} variant="form" />
       )}
     </div>
   );

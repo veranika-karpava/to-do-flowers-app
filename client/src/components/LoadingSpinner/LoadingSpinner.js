@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './LoadingSpinner.scss';
-import DynamicIcon from '../DynamicIcon/DynamicIcon';
+import DynamicIcon from '../DynamicIcon/DynamicIcon.js';
 
 const LoadingSpinner = () => {
   return (

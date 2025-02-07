@@ -1,10 +1,24 @@
-@use '../../styles/partials/typography' as *;
 @use '../../styles/partials/mixins' as *;
 @use '../../styles/partials/variables' as *;
 
 .tasks {
   &__list {
-    @include flex(space-between, center, column, nowrap);
+    @include flex(flex-start, center, column);
     width: 100%;
+    min-height: 11.375rem;
+    background-color: transparent;
+
+    &.light {
+      color: $text-color-actived-light;
+    }
+
+    &.dark {
+      color: $text-color-actived-light;
+    }
+
+    &.message {
+      padding: $space-md;
+      justify-content: center;
+    }
   }
 }

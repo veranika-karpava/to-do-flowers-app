@@ -3,8 +3,9 @@
 
 @font-face {
   font-family: 'Josefin Sans';
-  src: url('../../assets/fonts/JosefinSans-Bold.woff2') format ('woff2'),
-    url('../../assets/fonts/JosefinSans-Bold.woff2') format ('woff');
+  src:
+    url($font-path-bold) format ('woff2'),
+    url($font-path-bold) format ('woff');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -12,45 +13,47 @@
 
 @font-face {
   font-family: 'Josefin Sans';
-  src: url('../../assets/fonts/JosefinSans-Regular.woff2') format('woff2'),
-    url('../../assets/fonts/JosefinSans-Regular.woff') format('woff');
+  src:
+    url($font-path-regular) format('woff2'),
+    url($font-path-regular) format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
-@mixin font-stack($font-style, $font-size, $font-weight, $line-height, $color) {
-  font-style: $font-style;
+@mixin font-stack($font-size, $font-weight, $line-height: normal, $color) {
+  font-family: 'Josefin Sans', sans-serif;
+  font-style: normal;
   font-size: $font-size;
   font-weight: $font-weight;
   line-height: $line-height;
   color: $color;
+  @content;
 }
 
 // Header
 @mixin font-stack-header {
-  @include font-stack(normal, 1.25rem, 700, normal, $bg-list-light);
-  letter-spacing: 0.3rem;
-  text-transform: uppercase;
+  @include font-stack($font-size-md, $bold, normal, $bg-list-light) {
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
 
-  @include tablet {
-    @include font-stack(normal, 1.75rem, 700, normal, $bg-list-light);
-  }
+    @include tablet {
+      font-size: $font-size-lg;
+    }
+  };
 }
 
-// Footer
-@mixin font-stack-footer {
-  @include font-stack(normal, 0.8rem, 400, normal, $text-color-actived-light);
+// Main
+@mixin font-stack-main($color: $text-color-main-light) {
+  @include font-stack($font-size-sm, $regular, normal, $color);
 }
 
-// for list of todos
-@mixin font-stack-main {
-  font-family: 'Josefin Sans', sans-serif;
-  @include font-stack(normal, 1.125rem, 400, normal, $text-color-main-light);
+// Action buttons, footer, message
+@mixin font-stack-sm($color: $text-color-actived-light) {
+  @include font-stack($font-size-xs, $regular, normal, $color);
 }
 
-// navigation
-@mixin font-stack-nav-main {
-  font-family: 'Josefin Sans', sans-serif;
-  @include font-stack(normal, 0.8rem, 400, normal, $text-color-actived-light);
+// 
+@mixin font-stack-quote($color: $bg-list-light) {
+  @include font-stack($font-size-md, $regular, 1.6rem, $color);
 }

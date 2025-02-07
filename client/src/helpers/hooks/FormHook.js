@@ -7,25 +7,28 @@ export const useForm = (initialInputs, initialFormValidity) => {
   });
 
   const inputHandler = useCallback((id, value, isValid) => {
-    setFormState(prevState => {
-      const updatedInputs = {
-        ...prevState.inputs,
-        [id]: {
-          value,
-          isValid,
-        },
-      };
-      let isFormValid = true;
-      for (const inputId in updatedInputs) {
-        if (!updatedInputs[inputId]?.isValid) {
-          // check if the input object exists and has a defined isValid property
-          isFormValid = false;
-          break;
+    setFormState((prevState) => {
+      let formIsValid = true;
+
+      for (const inputId in prevState.inputs) {
+        if (!prevState.inputs[inputId]) {
+          continue;
+        }
+
+        if (inputId === id) {
+          formIsValid = formIsValid && isValid;
+        } else {
+          formIsValid = formIsValid && prevState.inputs[inputId].isValid;
         }
       }
+
       return {
-        inputs: updatedInputs,
-        isFormValid,
+        ...prevState,
+        inputs: {
+          ...prevState.inputs,
+          [id]: { value, isValid },
+        },
+        isFormValid: formIsValid,
       };
     });
   }, []);

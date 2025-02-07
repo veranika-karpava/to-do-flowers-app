@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "To-Do",
+  "name": "My To-Do App",
+  "description": "A fully responsive full-stack To-Do app to manage tasks efficiently. Add, delete, complete, and filter tasks effortlessly.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,7 +19,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"

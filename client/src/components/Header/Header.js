@@ -1,51 +1,76 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 
-import { LABEL_THEME_MODE, TITLE_HEADER } from '../../constants';
-import { uiActions } from '../../store/ui-slice';
-import { authActions } from '../../store/auth-slice';
+import { LABEL_THEME_MODE, TITLE_HEADER } from '../../data/constants.js';
+
+import { toggle } from '../../store/ui-slice.js';
+import { useLogoutMutation } from '../../store/usersApiSlice.js';
+import { useFetchQuoteQuery } from '../../store/uiApiSlice.js';
 
 import './Header.scss';
-import Button from '../Button/Button';
+import bgImageLight from '../../assets/images/bg-light.jpg';
+import bgImageDark from '../../assets/images/bg-dark.jpg';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.js';
+import Button from '../Button/Button.js';
 
 const Header = () => {
+  const { theme } = useSelector((state) => state.ui);
+  const { userInfo, isAuth } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
-  const theme = useSelector(state => state.ui.theme);
-  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-  const userName = useSelector(state => state.auth.userName);
+  const navigate = useNavigate();
 
-  const handleToggleTheme = () => {
-    dispatch(uiActions.toggle());
+  const [logout, { isLoading, isSuccess }] = useLogoutMutation();
+  const { data: quote, isSuccess: isSuccessQuote } = useFetchQuoteQuery(undefined, {
+    skip: !isAuth,
+  });
+
+  const toggleModeHandler = () => {
+    dispatch(
+      toggle(theme === LABEL_THEME_MODE.LIGHT ? LABEL_THEME_MODE.DARK : LABEL_THEME_MODE.LIGHT),
+    );
   };
 
-  const handleUserLogout = () => {
-    dispatch(authActions.logout())
-  };
+  useEffect(() => {
+    if (isSuccess) navigate('/');
+  }, [isSuccess, navigate]);
 
-  const userGreeting = isAuthenticated ? `${TITLE_HEADER.LOGIN}${userName}` : TITLE_HEADER.SIGNUP;
+  const userGreeting = isAuth ? `${TITLE_HEADER.LOGIN}${userInfo.userName}` : TITLE_HEADER.SIGNUP;
+  const iconButton = theme === LABEL_THEME_MODE.LIGHT ? 'BsSunFill' : 'FaMoon';
+  const backgroundImage = theme === LABEL_THEME_MODE.LIGHT ? bgImageLight : bgImageDark;
 
   return (
-    <header className={cn('header', { [theme]: theme })} >
+    <header
+      className={cn('header', { [theme]: theme })}
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
+      {isLoading && (
+        <div className="tasks__message">
+          <LoadingSpinner />
+        </div>
+      )}
       <div className="header__container">
         <div className="header__nav-item">
-          {isAuthenticated && (
-            <Button
-              to="/"
-              onClick={handleUserLogout}
-              icon="BiExit"
-              classNameIcon="btn-circle__icon"
-            />
+          <Button
+            variant="round"
+            classNameIcon="icon-inside"
+            icon={iconButton}
+            onClick={toggleModeHandler}
+          />
+          {isAuth && (
+            <Button onClick={logout} variant="round" icon="BiExit" classNameIcon="icon-inside" />
           )}
         </div>
         <div className="header__wrapper">
           <h1 className="header__heading">{userGreeting}</h1>
-          <Button
-            icon={theme === LABEL_THEME_MODE.LIGHT ? 'BsSunFill' : 'FaMoon'}
-            classNameIcon="btn-circle__icon"
-            onClick={handleToggleTheme}
-            mode
-          />
+          {isAuth && isSuccessQuote && quote ? (
+            <blockquote className="header__quote">
+              <p className="header__quote-content">{quote.text}</p>
+              <footer className="header__quote-footer">— {quote.author}</footer>
+            </blockquote>
+          ) : null}
         </div>
       </div>
     </header>

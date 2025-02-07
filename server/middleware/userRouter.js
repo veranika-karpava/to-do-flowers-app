@@ -1,14 +1,16 @@
 const express = require('express');
 
-const { signUp, logIn } = require('../services/userService');
+const { signUp, logIn, logOut } = require('../services/userService');
 
-// create router
 const userRouter = express.Router();
 
-// sign up new user
+//Registrate new user
 userRouter.post('/signup', signUp);
 
-// login existing user
+//Login user
 userRouter.post('/login', logIn);
+
+//Logout user
+userRouter.post('/logout', logOut);
 
 module.exports = userRouter;

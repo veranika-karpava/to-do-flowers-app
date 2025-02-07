@@ -1,29 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
-import { useHistory } from 'react-router-dom';
 
-import { VALIDATION_TYPE, LABEL_AUTH_MODE, LABEL_AUTH_TITLE, LABEL_AUTH_TEXT, LABEL_AUTH_INPUT,  ERROR_AUTH_TEXT } from '../../constants';
+import {
+  VALIDATION_TYPE,
+  LABEL_AUTH_MODE,
+  LABEL_AUTH_TITLE,
+  LABEL_AUTH_TEXT,
+  LABEL_AUTH_INPUT,
+  ERROR_AUTH_TEXT,
+} from '../../data/constants.js';
+import { useForm } from '../../helpers/hooks/FormHook.js';
 
-import { authActions } from '../../store/auth-slice';
+import { setCredentials } from '../../store/auth-slice.js';
+import { useLoginMutation, useSignupMutation } from '../../store/usersApiSlice.js';
 
 import './HomePage.scss';
-import Input from '../../components/Input/Input';
-import Button from '../../components/Button/Button';
-import Card from '../../components/Card/Card';
-import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
-import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
-import { useForm } from '../../helpers/hooks/FormHook';
-import { useHttpClient } from '../../helpers/hooks/HttpHook';
-
-const API_URL = process.env.REACT_APP_BACKEND_URL;
+import Input from '../../components/Input/Input.js';
+import Button from '../../components/Button/Button.js';
+import Card from '../../components/Card/Card.js';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage.js';
 
 const HomePage = () => {
-  const theme = useSelector(state => state.ui.theme);
-  const dispatch = useDispatch();
-
-  const [passwordIsVisiable, setPasswordIsVisiable] = useState(false)
-  const [isLoginMode, setIsLoginMode] = useState(true);
   const [formState, inputHandler, setFormData] = useForm(
     {
       email: {
@@ -35,80 +34,72 @@ const HomePage = () => {
         isValid: false,
       },
     },
-    false
+    false,
   );
 
-  const { isLoading, error, sendRequest } = useHttpClient();
+  const [isLoginMode, setIsLoginMode] = useState(true);
 
-  const history = useHistory();
+  const { theme } = useSelector((state) => state.ui);
+  const { isAuth } = useSelector((state) => state.auth);
 
-  const toggleLoginModeHandler = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [login, { isError: isLogError, error: loginerr }] = useLoginMutation();
+  const [signup, { isError: isSignError, error: signuperr }] = useSignupMutation();
+
+  useEffect(() => {
+    if (isAuth) {
+      navigate('/tasks');
+    }
+  }, [isAuth, navigate]);
+
+  const toggleLoginMode = () => {
+    if (!isLoginMode) {
+      setFormData(
+        { ...formState.inputs, username: undefined },
+        formState.inputs.email.isValid && formState.inputs.password.isValid,
+      );
+    } else {
+      setFormData({ ...formState.inputs, username: { value: '', isValid: false } }, false);
+    }
+    setIsLoginMode((prevMode) => !prevMode);
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
     const { email, password, username } = formState.inputs;
 
-    const updatedInputs = isLoginMode 
-    ? { ...formState.inputs, username: undefined } 
-    : { ...formState.inputs, username: { value: '', isValid: false } };
-
-    const isFormValid = isLoginMode
-    ? email.isValid && password.isValid
-    : email.isValid && password.isValid && username.isValid;
-
-    setFormData(updatedInputs, isFormValid);
-    setIsLoginMode(prevMode => !prevMode);
-  };
-
-  const handlePasswordIsVisiable = () => {
-    setPasswordIsVisiable(prevPasswordIsisiable => !prevPasswordIsisiable);
-  };
-
-  const authSubmitHandler = async (e) => {
-    e.preventDefault();
-
     try {
-      const url = `${API_URL}/user/${isLoginMode ? 'login' : 'signup' }`;
-      const payload = isLoginMode 
-        ? { email: formState.inputs.email.value, password: formState.inputs.password.value,}
-        : { email: formState.inputs.email.value, password: formState.inputs.password.value, username: formState.inputs.username.value,};
-
-        const responseData = await sendRequest(url, 'POST', payload, { 'Content-Type': 'application/json' });
-
-        dispatch(authActions.login({
-          userId: responseData.userId,
-          userName: responseData.userName,
-          userToken: responseData.jwtToken
-        }))
-        history.push('/tasks');
-    } catch(err) {
-      console.log(err)
+      const credentials = isLoginMode
+        ? await login({ email: email.value, password: password.value }).unwrap()
+        : await signup({
+            email: email.value,
+            password: password.value,
+            username: username.value,
+          }).unwrap();
+      dispatch(setCredentials(credentials));
+      navigate('/tasks');
+    } catch (err) {
+      console.log(err);
     }
   };
 
-  // useEffect(() => {
-  //   setError(null);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [formState.inputs]);
-
-  console.log('form',formState.isFormValid)
+  const errorMessage = isLoginMode
+    ? isLogError && loginerr?.message
+    : isSignError && signuperr?.message;
 
   return (
     <section className={cn('auth', theme)}>
       <Card>
-        {isLoading && (
-          <div className="auth__message">
-            <LoadingSpinner />
-          </div>
-        )}
-        <div
-          className={cn(
-            'auth__container-title',
-            `auth__container-title--${theme}`
-          )}
-        >
-          <h2 className="auth__title">{isLoginMode ? LABEL_AUTH_TITLE.LOGIN : LABEL_AUTH_TITLE.SIGNUP}</h2>
-          {error && <ErrorMessage errorText={error} textAlign="center" />}
+        <div className={cn('auth__container-title', { [theme]: theme })}>
+          <h2 className="auth__title">
+            {isLoginMode ? LABEL_AUTH_TITLE.LOGIN : LABEL_AUTH_TITLE.SIGNUP}
+          </h2>
+          {errorMessage && <ErrorMessage errorText={errorMessage} variant="login " />}
         </div>
 
-        <form className="auth__form" onSubmit={authSubmitHandler}>
+        <form className="auth__form" onSubmit={submitHandler} noValidate>
           {!isLoginMode && (
             <Input
               id={LABEL_AUTH_INPUT.USERNAME.toLowerCase()}
@@ -128,28 +119,24 @@ const HomePage = () => {
           />
           <Input
             id={LABEL_AUTH_INPUT.PASSWORD.toLowerCase()}
-            type={passwordIsVisiable ? 'text' : 'password'}
+            type="password"
             placeholder={LABEL_AUTH_INPUT.PASSWORD}
             errorText={ERROR_AUTH_TEXT.PASSWORD}
             validators={[VALIDATION_TYPE.PASSWORD]}
             onInput={inputHandler}
-            rightIcon={passwordIsVisiable ? 'MdOutlineVisibility' : 'MdOutlineVisibilityOff'}
-            onClickButton={handlePasswordIsVisiable}
           />
           <div className="auth__container-button">
-            <Button
-              shape="rectangle"
-              type="submit"
-              title={isLoginMode ? LABEL_AUTH_MODE.LOGIN : LABEL_AUTH_MODE.SIGNUP}
-            />
+            <Button variant="filled" type="submit" disabled={!formState.isFormValid}>
+              {isLoginMode ? LABEL_AUTH_MODE.LOGIN : LABEL_AUTH_MODE.SIGNUP}
+            </Button>
           </div>
         </form>
-        <div className={cn('auth__wrapper', `auth__wrapper--${theme}`)}>
+        <div className={cn('auth__wrapper', { [theme]: theme })}>
           <p className="auth__switch-content">
-            {isLoginMode ? LABEL_AUTH_TEXT.SIGNUP : LABEL_AUTH_TEXT.LOGIN }
+            {isLoginMode ? LABEL_AUTH_TEXT.SIGNUP : LABEL_AUTH_TEXT.LOGIN}
           </p>
-          <Button onClick={toggleLoginModeHandler} shape="noborder" >
-            {isLoginMode ? LABEL_AUTH_MODE.SIGNUP : LABEL_AUTH_MODE.LOGIN }
+          <Button onClick={toggleLoginMode} variant="text">
+            {isLoginMode ? LABEL_AUTH_MODE.SIGNUP : LABEL_AUTH_MODE.LOGIN}
           </Button>
         </div>
       </Card>

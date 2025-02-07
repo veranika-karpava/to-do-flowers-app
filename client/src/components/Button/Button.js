@@ -1,58 +1,39 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import cn from 'classnames';
 
 import './Button.scss';
-import DynamicIcon from '../DynamicIcon/DynamicIcon';
+import DynamicIcon from '../DynamicIcon/DynamicIcon.js';
 
 const Button = ({
-  to,
-  mode,
-  shape,
-  type = 'button',
-  id,
-  title,
-  onClick,
   children,
-  active,
-  icon,
   classNameIcon,
+  disabled = false,
+  icon,
+  isActive = false,
+  variant, // filled, text, visible, round, filter, delete, update
+  type = 'button',
+  count,
+  ...props
 }) => {
-  const theme = useSelector(state => state.ui.theme);
+  const { theme } = useSelector((state) => state.ui);
 
-  return to ? (
-    <NavLink
-      exact
-      to={to}
-      onClick={onClick}
-      className={cn('button', { 'btn-circle': to || mode })}
-    >
-      {icon && (
-        <DynamicIcon name={icon} className={cn('button', classNameIcon)} />
-      )}
-      {children}
-    </NavLink>
-  ) : (
-    <button
-      type={type}
-      id={id}
+  const iconElement = icon && <DynamicIcon name={icon} className={cn('button', classNameIcon)} />;
 
-      className={cn(
-        'button',
-        { [theme]: theme },
-        { [shape]: shape },
-        { [active]: active },
-        { 'btn-circle': to || mode }
-      )}
-      onClick={onClick}
-    >
-      {title}
+  const buttonClasses = cn(
+    'button',
+    theme,
+    variant, // Apply variant class (filled, text, visible, round, filter, delete, update)
+    {
+      active: isActive, // Apply 'active' class if isActive is true
+    },
+  );
+
+  return (
+    <button type={type} className={buttonClasses} disabled={disabled} {...props}>
       {children}
-      
-      {icon && (
-        <DynamicIcon name={icon} className={cn('button', classNameIcon)} />
-      )}
+      {iconElement}
+      {count >= 0 && <span className="button__count">{count}</span>}
     </button>
   );
 };

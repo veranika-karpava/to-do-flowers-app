@@ -3,23 +3,41 @@
 @use '../../styles/partials/variables' as *;
 
 .form {
-  &__container-border {
+  &__container {
     width: 100%;
-    padding: 1rem 1rem 0.8rem 1rem;
-    border-bottom: 1px solid $text-color-completed-light;
 
-    &--dark {
-      border-bottom: 1px solid $text-color-completed-dark;
+    &.dark {
+      background-color: $bg-list-dark;
+      border-color: $text-color-completed-dark;
+    }
+  
+    &.light {
+      background-color: $bg-list-light;
+      border-color: $text-color-completed-light;
+    }
+
+  &.border {
+    padding: $space-md;
+    border-bottom: 1px solid;
+
+    &.dark {
+      border-color: $text-color-completed-dark;
+    }
+  
+    &.light {
+      border-color: $text-color-completed-light;
     }
   }
 
-  &__container-none {
-    width: 100%;
-    padding: 1rem;
-  }
+  &.noborder {
+    padding-top: 1.5%;
+  }}
 
   &__label {
     position: relative;
+    width: 100%;
+    display: inline-block;
+    vertical-align: middle;
   }
 
   &__input {
@@ -29,35 +47,17 @@
     background-color: transparent;
     outline: none;
     height: 1.58rem;
-    @include font-stack-main;
 
-    &--light {
-      &:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px $bg-list-light inset;
-        -webkit-text-fill-color: $text-color-main-light;
-      }
-
-      &::placeholder {
-        color: $text-color-actived-light;
-        vertical-align: middle;
-      }
+    &::placeholder {
+      color: $text-color-actived-light;
     }
 
-    &--dark {
-      &[type='text'],
-      &[type='email'],
-      &[type='password'] {
-        color: $text-color-main-dark !important;
-      }
+    &.light {
+      @include font-stack-main;
+    }
 
-      &:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px $bg-list-dark inset;
-        -webkit-text-fill-color: $text-color-main-dark;
-      }
-
-      &::placeholder {
-        color: $text-color-main-light;
-      }
+    &.dark {
+      @include font-stack-main($text-color-main-dark);
     }
   }
 }

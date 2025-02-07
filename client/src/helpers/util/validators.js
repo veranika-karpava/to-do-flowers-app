@@ -1,4 +1,4 @@
-import { VALIDATION_TYPE } from "../../constants";
+import { VALIDATION_TYPE } from '../../data/constants.js';
 
 export const validateInput = (value, validators) => {
   // If validators is not an array, return false by default

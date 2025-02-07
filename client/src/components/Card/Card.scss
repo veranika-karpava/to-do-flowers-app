@@ -1,13 +1,10 @@
-@use '../../styles/partials/typography' as *;
 @use '../../styles/partials/mixins' as *;
 @use '../../styles/partials/variables' as *;
 
 .card {
-  @include flex(space-between, center, column, nowrap);
   width: 100%;
   height: inherit;
-  border-radius: 4px;
-  background-color: $bg-list-light;
+  @include border-radius;
 
   @include tablet {
     width: 50%;
@@ -15,5 +12,9 @@
 
   &.dark {
     background-color: $bg-list-dark;
+  }
+
+  &.light {
+    background-color: $bg-list-light;
   }
 }

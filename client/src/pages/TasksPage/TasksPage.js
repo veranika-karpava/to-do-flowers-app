@@ -1,156 +1,78 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 
-import { VALIDATION_TYPE, LABEL_TASK_INPUT, EMPTY_LIST, ITEMS_LEFT, LABEL_BUTTON } from '../../constants';
+import { useFetchTasksQuery, useCreateTaskMutation } from '../../store/todosApiSlice.js';
+import { setTodoList, createNewToDo } from '../../store/todos-slice.js';
+import { useForm } from '../../helpers/hooks/FormHook.js';
+import { VALIDATION_TYPE, LABEL_TASK_INPUT } from '../../data/constants.js';
 
 import './TasksPage.scss';
-import { useForm } from '../../helpers/hooks/FormHook';
-import { useHttpClient } from '../../helpers/hooks/HttpHook';
-import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
-import Card from '../../components/Card/Card';
-import Button from '../../components/Button/Button';
-import Input from '../../components/Input/Input';
-import TasksList from '../../components/TasksList/TasksList';
-import Navigation from '../../components/Navigation/Navigation';
-
-const API_URL = process.env.REACT_APP_BACKEND_URL;
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.js';
+import Card from '../../components/Card/Card.js';
+import Button from '../../components/Button/Button.js';
+import Input from '../../components/Input/Input.js';
+import TasksList from '../../components/TasksList/TasksList.js';
+import ActionBar from '../../components/ActionBar/ActionBar.js';
+import Navigation from '../../components/Navigation/Navigation.js';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage.js';
 
 const TasksPage = () => {
-  const theme = useSelector(state => state.ui.theme);
-  const userId = useSelector(state => state.auth.userId);
+  const { theme } = useSelector((state) => state.ui);
+  const dispatch = useDispatch();
 
-  console.log(userId)
+  const { data: tasksList, isLoading, isSuccess, isError, error } = useFetchTasksQuery();
+  const [createTask, { isError: isNewError, error: newerr }] = useCreateTaskMutation();
 
-  const [clearInput, setClearInput] = useState(false);
-  const [loadedTasks, setLoadedTasks] = useState([]);
-  const [activeTasks, setActiveTasks] = useState([]);
-
-  const [filter, setFilter] = useState('all');
-
-  const [filteredTasks, setFilteredTasks] = useState([]);
-
-  const { isLoading, sendRequest } = useHttpClient();
-
+  const [triggerClear, setTriggerClear] = useState(false);
   const [formState, inputHandler] = useForm(
     {
-      title: {
+      task: {
         value: '',
         isValid: false,
       },
     },
-    false
+    false,
   );
 
-  // for getting list of task specified user ID
   useEffect(() => {
-    const fetchListTasks = async () => {
-      try {
-        const response = await sendRequest(`${API_URL}/tasks/${userId}`);
-        console.log()
-        setLoadedTasks(response.tasks);
-      } catch (err) {
-        console.log(`Get request loadedTask: ${err}`);
-      }
-    };
-    fetchListTasks();
-  }, [sendRequest, userId]);
+    if (isSuccess) {
+      dispatch(setTodoList(tasksList));
+    }
+  }, [isSuccess]);
 
-  // for creating new task and to the existing list
-  const submitHandler = async e => {
+  let content;
+
+  if (isLoading) {
+    content = (
+      <div className="tasks__message">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (isError) {
+    content = <div className="tasks__message">{error?.message}</div>;
+  }
+
+  if (isSuccess) {
+    content = <TasksList />;
+  }
+
+  const submitHandler = async (e) => {
     e.preventDefault();
+    setTriggerClear(false);
+    const { task } = formState.inputs;
     try {
-      const response = await sendRequest(`${API_URL}/tasks/new`, 'POST', {
-        title: formState.inputs.title.value,
-        userId: userId,
-      });
-      setLoadedTasks(response.tasks);
-      setClearInput(true);
+      const newTask = await createTask({ title: task.value }).unwrap();
+      dispatch(createNewToDo(newTask));
+      setTriggerClear((prev) => !prev);
     } catch (err) {
-      console.error(`Post request for creating a new task: ${err.message}`);
+      console.log(err);
     }
   };
 
-  // for removing task from the list of tasks
-  const deleteTaskHandler = async tid => {
-    const prevTasks = [...loadedTasks];
-    const updatedTasks = prevTasks.filter(task => task.id !== tid);
-    setLoadedTasks(updatedTasks);
-    try {
-      await sendRequest(`${API_URL}/tasks/${tid}`, 'DELETE', {
-        userId: userId,
-      });
-    } catch (err) {
-      setLoadedTasks(prevTasks);
-      console.error(`Failed to delete task with ID ${tid}: ${err.message}`);
-    }
-  };
-
-  // for updating status of the task specified Id
-  const updateStatusTaskHandler = async (tid, currentStatus) => {
-    const prevTasks = [...loadedTasks];
-
-    const updatedTasks = prevTasks.map(task => {
-      if (task.id === tid) {
-        return { ...task, completed: !currentStatus };
-      }
-      return task;
-    });
-    setLoadedTasks(updatedTasks);
-
-    try {
-      await sendRequest(`${API_URL}/tasks/${tid}`, 'PUT', {
-        userId: userId,
-        completed: !currentStatus,
-      });
-    } catch (err) {
-      setLoadedTasks(prevTasks);
-      console.error(`Failed to update satus of task ID ${tid}: ${err.message}`);
-    }
-  };
-
-  // for deleting completed tasks
-  const deleteAllCompletedHandler = async () => {
-    try {
-      const response = await sendRequest(
-        `${API_URL}/tasks/completed/true`,
-        'DELETE',
-        {
-          userId: userId,
-        }
-      );
-
-      setLoadedTasks(response.tasks);
-    } catch (err) {
-      console.error(`Failed to delete completed tasks: ${err.message}`);
-    }
-  };
-
-  // for counting active tasks
-  useEffect(() => {
-    if (!isLoading && loadedTasks) {
-      const activeTasks = loadedTasks.filter(task => !task.completed);
-      setActiveTasks(activeTasks);
-    }
-  }, [loadedTasks, isLoading]);
-
-  useEffect(() => {
-    const filteredTasks = loadedTasks.filter(task => {
-      if (filter === 'active') {
-        return !task.completed;
-      }
-      if (filter === 'completed') {
-        return task.completed;
-      }
-      return true;
-    });
-
-    setFilteredTasks(filteredTasks);
-  }, [filter, loadedTasks]);
-
-  const handleSetFilter = (filterTask) => {
-    setFilter(filterTask);
-  };
+  const errorMessage = isNewError && newerr?.message;
 
   return (
     <section className={cn('tasks', theme)}>
@@ -158,57 +80,28 @@ const TasksPage = () => {
         <form className="tasks__form" onSubmit={submitHandler}>
           <Button
             type="submit"
-            shape="circle"
+            variant="update"
             icon="RiAddFill"
-            classNameIcon="circle__icon-add"
+            classNameIcon={cn('update', 'icon-add')}
+            disabled={!formState.isFormValid}
           />
           <Input
             id={LABEL_TASK_INPUT.TITLE}
             placeholder={LABEL_TASK_INPUT.PLACEHOLDER}
             validators={[VALIDATION_TYPE.REQUIRE]}
             onInput={inputHandler}
-            border="none"
-            clearInput={clearInput}
-            setClearInput={setClearInput}
+            border="noborder"
+            clearInput={triggerClear}
           />
         </form>
+        {errorMessage && <ErrorMessage errorText={errorMessage} variant="new" />}
       </Card>
-
       <div className="tasks__container">
         <Card>
-          {isLoading && (
-            <div className="tasks__message">
-              <LoadingSpinner />
-            </div>
-          )}
-          {!isLoading && loadedTasks.length === 0 && (
-            <div className="tasks__message">
-              <p className={cn('tasks__content-message', theme)}>{EMPTY_LIST.TEXT}</p>
-            </div>
-          )}
-
-          {!isLoading && loadedTasks && (
-            <>
-              <TasksList
-                onDeleteHandler={deleteTaskHandler}
-                filteredTasks={filteredTasks}
-                onCompletedHandler={updateStatusTaskHandler}
-              />
-              <div className="tasks__action-container">
-                <div className="tasks__container-nav">
-                  <p className="tasks__left-items">{`${activeTasks.length} ${ITEMS_LEFT.TEXT}`}</p>
-
-                  <Button
-                    title={LABEL_BUTTON.CLEAR}
-                    shape="nav"
-                    onClick={deleteAllCompletedHandler}
-                  />
-                </div>
-              </div>
-            </>
-          )}
+          {content}
+          <ActionBar />
         </Card>
-        <Navigation filter={filter} onClick={handleSetFilter}/>
+        <Navigation />
       </div>
     </section>
   );

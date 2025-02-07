@@ -3,9 +3,10 @@ import cn from 'classnames';
 
 import './ErrorMessage.scss';
 
-const ErrorMessage = ({ errorText, textAlign }) => {
+//variant - new, update, login, form
+const ErrorMessage = ({ errorText, variant }) => {
   return (
-    <div className={cn('error-message')} style={{ textAlign: textAlign }}>
+    <div className={cn('error-message', variant)}>
       <p>{errorText}</p>
     </div>
   );

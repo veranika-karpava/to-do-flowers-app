@@ -1,19 +1,12 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-
 const HttpError = require('../models/http-error');
 const User = require('../models/user');
-const JWT_KEY = process.env.JWT_SECRET_KEY;
 
-const generateJWT = (user) => {
-  return jwt.sign(
-    { userId: user.id, email: user.email },
-    JWT_KEY,
-    { expiresIn: '1h'}
-  );
-};
+const generateJWT = require('../utils/generateJWT');
+const ERROR_MESSAGES = require('../utils/errorMessages');
 
-// for creating the new user
+// @desc Registrate new user
+// route POST/user/signup
+// @access Public
 const signUp = async (req, res, next) => {
   let { username, email, password } = req.body;
 
@@ -21,57 +14,42 @@ const signUp = async (req, res, next) => {
   email = email.toLowerCase();
   password = password.trim();
 
-  // check all inputs have value
   if (!username || !email || !password) {
-    return next(new HttpError('Please make sure to include all inputs.', 422));
-  };
+    return next(new HttpError(ERROR_MESSAGES.VALIDATION.REQUIRED_FIELDS, 422));
+  }
 
   try {
-    // check for existing user
-    const existingUser = await User.findOne({$or: [{ username: username }, { email: email }],});
+    const existingUser = await User.findOne({
+      $or: [{ username: username }, { email: email }],
+    });
 
     if (existingUser) {
-      const message = existingUser.username === username
-        ? 'Username is already taken. Please choose a different one.'
-        : 'Email address is already registered. Please use a different one or login.';
+      const message =
+        existingUser.username === username
+          ? ERROR_MESSAGES.USER.DUPLICATE_USERNAME
+          : ERROR_MESSAGES.USER.DUPLICATE_EMAIL;
       return next(new HttpError(message, 422));
-    };
-
-    // hash password
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    // create and save the new user
-    const newUser = new User({
+    }
+    const newUser = await User.create({
       username,
       email,
-      password: hashedPassword,
+      password,
     });
 
-    await newUser.save();
-
-    // generate and send JWT
-    const token = generateJWT(newUser);
-
-    // set cookies
-    res.cookie('token', token, {
-      httpOnly: true,
-      withCredentials: true,
-      // secure: process.env.NODE_ENV === 'production',
-      maxAge: 3600 * 1000, // 1 hour
-    });
-
-    return res.status(201).json({
+    generateJWT(res, newUser);
+    res.status(201).json({
       userName: newUser.username,
       userId: newUser.id,
-      email:newUser.email,
-      jwtToken: token,
+      email: newUser.email,
     });
   } catch {
-    return next(new HttpError('Signing up failed, please try again later.', 500));
+    return next(new HttpError(ERROR_MESSAGES.USER.SIGNUP_FAILED, 500));
   }
 };
 
-// login existing user
+// @desc Auth user/set token
+// route POST/user/login
+// @access Public
 const logIn = async (req, res, next) => {
   let { email, password } = req.body;
 
@@ -79,55 +57,43 @@ const logIn = async (req, res, next) => {
   password = password.trim();
 
   if (!email || !password) {
-    return next(new HttpError('Please make sure to include all inputs.', 422));
+    return next(new HttpError(ERROR_MESSAGES.VALIDATION.REQUIRED_FIELDS, 422));
   }
 
-  let existingUser;
   try {
-    existingUser = await User.findOne({ email: email });
-  } catch (err) {
-    return next(
-      new HttpError('Logging in failed, please try again later.', 500)
-    );
-  }
+    const existingUser = await User.findOne({ email: email });
 
-  if (!existingUser) {
-    return next(
-      new HttpError('User is not found, please check your email', 422)
-    );
-  }
+    if (!existingUser) {
+      return next(new HttpError(ERROR_MESSAGES.USER.NOT_FOUND, 422));
+    }
 
-  let isValidPassword;
-  try {
-    isValidPassword = await bcrypt.compare(password, existingUser.password);
-  } catch (err) {
-    return next(new HttpError('Could not log you in, please try again.', 500));
-  }
+    const isValidPassword = await existingUser.matchPassword(password);
 
-  if (!isValidPassword) {
-    return next(
-      new HttpError('Please check your password, could not log you in.', 403)
-    );
-  }
+    if (!isValidPassword) {
+      return next(new HttpError(ERROR_MESSAGES.USER.INVALID_PASSWORD, 403));
+    }
 
-  // generate jwt token
-  let jwtToken;
-  try {
-    jwtToken = jwt.sign(
-      { userId: existingUser.id, username: existingUser.username },
-      JWT_KEY,
-      { expiresIn: '1h' }
-    );
-  } catch (err) {
-    return next(new HttpError('Logging in failed, please try again', 500));
+    generateJWT(res, existingUser);
+    res.status(201).json({
+      userName: existingUser.username,
+      userId: existingUser.id,
+      email: existingUser.email,
+    });
+  } catch {
+    return next(new HttpError(ERROR_MESSAGES.USER.LOGIN_FAILED, 500));
   }
-  res.status(200).json({
-    userName: existingUser.username,
-    userId: existingUser.id,
-    email: existingUser.email,
-    jwtToken: jwtToken,
-  });
+};
+
+// @desc Logout user/ delete cookie
+// route POST/user/logout
+// @access Public
+const logOut = async (req, res, next) => {
+  const token = req.cookies?.jwt;
+  if (!token) return next(new HttpError(ERROR_MESSAGES.TOKEN.NO_CONTENT, 204));
+  res.clearCookie('jwt', { httpOnly: true, sameSite: 'Strict', secure: true });
+  res.status(200).json({ message: ERROR_MESSAGES.USER.LOGOUT_SUCCESS });
 };
 
 exports.signUp = signUp;
 exports.logIn = logIn;
+exports.logOut = logOut;

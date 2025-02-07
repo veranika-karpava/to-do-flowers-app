@@ -1,276 +1,174 @@
-const mongoose = require('mongoose');
-
 const HttpError = require('../models/http-error');
 const User = require('../models/user');
 const Task = require('../models/task');
 
-// helpers for getting list of tasks
-const getListTasksByUserId = async uid => {
-  let tasksList;
-  try {
-    tasksList = await Task.find({ owner: uid });
-  } catch (err) {
-    const error = new HttpError(
-      'Fetching tasks failed, please try again later.',
-      500
-    );
-    throw error;
-  }
-  return tasksList;
-};
+const ERROR_MESSAGES = require('../utils/errorMessages');
 
-// for checking existing user
-const checkExistingUser = async uid => {
-  let user;
-  try {
-    user = await User.findById(uid);
-  } catch (err) {
-    const error = new HttpError(
-      'Fetching tasks failed, please try again later.',
-      500
-    );
-    throw error;
-  }
-
-  if (!user) {
-    const error = new HttpError('Could not find user specified id.', 404);
-    throw error;
-  }
-
-  return user;
-};
-
-// for getting a list of tasks specified user ID (uid)
+// @desc Get tasks list specified user ID
+// @route GET/tasks
+// @access Private
 const getListTasks = async (req, res, next) => {
-  // get userId from url params
-  const userId = req.params.uid;
-
-  let user;
-
   try {
-    user = await checkExistingUser(userId);
-  } catch (err) {
-    return next(new HttpError('Could not find user specified id.', 404));
-  }
+    const user = await User.findById(req.user.id);
 
-  let userWithTasks;
+    if (!user) {
+      return next(new HttpError(ERROR_MESSAGES.USER.NOT_FOUND_ID, 404));
+    }
+    const tasksList = await Task.find({ owner: user.id }).sort({ createdAt: -1 });
 
-  try {
-    userWithTasks = await getListTasksByUserId(user.id);
-  } catch (err) {
-    return next(
-      new HttpError('Fetching tasks failed, please try again later.', 500)
-    );
-  }
+    if (tasksList && tasksList.length === 0) {
+      return res.status(200).json({ tasks: [] });
+    }
 
-  if (userWithTasks.length === 0) {
-    return next(new HttpError('Your list of tasks is empty.', 404));
-  } else {
     res.status(200).json({
-      tasks: userWithTasks.map(task => task.toObject({ getters: true })),
+      tasks: tasksList.map((task) => ({
+        id: task._id,
+        title: task.title,
+        completed: task.completed,
+      })),
     });
+  } catch {
+    return next(new HttpError(ERROR_MESSAGES.TASK.FETCH_TASK, 500));
   }
 };
 
-// for adding new task to the list
+// @desc Add new task to the list
+// @route POST/tasks/new
+// @access Private
 const addNewTask = async (req, res, next) => {
-  const { title, userId } = req.body;
+  const { title } = req.body;
 
   if (!title) {
-    return next(
-      new HttpError('Please make sure to include title of a new task.', 422)
-    );
+    return next(new HttpError(ERROR_MESSAGES.TASK.REQUIRED_TASK, 422));
   }
 
-  let user;
-
   try {
-    user = await checkExistingUser(userId);
-  } catch (err) {
-    return next(new HttpError('Could not find user specified id.', 404));
-  }
+    const user = await User.findById(req.user.id);
 
-  let createdNewTask;
+    if (!user) {
+      return next(new HttpError(ERROR_MESSAGES.USER.NOT_FOUND_ID, 404));
+    }
 
-  try {
-    createdNewTask = new Task({
+    const createdNewTask = await Task.create({
       title,
       completed: false,
       owner: user.id,
     });
-  } catch (err) {
-    console.log(err);
+    res.status(201).json({
+      message: ERROR_MESSAGES.TASK.ADD_TASK_SUCCESS,
+      task: {
+        id: createdNewTask._id,
+        title: createdNewTask.title,
+        completed: createdNewTask.completed,
+      },
+    });
+  } catch {
+    return next(new HttpError(ERROR_MESSAGES.TASK.ADD_TASK_FAIL, 500));
   }
-
-  try {
-    // create session - start session when we want to create a task
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
-    // task created w/t unique id and stored  on the current session
-    await createdNewTask.save({ session: sess });
-    await sess.commitTransaction();
-  } catch (err) {
-    return next(new HttpError('Adding task failed, please try again.', 500));
-  }
-
-  let userWithTasks;
-
-  try {
-    userWithTasks = await getListTasksByUserId(user.id);
-  } catch (err) {
-    return next(
-      new HttpError('Fetching tasks failed, please try again later.', 500)
-    );
-  }
-
-  res.status(201).json({
-    message: 'New task created',
-    task: createdNewTask,
-    tasks: userWithTasks.map(task => task.toObject({ getters: true })),
-  });
 };
 
-// for updating status of task specified task ID (tid)
+// @desc Update status of the task specified ID
+// @route PUT/tasks/:tid?
+// @access Private
 const updateStatusTask = async (req, res, next) => {
-  const { completed, userId } = req.body;
-  // get taskId from url as params
   const taskId = req.params.tid;
-
-  let user;
-
-  try {
-    // eslint-disable-next-line no-unused-vars
-    user = await checkExistingUser(userId);
-  } catch (err) {
-    return next(new HttpError('Could not find user specified id.', 404));
-  }
-
-  let task;
-  try {
-    task = await Task.findByIdAndUpdate(
-      { _id: taskId },
-      { completed: completed },
-      { new: true }
-    );
-  } catch (err) {
-    return next(
-      new HttpError(
-        'Something went wrong, could not update status of the specified task.',
-        500
-      )
-    );
-  }
-  if (!task) {
-    return next(new HttpError('Could not find task specified id.', 404));
-  }
-
-  res.status(200).json({
-    message: 'Task updated successefully',
-    task: task,
-  });
-};
-
-// for deleting a task specified task ID (tid)
-const deleteTaskById = async (req, res, next) => {
-  const { userId } = req.body;
-  const taskId = req.params.tid;
-
-  let user;
+  const isCompleted = req.query.completed;
 
   try {
-    user = await checkExistingUser(userId);
-  } catch (err) {
-    return next(new HttpError('Could not find user specified id.', 404));
-  }
-
-  let task;
-
-  try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
-    try {
-      task = await Task.findByIdAndDelete({ _id: taskId, owner: user.id });
-    } catch (err) {
-      return next(
-        new HttpError(
-          'Something went wrong, could not delete task specified id.',
-          500
-        )
-      );
-    }
+    const task = await Task.findById(taskId);
 
     if (!task) {
-      return next(new HttpError('Could not find task for specified id.', 404));
+      return next(new HttpError(ERROR_MESSAGES.TASK.NO_TASK, 404));
     }
-    await sess.commitTransaction();
-    await sess.endSession();
-  } catch (err) {
-    console.log(err);
-    return next(
-      new HttpError('Something went wrong, could not delete task.', 500)
-    );
-  }
 
-  res.status(200).json({
-    message: 'Task deleted successfully',
-    task: task,
-  });
+    if (task.owner.toString() !== req.user.id) {
+      return next(new HttpError(ERROR_MESSAGES.USER.NOT_FOUND_ID, 403));
+    }
+
+    const updatedTask = await Task.findByIdAndUpdate(
+      { _id: taskId },
+      { completed: isCompleted },
+      { new: true },
+    );
+
+    res.status(200).json({
+      message: ERROR_MESSAGES.TASK.UPDATE_TASK_SUCCESS,
+      task: {
+        id: updatedTask._id,
+        title: updatedTask.title,
+        completed: updatedTask.completed,
+      },
+    });
+  } catch {
+    return next(new HttpError(ERROR_MESSAGES.TASK.UPDATE_TASK_FAIL, 500));
+  }
 };
 
-// for deleting a list of completed tasks
+// @desc Delete task specified ID
+// @route DELETE/tasks/:tid
+// @access Private
+const deleteTaskById = async (req, res, next) => {
+  const taskId = req.params.tid;
+
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return next(new HttpError(ERROR_MESSAGES.USER.NOT_FOUND_ID, 404));
+    }
+
+    const deletedTask = await Task.findByIdAndDelete({
+      _id: taskId,
+      owner: user.id,
+    });
+
+    if (!deletedTask) {
+      return next(new HttpError(ERROR_MESSAGES.TASK.NO_TASK, 404));
+    }
+
+    res.status(200).json({
+      message: ERROR_MESSAGES.TASK.DELETE_TASK_SUCCESS,
+      task: {
+        id: deletedTask._id,
+        title: deletedTask.title,
+        completed: deletedTask.completed,
+      },
+    });
+  } catch {
+    return next(new HttpError(ERROR_MESSAGES.TASK.DELETE_TASK_FAIL, 500));
+  }
+};
+
+// @desc Delete tasks with status completed: true
+// @route DELETE/tasks/completed
+// @access Private
 const deleteAllCompletedTasks = async (req, res, next) => {
-  const { userId } = req.body;
-
-  let user;
-
   try {
-    user = await checkExistingUser(userId);
-  } catch (err) {
-    return next(new HttpError('Could not find user specified id.', 404));
-  }
+    const user = await User.findById(req.user.id);
 
-  let tasks;
-  try {
-    tasks = await Task.find({ completed: true });
-  } catch (err) {
-    return next(
-      new HttpError(
-        'Something went wrong, could not delete completed tasks.',
-        500
-      )
-    );
-  }
-  if (!tasks || tasks.length === 0) {
-    return next(new HttpError('Could not find any completed tasks', 404));
-  }
+    if (!user) {
+      return next(new HttpError(ERROR_MESSAGES.USER.NOT_FOUND_ID, 404));
+    }
 
-  try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
-    const idsToDelete = tasks.map(task => task._id);
-    await Task.deleteMany({ _id: { $in: [...idsToDelete] } }).session(sess);
-    await sess.commitTransaction();
-    await sess.endSession();
-  } catch (err) {
-    return next(
-      new HttpError('Something went wrong, could not delete tasks.', 500)
-    );
+    const tasksToDelete = await Task.find({ completed: true, owner: user.id });
+
+    if (tasksToDelete && tasksToDelete.length === 0) {
+      return next(new HttpError(ERROR_MESSAGES.TASK.COMPLETED_TASKS, 404));
+    }
+
+    const result = await Task.deleteMany({ completed: true, owner: user.id });
+
+    res.status(200).json({
+      message: `${result.deletedCount} ${ERROR_MESSAGES.TASK.COUNT_TEXT}`,
+      tasks: tasksToDelete.map((task) => ({
+        id: task._id,
+        title: task.title,
+        completed: task.completed,
+      })),
+    });
+  } catch {
+    return next(new HttpError(ERROR_MESSAGES.TASK.DELETE_COMPLETED, 500));
   }
-
-  let userWithTasks;
-
-  try {
-    userWithTasks = await getListTasksByUserId(user.id);
-  } catch (err) {
-    return next(
-      new HttpError('Fetching tasks failed, please try again later.', 500)
-    );
-  }
-
-  res.status(200).json({
-    message: 'Deleted tasks.',
-    tasks: userWithTasks.map(task => task.toObject({ getters: true })),
-  });
 };
 
 exports.getListTasks = getListTasks;

@@ -6,128 +6,109 @@
   cursor: pointer;
   border: none;
 
-  &.dark {
-    border-color: $bg-list-light;
+  &:disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.8;
   }
 
-  &.light {
-    border-color: linear-gradient(
-      to left,
-      hsl(192, 100%, 67%),
-      hsl(280, 87%, 65%)
-    );
+  &__count {
+    margin: 0 $space-xs;
   }
 
-  &.circle {
-    @include flex(center, center, row, nowrap);
-    border: 1px solid $text-color-completed-light;
-    border-radius: 50%;
-    height: 1.7rem;
-    width: 1.7rem;
-    background: linear-gradient(
-      to left,
-      hsl(192, 100%, 67%),
-      hsl(280, 87%, 65%)
-    );
+  &.round {
+    background: transparent;
+    border: 2px solid $bg-list-light;
+    @include border-radius(50%);
+    @include flex(center, center);
+    padding: $space-sm;
+    @include transition(transform 0.2s);
 
     &:hover {
-      transform: scale(1.1);
-    }
-
-    &__icon-status {
-      width: 1.2rem;
-      height: 1.2rem;
-      color: $bg-list-light;
-    }
-
-    &__icon-add {
-      @include size-icon;
-      color: $bg-list-light;
+      @include transform(scale(1.1));
     }
   }
 
-  &.noborder {
-    @include font-stack-main;
-    background-color: transparent;
-    color: $active-bright-blue;
-  }
-
-  &.nav {
-    border: none;
-    background-color: transparent;
-    @include font-stack-nav-main;
-
-    &:hover {
-      color: $active-bright-blue;
-    }
-  }
-
-  &.rectangle {
-    padding: 0.5rem 1rem;
-    width: 8rem;
-    @include font-stack-main;
-    background: linear-gradient(
-      to left,
-      hsl(192, 100%, 67%),
-      hsl(280, 87%, 65%)
-    );
-    border-radius: 8px;
+  &.icon-inside {
+    @include size-icon(1.5, 1.5);
     color: $bg-list-light;
-    border: 1px solid;
   }
 
-  &.delete {
-    height: 1.7rem;
-    width: 1.7rem;
-    border: none;
-    background-color: transparent;
-    color: $text-color-completed-dark;
+  &.filled {
+    background: $gradient-blue-purple;
+    @include border-radius($space-sm);
+    @include box-shadow(0px, 4px, 6px,rgba(0, 0, 0, 0.1));
+    @include font-stack-main($bg-list-light);
+    @include transition(transform 0.2s, box-shadow 0.2s);
+    padding: 0.75rem 1.25rem;
+    width: 100%;
 
     &:hover {
-      transform: scale(1.1);
-    }
-
-    &.icon-cross {
-      width: inherit;
-      height: inherit;
+      @include box-shadow(0px, 6px, 8px, rgba(0, 0, 0, 0.15));
+      @include transform(scale(1.02));
     }
   }
 
-  &.visibility {
-    height: 1.7rem;
-    width: 1.7rem;
-    border: none;
+  &.text {
+    @include font-stack-main($active-bright-blue);
+    @include transition(transform 0.2s);
     background-color: transparent;
+
+    &:hover {
+      @include transform(scale(1.02));
+    }
+  }
+
+  &.visible {
     color: $text-color-completed-dark;
     position: absolute;
     right: 0;
-    top: -2px;
+    top: 0;
 
-    &.icon-visibility {
-      width: inherit;
-      height: inherit;
+    &.icon-visible {
+      @include size-icon(1.7, 1.7);
     }
   }
 
-  &.active {
-    color: $active-bright-blue;
+  &.update {
+    @include flex(center, center);
+    @include border-radius(50%);
+    @include size-icon(1.8, 1.8);
+    background: $gradient-blue-purple;
+    color: $bg-list-light;
+
+    &.icon-update,
+    &.icon-add {
+      @include size-icon(1.5, 1.5);
+    }
   }
 
-  &.btn-circle {
-    @include flex(center, center, row, nowrap);
-    padding: 0.5rem;
-    border-radius: 50%;
-    border: 2px solid $bg-list-light;
-    cursor: pointer;
-    background: transparent;
+  &.delete {
+    background-color: transparent;
+    color: $text-color-completed-dark;
+    @include transition(transform 0.2s);
 
     &:hover {
-      transform: scale(1.1);
+      @include transform(scale(1.1));
     }
 
-    &__icon {
-      @include size-icon;
-      color: $bg-list-light;
+    &.icon-cross {
+      @include size-icon(1.7, 1.7);
+    }
+  }
+
+  &.filter {
+    background-color: transparent;
+    @include font-stack-sm;
+    @include transition(color 0.3s, border-bottom 0.3s ease-in-out);
+
+    &.active {
+      border-bottom: 1px solid $active-bright-blue;
+      color: $active-bright-blue;
+    }
+
+    &:hover {
+      color: $active-bright-blue;
     }
   }
 }

@@ -5,7 +5,7 @@ import cn from 'classnames';
 import './Card.scss';
 
 const Card = ({ children }) => {
-  const theme = useSelector(state=> state.ui.theme);
+  const { theme } = useSelector((state) => state.ui);
 
   return <div className={cn('card', { [theme]: theme })}>{children}</div>;
 };

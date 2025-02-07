@@ -1,17 +1,22 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-import { LABEL_THEME_MODE } from '../constants'
+import { LABEL_THEME_MODE, FILTER_TERM } from '../data/constants.js';
+
+const initialState = { theme: LABEL_THEME_MODE.LIGHT, filter: FILTER_TERM.ALL };
 
 const uiSlice = createSlice({
-    name: 'ui',
-    initialState: { theme: LABEL_THEME_MODE.LIGHT },
-    reducers: {
-        toggle(state) {
-            state.theme = state.theme === LABEL_THEME_MODE.LIGHT ? LABEL_THEME_MODE.DARK : LABEL_THEME_MODE.LIGHT
-        },
-    }
+  name: 'ui',
+  initialState: initialState,
+  reducers: {
+    toggle: (state, action) => {
+      state.theme = action.payload;
+    },
+    setFilter: (state, action) => {
+      state.filter = action.payload;
+    },
+  },
 });
 
-export const uiActions = uiSlice.actions;
+export const { toggle, setFilter } = uiSlice.actions;
 
 export default uiSlice;

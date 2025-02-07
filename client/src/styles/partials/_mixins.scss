@@ -25,16 +25,25 @@
   flex-wrap: $flex-wrap;
 }
 
-@mixin style-bg-image-header {
-  height: 50vh;
-  background-repeat: no-repeat;
-  background-position: 50% 20%;
-  background-size: cover;
+@mixin transition($properties...) {
+  -webkit-transition: $properties;
+  -moz-transition: $properties;
+  -o-transition: $properties;
+  transition: $properties;
 }
 
-@mixin size-icon {
-  width: 1.5rem;
-  height: 1.5rem;
+@mixin style-bg-image-header {
+  position: relative;
+  height: 50vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 20%;
+  @include transition(background-image 0.6s ease-in-out, background-size 0.6s ease-in-out, background-position 0.6s ease-in-out);
+}
+
+@mixin size-icon($width: 1.5, $height: 1.5) {
+  width: $width * 1rem;
+  height: $height * 1rem;
 }
 
 @mixin animate($animation, $duration, $method, $times) {
@@ -45,4 +54,18 @@
   @keyframes #{$name} {
     @content;
   }
+}
+
+@mixin box-shadow($x: 0px, $y: 4px, $blur: 10px, $color: rgba(0, 0, 0, 0.25)) {
+  box-shadow: $x $y $blur $color;
+}
+
+@mixin transform($transform) {
+  -webkit-transform: $transform;
+  -ms-transform: $transform;
+  transform: $transform;
+}
+
+@mixin border-radius($radius: $space-xs) {
+  border-radius: $radius;
 }

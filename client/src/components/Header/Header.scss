@@ -3,39 +3,52 @@
 @use '../../styles/partials/variables' as *;
 
 .header {
-  padding: 1rem;
-  width: 100%;
   @include style-bg-image-header;
-
-  &.light {
-    background-image: url('../../assets/images/bg-light.jpg');
-  }
-
-  &.dark {
-    background-image: url('../../assets/images/bg-dark.jpg');
-  }
+  padding: $space-md;
+  width: 100%;
 
   &__container {
     width: 100%;
-    height: 60%;
-    @include flex(space-between, center, column, nowrap);
+    height: 100%;
+    @include flex(space-between, center, column);
   }
 
   &__nav-item {
-    width: inherit;
-    @include flex(flex-end, center, row, nowrap);
+    margin-left: auto; 
+    @include flex(space-between, center, row);
+    gap: $space-md;
   }
 
   &__wrapper {
-    width: inherit;
-    @include flex(space-between, center, row, nowrap);
+    gap: $space-md;
+    width: 90%;
+    margin: auto 0;
+    @include flex(space-between, center, row, wrap);
 
     @include tablet {
-      width: 60%;
+      width: 70%;
     }
   }
 
   &__heading {
     @include font-stack-header;
+  }
+
+  &__quote {
+    @include box-shadow(0px, 4px, 10px, $bg-list-light);
+    @include border-radius;
+    @include flex(flex-start, flex-start, column);
+    @include font-stack-quote;
+    font-style: italic;
+    width: 100%;
+    padding: $space-md;
+  }
+
+  &__quote-content {
+    margin-bottom: $space-md;
+  }
+
+  &__quote-footer {
+    align-self: end;
   }
 }

@@ -18,14 +18,17 @@ body {
 
 section {
   min-height: 50vh;
-  padding: 2rem 1rem 1rem 1rem;
-  @include flex(flex-start, center, column, nowrap);
+  padding: $space-lg $space-md $space-md $space-md ;
+  @include flex(flex-start, center, column);
 }
 
 .dark {
+  @include transition(all 0.2s ease);
+  color: $text-color-main-dark;
   background-color: $bg-main-dark;
 }
 
 .light {
+  @include transition(all 0.2s ease);
   background-color: $bg-main-light;
 }
