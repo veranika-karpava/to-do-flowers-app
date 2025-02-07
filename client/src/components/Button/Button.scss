@@ -37,7 +37,7 @@
   &.filled {
     background: $gradient-blue-purple;
     @include border-radius($space-sm);
-    @include box-shadow(0px, 4px, 6px,rgba(0, 0, 0, 0.1));
+    @include box-shadow(0px, 4px, 6px, rgba(0, 0, 0, 0.1));
     @include font-stack-main($bg-list-light);
     @include transition(transform 0.2s, box-shadow 0.2s);
     padding: 0.75rem 1.25rem;

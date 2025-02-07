@@ -10,28 +10,29 @@
       background-color: $bg-list-dark;
       border-color: $text-color-completed-dark;
     }
-  
+
     &.light {
       background-color: $bg-list-light;
       border-color: $text-color-completed-light;
     }
 
-  &.border {
-    padding: $space-md;
-    border-bottom: 1px solid;
+    &.border {
+      padding: $space-md;
+      border-bottom: 1px solid;
 
-    &.dark {
-      border-color: $text-color-completed-dark;
+      &.dark {
+        border-color: $text-color-completed-dark;
+      }
+
+      &.light {
+        border-color: $text-color-completed-light;
+      }
     }
-  
-    &.light {
-      border-color: $text-color-completed-light;
+
+    &.noborder {
+      padding-top: 1.5%;
     }
   }
-
-  &.noborder {
-    padding-top: 1.5%;
-  }}
 
   &__label {
     position: relative;

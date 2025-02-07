@@ -40,7 +40,7 @@
     @include tablet {
       font-size: $font-size-lg;
     }
-  };
+  }
 }
 
 // Main
@@ -53,7 +53,7 @@
   @include font-stack($font-size-xs, $regular, normal, $color);
 }
 
-// 
+//
 @mixin font-stack-quote($color: $bg-list-light) {
   @include font-stack($font-size-md, $regular, 1.6rem, $color);
 }

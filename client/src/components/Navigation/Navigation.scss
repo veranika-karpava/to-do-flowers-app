@@ -3,14 +3,14 @@
 @use '../../styles/partials/variables' as *;
 
 .tasks {
-    &__navigation {
-        width: 100%;
-        margin-top: $space-md;
-        @include flex(center, center);
-      }
+  &__navigation {
+    width: 100%;
+    margin-top: $space-md;
+    @include flex(center, center);
+  }
 
-      &__wrapper-container {
-        padding: 1.5rem;
-        @include flex(space-evenly, center);
-      }
+  &__wrapper-container {
+    padding: 1.5rem;
+    @include flex(space-evenly, center);
+  }
 }

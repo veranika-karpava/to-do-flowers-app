@@ -1,6 +1,5 @@
 import apiSlice from './apiSlice.js';
 import { clearCredentials } from './auth-slice.js';
-const USERS_URL = '/user';
 import { PATH_API } from '../data/constants.js';
 
 export const handleAuthError = (dispatch) => {

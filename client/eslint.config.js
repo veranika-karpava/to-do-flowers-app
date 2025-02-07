@@ -1,10 +1,11 @@
 import js from '@eslint/js';
 import globals from 'globals';
 import eslintReact from 'eslint-plugin-react';
-import eslintReactHooks from 'eslint-plugin-react-hooks';
+import eslintReactHooks from 'eslint-plugin-react-hooks/index.js';
 import eslintReactRefresh from 'eslint-plugin-react-refresh';
 import prettierPlugin from 'eslint-plugin-prettier';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import babelPlugin from '@babel/plugin-transform-private-property-in-object';
 
 export default [
   {
@@ -13,6 +14,7 @@ export default [
       "react-hooks": eslintReactHooks,
       "react-refresh": eslintReactRefresh,
       prettier: prettierPlugin,
+      "babel": babelPlugin,
     }
   },
   {

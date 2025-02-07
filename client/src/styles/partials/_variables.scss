@@ -19,8 +19,8 @@ $regular: 400;
 // Space
 $space-lg: 2rem;
 $space-md: 1rem;
-$space-sm: .5rem;
-$space-xs: .25rem;
+$space-sm: 0.5rem;
+$space-xs: 0.25rem;
 
 // Action color
 $active-bright-blue: hsl(220, 98%, 61%); // for active navigation
@@ -38,11 +38,10 @@ $bg-list-dark: hsl(235, 24%, 19%); //background-list
 $text-color-completed-dark: hsl(234, 11%, 52%); // text-color in completed list
 $text-color-main-dark: hsl(234, 39%, 85%); //text-list
 
-
 // Gradient Color - button
-$gradient-blue-purple: linear-gradient(to left, #3B6CB7, #D36DB9);// Blue to purple gradient
+$gradient-blue-purple: linear-gradient(to left, #3b6cb7, #d36db9); // Blue to purple gradient
 
 // Neutral Colors (For borders, dividers, and subtle details)
-$neutral-light: hsl(210, 15%, 90%);    // Light neutral for subtle backgrounds or card details
-$neutral-dark: hsl(210, 15%, 20%);     // Dark neutral for text and borders in dark mode
-$neutral-medium: hsl(210, 10%, 50%);   // Medium neutral for borders or section dividers
+$neutral-light: hsl(210, 15%, 90%); // Light neutral for subtle backgrounds or card details
+$neutral-dark: hsl(210, 15%, 20%); // Dark neutral for text and borders in dark mode
+$neutral-medium: hsl(210, 10%, 50%); // Medium neutral for borders or section dividers

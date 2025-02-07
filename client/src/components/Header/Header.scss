@@ -14,7 +14,7 @@
   }
 
   &__nav-item {
-    margin-left: auto; 
+    margin-left: auto;
     @include flex(space-between, center, row);
     gap: $space-md;
   }
