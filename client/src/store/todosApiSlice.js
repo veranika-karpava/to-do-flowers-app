@@ -1,13 +1,13 @@
 import apiSlice from './apiSlice.js';
 import { handleAuthError } from './usersApiSlice.js';
 
-const TASKS_URL = '/tasks';
+import { PATH_API } from '../data/constants.js';
 
 export const todosApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     fetchTasks: builder.query({
       query: () => ({
-        url: TASKS_URL,
+        url: PATH_API.TASKS_URL,
         method: 'GET',
       }),
       transformResponse: (response) => response.tasks,
@@ -31,7 +31,7 @@ export const todosApiSlice = apiSlice.injectEndpoints({
     }),
     createTask: builder.mutation({
       query: (data) => ({
-        url: `${TASKS_URL}/new`,
+        url: `${PATH_API.TASKS_URL}/new`,
         method: 'POST',
         body: data,
       }),
@@ -53,7 +53,7 @@ export const todosApiSlice = apiSlice.injectEndpoints({
     }),
     updateTask: builder.mutation({
       query: ({ id, status }) => ({
-        url: `${TASKS_URL}/${id}?completed=${status}`,
+        url: `${PATH_API.TASKS_URL}/${id}?completed=${status}`,
         method: 'PUT',
       }),
       transformResponse: (response) => response.task,
@@ -74,7 +74,7 @@ export const todosApiSlice = apiSlice.injectEndpoints({
     }),
     deleteTask: builder.mutation({
       query: (id) => ({
-        url: `${TASKS_URL}/${id}`,
+        url: `${PATH_API.TASKS_URL}/${id}`,
         method: 'DELETE',
       }),
       transformResponse: (response) => response.task,
@@ -95,7 +95,7 @@ export const todosApiSlice = apiSlice.injectEndpoints({
     }),
     deleteCompletedTasks: builder.mutation({
       query: () => ({
-        url: `${TASKS_URL}/completed`,
+        url: `${PATH_API.TASKS_URL}/completed`,
         method: 'DELETE',
       }),
       transformResponse: (response) => response.tasks,

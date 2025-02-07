@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
-import { TITLE_FOOTER } from '../../data/constants.js';
+import { FOOTER_TITLE, FOOTER_COPYRIGHT } from '../../data/constants.js';
 
 import './Footer.scss';
 import DynamicIcon from '../DynamicIcon/DynamicIcon.js';
@@ -13,11 +13,11 @@ const Footer = () => {
   return (
     <footer className={cn('footer', { [theme]: theme })}>
       <p className="footer__content">
-        {TITLE_FOOTER.RIGHT}
+        {FOOTER_TITLE.RIGHT}
         <span className="footer__container-heart-icon">
           <DynamicIcon name="FaHeart" className="footer__icon" />
         </span>
-        {TITLE_FOOTER.LEFT}
+        {FOOTER_COPYRIGHT}
       </p>
     </footer>
   );

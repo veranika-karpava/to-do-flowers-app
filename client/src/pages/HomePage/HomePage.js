@@ -5,11 +5,11 @@ import cn from 'classnames';
 
 import {
   VALIDATION_TYPE,
-  LABEL_AUTH_MODE,
-  LABEL_AUTH_TITLE,
-  LABEL_AUTH_TEXT,
-  LABEL_AUTH_INPUT,
-  ERROR_AUTH_TEXT,
+  AUTH_MODE,
+  AUTH_TITLE,
+  AUTH_TEXT,
+  AUTH_INPUT,
+  AUTH_ERROR_TEXT,
 } from '../../data/constants.js';
 import { useForm } from '../../helpers/hooks/FormHook.js';
 
@@ -93,50 +93,46 @@ const HomePage = () => {
     <section className={cn('auth', theme)}>
       <Card>
         <div className={cn('auth__container-title', { [theme]: theme })}>
-          <h2 className="auth__title">
-            {isLoginMode ? LABEL_AUTH_TITLE.LOGIN : LABEL_AUTH_TITLE.SIGNUP}
-          </h2>
+          <h2 className="auth__title">{isLoginMode ? AUTH_TITLE.LOGIN : AUTH_TITLE.SIGNUP}</h2>
           {errorMessage && <ErrorMessage errorText={errorMessage} variant="login " />}
         </div>
 
         <form className="auth__form" onSubmit={submitHandler} noValidate>
           {!isLoginMode && (
             <Input
-              id={LABEL_AUTH_INPUT.USERNAME.toLowerCase()}
-              placeholder={LABEL_AUTH_INPUT.USERNAME}
-              errorText={ERROR_AUTH_TEXT.USERNAME}
+              id={AUTH_INPUT.USERNAME.toLowerCase()}
+              placeholder={AUTH_INPUT.USERNAME}
+              errorText={AUTH_ERROR_TEXT.USERNAME}
               validators={[VALIDATION_TYPE.REQUIRE]}
               onInput={inputHandler}
             />
           )}
           <Input
-            id={LABEL_AUTH_INPUT.EMAIL.toLowerCase()}
+            id={AUTH_INPUT.EMAIL.toLowerCase()}
             type="email"
-            placeholder={LABEL_AUTH_INPUT.EMAIL}
-            errorText={ERROR_AUTH_TEXT.EMAIL}
+            placeholder={AUTH_INPUT.EMAIL}
+            errorText={AUTH_ERROR_TEXT.EMAIL}
             validators={[VALIDATION_TYPE.EMAIL]}
             onInput={inputHandler}
           />
           <Input
-            id={LABEL_AUTH_INPUT.PASSWORD.toLowerCase()}
+            id={AUTH_INPUT.PASSWORD.toLowerCase()}
             type="password"
-            placeholder={LABEL_AUTH_INPUT.PASSWORD}
-            errorText={ERROR_AUTH_TEXT.PASSWORD}
+            placeholder={AUTH_INPUT.PASSWORD}
+            errorText={AUTH_ERROR_TEXT.PASSWORD}
             validators={[VALIDATION_TYPE.PASSWORD]}
             onInput={inputHandler}
           />
           <div className="auth__container-button">
             <Button variant="filled" type="submit" disabled={!formState.isFormValid}>
-              {isLoginMode ? LABEL_AUTH_MODE.LOGIN : LABEL_AUTH_MODE.SIGNUP}
+              {isLoginMode ? AUTH_MODE.LOGIN : AUTH_MODE.SIGNUP}
             </Button>
           </div>
         </form>
         <div className={cn('auth__wrapper', { [theme]: theme })}>
-          <p className="auth__switch-content">
-            {isLoginMode ? LABEL_AUTH_TEXT.SIGNUP : LABEL_AUTH_TEXT.LOGIN}
-          </p>
+          <p className="auth__switch-content">{isLoginMode ? AUTH_TEXT.SIGNUP : AUTH_TEXT.LOGIN}</p>
           <Button onClick={toggleLoginMode} variant="text">
-            {isLoginMode ? LABEL_AUTH_MODE.SIGNUP : LABEL_AUTH_MODE.LOGIN}
+            {isLoginMode ? AUTH_MODE.SIGNUP : AUTH_MODE.LOGIN}
           </Button>
         </div>
       </Card>

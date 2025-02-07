@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { LABEL_BUTTON, FILTER_TERM } from '../../data/constants.js';
+import { BUTTON_LABELS, FILTER_TERMS } from '../../data/constants.js';
 import { setFilter } from '../../store/ui-slice.js';
 import { selectActiveCount, selectCompletedCount } from '../../store/todos-slice.js';
 
@@ -26,31 +26,31 @@ const Navigation = () => {
       <Card>
         <div className="tasks__wrapper-container">
           <Button
-            id={FILTER_TERM.ALL}
+            id={FILTER_TERMS.ALL}
             variant="filter"
             onClick={handleSetFilter}
-            isActive={filter === FILTER_TERM.ALL}
+            isActive={filter === FILTER_TERMS.ALL}
             count={tasks.length}
           >
-            {LABEL_BUTTON.ALL}
+            {BUTTON_LABELS.ALL}
           </Button>
           <Button
-            id={FILTER_TERM.ACTIVE}
+            id={FILTER_TERMS.ACTIVE}
             variant="filter"
             onClick={handleSetFilter}
-            isActive={filter === FILTER_TERM.ACTIVE}
+            isActive={filter === FILTER_TERMS.ACTIVE}
             count={activeCount}
           >
-            {LABEL_BUTTON.ACTIVE}
+            {BUTTON_LABELS.ACTIVE}
           </Button>
           <Button
-            id={FILTER_TERM.COMPLETED}
+            id={FILTER_TERMS.COMPLETED}
             variant="filter"
             onClick={handleSetFilter}
-            isActive={filter === FILTER_TERM.COMPLETED}
+            isActive={filter === FILTER_TERMS.COMPLETED}
             count={completedCount}
           >
-            {LABEL_BUTTON.COMPLETED}
+            {BUTTON_LABELS.COMPLETED}
           </Button>
         </div>
       </Card>

@@ -1,56 +1,59 @@
+// Validation type
 export const VALIDATION_TYPE = {
   REQUIRE: 'REQUIRE',
   EMAIL: 'EMAIL',
   PASSWORD: 'PASSWORD',
 };
 
-export const LABEL_THEME_MODE = {
+// Theme Modes
+export const THEME_MODE = {
   LIGHT: 'light',
   DARK: 'dark',
 };
 
-export const LABEL_AUTH_MODE = {
+// Auth Modes
+export const AUTH_MODE = {
   LOGIN: 'Log in',
   SIGNUP: 'Sign up',
 };
 
-export const LABEL_AUTH_TITLE = {
-  LOGIN: 'Login',
-  SIGNUP: 'Signup',
+export const AUTH_TITLE = {
+  LOGIN: 'Log in to Continue',
+  SIGNUP: 'Create Your Account',
 };
 
-export const LABEL_AUTH_TEXT = {
-  LOGIN: 'Do you have an account? ',
-  SIGNUP: "Don't have an account? ",
+export const AUTH_TEXT = {
+  LOGIN: 'Already have an account?',
+  SIGNUP: "New here? Let's get you started!",
 };
 
-export const LABEL_AUTH_INPUT = {
+export const AUTH_INPUT = {
   USERNAME: 'Username',
   EMAIL: 'Email',
   PASSWORD: 'Password',
 };
 
-export const ERROR_AUTH_TEXT = {
-  USERNAME: 'Please enter your username',
-  EMAIL: 'Please enter a valid email address example@example.com',
+export const AUTH_ERROR_TEXT = {
+  USERNAME: 'Please provide a username',
+  EMAIL: 'Please provide a valid email address example@example.com',
   PASSWORD:
-    'Please enter a valid password, at least 8 characteres, at least one letter and a number from 0 to 99',
+    'Your password needs at least 8 characters, a letter, and a number. Let’s make it strong!',
 };
 
-export const LABEL_TASK_INPUT = {
+export const TASK_INPUT = {
   TITLE: 'task',
-  PLACEHOLDER: 'Create a new to-do...',
+  PLACEHOLDER: 'Add a new task... get things done!',
 };
 
 export const EMPTY_LIST = {
-  TEXT: 'Your TO-DO list is empty',
+  TEXT: 'Your task list is looking a little empty—let’s add some tasks!',
 };
 
 export const ITEMS_LEFT = {
   TEXT: 'items left',
 };
 
-export const LABEL_BUTTON = {
+export const BUTTON_LABELS = {
   LOGIN: 'Login',
   SIGNUP: 'Signup',
   CLEAR: 'Clear Completed',
@@ -59,18 +62,29 @@ export const LABEL_BUTTON = {
   COMPLETED: 'Completed',
 };
 
-export const FILTER_TERM = {
+export const FILTER_TERMS = {
   ALL: 'all',
   ACTIVE: 'active',
   COMPLETED: 'completed',
 };
 
-export const TITLE_HEADER = {
-  LOGIN: 'Welcome,',
+export const HEADER_TITLE = {
+  LOGIN: 'Welcome, ',
   SIGNUP: 'Flourish',
 };
 
-export const TITLE_FOOTER = {
+export const FOOTER_TITLE = {
   RIGHT: 'Created with',
-  LEFT: 'by Veranika Karpava © 2022-2025',
+  LEFT: 'by Veranika Karpava © 2022-',
+};
+
+// Footer Dynamic Year
+export const CURRENT_YEAR = new Date().getFullYear();
+export const FOOTER_COPYRIGHT = `${FOOTER_TITLE.LEFT}${CURRENT_YEAR}`;
+
+//urls
+export const PATH_API = {
+  TASKS_URL: '/tasks',
+  QUOTE_URL: '/quote',
+  USERS_URL: '/user',
 };

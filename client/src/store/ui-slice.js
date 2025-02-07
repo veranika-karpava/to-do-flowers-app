@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { LABEL_THEME_MODE, FILTER_TERM } from '../data/constants.js';
+import { THEME_MODE, FILTER_TERMS } from '../data/constants.js';
 
-const initialState = { theme: LABEL_THEME_MODE.LIGHT, filter: FILTER_TERM.ALL };
+const initialState = { theme: THEME_MODE.LIGHT, filter: FILTER_TERMS.ALL };
 
 const uiSlice = createSlice({
   name: 'ui',

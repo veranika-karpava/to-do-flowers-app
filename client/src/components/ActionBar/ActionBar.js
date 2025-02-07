@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { ITEMS_LEFT, LABEL_BUTTON, FILTER_TERM } from '../../data/constants.js';
+import { ITEMS_LEFT, BUTTON_LABELS, FILTER_TERMS } from '../../data/constants.js';
 import { useDeleteCompletedTasksMutation } from '../../store/todosApiSlice.js';
 import {
   deleteCompletedToDos,
@@ -30,12 +30,12 @@ const ActionBar = () => {
 
   return (
     <div className="tasks__action-container">
-      {filter !== FILTER_TERM.COMPLETED && (
+      {filter !== FILTER_TERMS.COMPLETED && (
         <p className="tasks__left-items">{`${activeCount} ${ITEMS_LEFT.TEXT}`}</p>
       )}
-      {filter !== FILTER_TERM.ACTIVE && completedCount !== 0 && (
+      {filter !== FILTER_TERMS.ACTIVE && completedCount !== 0 && (
         <Button variant="filter" onClick={deleteAllCompletedHandler}>
-          {LABEL_BUTTON.CLEAR}
+          {BUTTON_LABELS.CLEAR}
         </Button>
       )}
     </div>

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 
-import { LABEL_THEME_MODE, TITLE_HEADER } from '../../data/constants.js';
+import { THEME_MODE, HEADER_TITLE } from '../../data/constants.js';
 
 import { toggle } from '../../store/ui-slice.js';
 import { useLogoutMutation } from '../../store/usersApiSlice.js';
@@ -28,18 +28,16 @@ const Header = () => {
   });
 
   const toggleModeHandler = () => {
-    dispatch(
-      toggle(theme === LABEL_THEME_MODE.LIGHT ? LABEL_THEME_MODE.DARK : LABEL_THEME_MODE.LIGHT),
-    );
+    dispatch(toggle(theme === THEME_MODE.LIGHT ? THEME_MODE.DARK : THEME_MODE.LIGHT));
   };
 
   useEffect(() => {
     if (isSuccess) navigate('/');
   }, [isSuccess, navigate]);
 
-  const userGreeting = isAuth ? `${TITLE_HEADER.LOGIN}${userInfo.userName}` : TITLE_HEADER.SIGNUP;
-  const iconButton = theme === LABEL_THEME_MODE.LIGHT ? 'BsSunFill' : 'FaMoon';
-  const backgroundImage = theme === LABEL_THEME_MODE.LIGHT ? bgImageLight : bgImageDark;
+  const userGreeting = isAuth ? `${HEADER_TITLE.LOGIN}${userInfo.userName}` : HEADER_TITLE.SIGNUP;
+  const iconButton = theme === THEME_MODE.LIGHT ? 'BsSunFill' : 'FaMoon';
+  const backgroundImage = theme === THEME_MODE.LIGHT ? bgImageLight : bgImageDark;
 
   return (
     <header

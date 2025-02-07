@@ -1,6 +1,7 @@
 import apiSlice from './apiSlice.js';
 import { clearCredentials } from './auth-slice.js';
 const USERS_URL = '/user';
+import { PATH_API } from '../data/constants.js';
 
 export const handleAuthError = (dispatch) => {
   dispatch(clearCredentials());
@@ -11,7 +12,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({
-        url: `${USERS_URL}/login`,
+        url: `${PATH_API.USERS_URL}/login`,
         method: 'POST',
         body: { ...credentials },
       }),
@@ -26,7 +27,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     signup: builder.mutation({
       query: (credentials) => ({
-        url: `${USERS_URL}/signup`,
+        url: `${PATH_API.USERS_URL}/signup`,
         method: 'POST',
         body: { ...credentials },
       }),
@@ -41,7 +42,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     logout: builder.mutation({
       query: () => ({
-        url: `${USERS_URL}/logout`,
+        url: `${PATH_API.USERS_URL}/logout`,
         method: 'POST',
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {

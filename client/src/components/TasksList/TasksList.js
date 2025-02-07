@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
-import { FILTER_TERM, EMPTY_LIST } from '../../data/constants.js';
+import { FILTER_TERMS, EMPTY_LIST } from '../../data/constants.js';
 
 import './TasksList.scss';
 import TaskItem from '../TaskItem/TaskItem.js';
@@ -12,9 +12,9 @@ const TasksList = () => {
   const { theme, filter } = useSelector((state) => state.ui);
 
   const filteredTasks = useMemo(() => {
-    return filter === FILTER_TERM.COMPLETED
+    return filter === FILTER_TERMS.COMPLETED
       ? tasks.filter((task) => task.completed)
-      : filter === FILTER_TERM.ACTIVE
+      : filter === FILTER_TERMS.ACTIVE
         ? tasks.filter((task) => !task.completed)
         : tasks;
   }, [tasks, filter]);

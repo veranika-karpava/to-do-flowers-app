@@ -1,24 +1,30 @@
-# ToDo app
-ToDo app is a fully responsive full-stack web app that allows users to add/delete their tasks and set status to task as completed and delete completed task. 
+# Flourish app
+The Flourish app is a fully responsive, full-stack web application that allows users to manage theie tasks effectively. User can add/delete and update task statuses, as well as filter tasks based on current status. This app provides the option to switch between light/dark modes, and includes user authentication with JWT for secure login and sign-up.
 
-Current functionality:
-* select light/dark mode
-* sign up and login to the web app 
-* add/delete task
-* update task status as completed
-* filter tasks by status(all,completed, active)
-* log out
+
+# Current Features:
+* Light/Dark Mode Toggle: switch between light and dark mode for better visual comfort;
+* User Authentication: secure sign-up and login functionality with JWT tokens;
+* Task Management: add new tasks, delete tasks, and update task statuses;
+* Task Filtering: filter tasks by their status (All, Completed, Active);
+* Task Cleanup: delete completed tasks to keep your task list organized.
+* User Logout: log out and secure your account.
 
 # Project Structure
-* * `/` - login/sign-up page
-* `/tasks` - tasks page where user can create, update status, delete and sort by category tasks.
+* `/`: the login/sign-up page, where users can create an account or log in;
+* `/tasks`: the main tasks management page where users create/update/delete tasks;
 
 # Enviroment Variables
-Check `.env.sample` in the client and the server directory to set up enviroment variables file (.env). 
+* set up the environment variables, make sure to configure both the client and server by following the instructions in the `.env.sample` file in both directories.
 
 # Project Tech Stack
 * Sass
-* ReactJS
+* React
+* Redux-Toolkit
+* RTK Query
+* React-router
+* ESLint
+* Prettier
 * NodeJS
 * ExpressJS
 * MongoDB
@@ -26,16 +32,15 @@ Check `.env.sample` in the client and the server directory to set up enviroment 
 * JWT Authentication
 
 # Running the Project
-1. Clone or download this repository
-2. Start the server
-   * **`cd server`** - change project directory to server diretory
-   * **`npm install`** - install all the node modules and dependecies
-   * **`npm start`** - start run server on port
-3. Start the client
-   * **`cd client`** - change project directory to client diretory
-   * **`npm install`** - install all the node modules and dependecies
-   * **`npm start`** - start run to-do app on http://localhost:3000 in browser
+1. Clone or Download the Repository: clone the repository to your local machine;
+2. Start the server:
+   * **`cd server`**: navigate to the server directory;
+   * **`npm install`**: install necessary dependencies;
+   * **`npm start`**: start the server
+3. Start the client:
+   * **`cd client`**: navigate to the client directory;
+   * **`npm install`**: install necessary dependencies;
+   * **`npm start`** - launch the app in your browser;
 
 # Link to the demo
 * https://to-do-flowers-app.herokuapp.com/
-

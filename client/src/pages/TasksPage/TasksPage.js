@@ -5,7 +5,7 @@ import cn from 'classnames';
 import { useFetchTasksQuery, useCreateTaskMutation } from '../../store/todosApiSlice.js';
 import { setTodoList, createNewToDo } from '../../store/todos-slice.js';
 import { useForm } from '../../helpers/hooks/FormHook.js';
-import { VALIDATION_TYPE, LABEL_TASK_INPUT } from '../../data/constants.js';
+import { VALIDATION_TYPE, TASK_INPUT } from '../../data/constants.js';
 
 import './TasksPage.scss';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.js';
@@ -86,8 +86,8 @@ const TasksPage = () => {
             disabled={!formState.isFormValid}
           />
           <Input
-            id={LABEL_TASK_INPUT.TITLE}
-            placeholder={LABEL_TASK_INPUT.PLACEHOLDER}
+            id={TASK_INPUT.TITLE}
+            placeholder={TASK_INPUT.PLACEHOLDER}
             validators={[VALIDATION_TYPE.REQUIRE]}
             onInput={inputHandler}
             border="noborder"

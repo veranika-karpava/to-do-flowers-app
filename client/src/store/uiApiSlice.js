@@ -1,11 +1,12 @@
 import apiSlice from './apiSlice.js';
-const QUOTE_URL = '/quote';
+
+import { PATH_API } from '../data/constants.js';
 
 export const uiApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     fetchQuote: builder.query({
       query: () => ({
-        url: QUOTE_URL,
+        url: PATH_API.QUOTE_URL,
         method: 'GET',
       }),
     }),
