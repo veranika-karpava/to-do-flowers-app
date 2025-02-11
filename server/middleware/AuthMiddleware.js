@@ -7,11 +7,8 @@ const ERROR_MESSAGES = require('../utils/errorMessages');
 
 const JWT_KEY = process.env.JWT_SECRET_KEY;
 
-const protect = async (req, res, next) => {
+const protect = async (req, _res, next) => {
   const token = req.cookies?.jwt;
-
-  console.log(req.cookies);
-  console.log()
 
   if (token) {
     try {
