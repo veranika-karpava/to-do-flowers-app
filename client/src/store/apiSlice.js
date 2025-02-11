@@ -8,6 +8,7 @@ const baseQuery = fetchBaseQuery({
 const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery,
+  credentials: 'include',
   tagTypes: ['User', 'Task', 'UI'],
   endpoints: (builder) => ({}),
 });
