@@ -9,7 +9,10 @@ const JWT_KEY = process.env.JWT_SECRET_KEY;
 
 const protect = async (req, res, next) => {
   const token = req.cookies?.jwt;
-  
+
+  console.log(req.cookies);
+  console.log()
+
   if (token) {
     try {
       const decoded = jwt.verify(token, JWT_KEY);
@@ -19,7 +22,7 @@ const protect = async (req, res, next) => {
       return next(new HttpError(ERROR_MESSAGES.TOKEN.TOKEN_FAILED, 401));
     }
   } else {
-    return next(new HttpError(req.cookies, 401));
+    return next(new HttpError(ERROR_MESSAGES.TOKEN.NO_TOKEN, 401));
   }
 };
 
