@@ -14,7 +14,7 @@ const quoteRouter = require('./middleware/quoteRouter');
 const app = express();
 
 // for deploying - handle error not existing routes if any js file
-app.use(express.static(path.join('public')));
+// app.use(express.static(path.join('public')));
 
 // middlewares
 // for handling CORS(cross-origin resource sharing) error
@@ -38,9 +38,9 @@ app.use('/tasks', taskRouter);
 app.use('/quote', quoteRouter);
 
 // for deploying  - anything else return index.html
-app.use((_req, res) => {
-  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-});
+// app.use((_req, res) => {
+//   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+// });
 
 // for error-handling
 app.use((error, _req, res, next) => {
