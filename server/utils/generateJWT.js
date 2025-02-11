@@ -12,7 +12,7 @@ const generateJWT = (res, user) => {
     httpOnly: true, //accessible only by web server
     sameSite: 'None', // cross-site cookie
     secure: true, //https
-    domain: '.onrender.com',
+    domain: '.onrender.com', // for deploying
   });
 };
 

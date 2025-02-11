@@ -10,6 +10,8 @@ const JWT_KEY = process.env.JWT_SECRET_KEY;
 const protect = async (req, _res, next) => {
   const token = req.cookies?.jwt;
 
+  console.log(req.cookies);
+
   if (token) {
     try {
       const decoded = jwt.verify(token, JWT_KEY);
