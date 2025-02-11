@@ -12,7 +12,8 @@ const generateJWT = (res, user) => {
     httpOnly: true, //accessible only by web server
     sameSite: 'None', // cross-site cookie
     secure: true, //https
-    domain: '.onrender.com', // for deploying
+    domain: 'https://flourish-server.onrender.com', // for deploying
+    path: '/',
   });
 };
 
