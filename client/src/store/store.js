@@ -13,7 +13,7 @@ const store = configureStore({
     todos: todosSlice.reducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
-  devTools: true,
+  devTools: false,
 });
 
 export default store;
