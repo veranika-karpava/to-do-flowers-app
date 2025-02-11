@@ -10,7 +10,7 @@ const generateJWT = (res, user) => {
   res.cookie('jwt', token, {
     httpOnly: true, //accessible only by web server
     secure: true, //https
-    sameSite: 'Strict', // cross-site cookie
+    sameSite: 'None', // cross-site cookie
     maxAge: 60 * 60 * 1000, //  1hour
   });
 };
