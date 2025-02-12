@@ -24,7 +24,8 @@
     "lint:fix": "eslint --fix 'src/**/*.{js,jsx}'",
     "format:check": "prettier --check 'src/**/*.{js,jsx,scss}'",
     "format:write": "prettier --write 'src/**/*.{js,jsx,scss}'",
-    "delint": "npm run lint:fix && npm run format:write"
+    "delint": "npm run lint:fix && npm run format:write",
+    "build-and-copy": "npm run build && cp -r build/ ../server/public"
   },
   "browserslist": {
     "production": [

@@ -1,7 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 # environment var
 **/.env
-**/.env
 **/.env.production
 **/README.md
 # dependencies
@@ -14,7 +13,7 @@
 
 # production
 /build
-server/public/
+/build
 
 # misc
 .DS_Store

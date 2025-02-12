@@ -1,0 +1,26 @@
+{
+  "short_name": "Flourish",
+  "name": "Flourish - Task Management App",
+  "description": "Flourish is a fully responsive task management web app that lets you manage your tasks effortlessly. Add, delete, update, and filter tasks while enjoying light/dark mode and secure user authentication.",
+  "icons": [
+    {
+      "src": "flower.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "flower.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "flower.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#FFFFFF",
+  "background_color": "#1d3557"
+}

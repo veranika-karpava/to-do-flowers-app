@@ -2,9 +2,6 @@ const express = require('express');
 const cookiesParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const path = require('path');
-// if (process.env.NODE_ENV !== 'production') {
-//   require('dotenv').config();
-// }
 const cors = require('cors');
 
 const userRouter = require('./middleware/userRouter');
@@ -13,11 +10,7 @@ const quoteRouter = require('./middleware/quoteRouter');
 
 const app = express();
 
-// for deploying - handle error not existing routes if any js file
-// app.use(express.static(path.join('public')));
-
-// middlewares
-// for handling CORS(cross-origin resource sharing) error
+// CORS middleware: configures cross-origin resource sharing
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
@@ -27,22 +20,27 @@ app.use(
   }),
 );
 
-//convert incoming data -> JSON obj to JS obj and parsed to req.body
+// Middleware to parse incoming JSON requests into JS objects
 app.use(express.json());
-// for cookies
+
+// Middleware to handle cookies in incoming requests
 app.use(cookiesParser());
 
-// for registration routers
+// Register route handlers for different parts of the app
 app.use('/user', userRouter);
 app.use('/tasks', taskRouter);
 app.use('/quote', quoteRouter);
 
-// for deploying  - anything else return index.html
-// app.use((_req, res) => {
-//   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-// });
+// Serve static files (e.g., images, CSS, JavaScript) from the 'public' directory - for deploying
+app.use(express.static(path.join(__dirname, '/public')));
 
-// for error-handling
+// Catch-all route for single-page applications (SPAs)
+// If no API routes match, serve the 'index.html' file from the 'public' directory
+app.use((_req, res) => {
+  res.sendFile(path.resolve(__dirname, '/public/index.html'));
+});
+
+// Set default status code and message for errors
 app.use((error, _req, res, next) => {
   if (res.headerSent) {
     return next(error);
@@ -50,6 +48,7 @@ app.use((error, _req, res, next) => {
   res.status(error.code || 500).json({ message: error.message || 'An unknown error occured' });
 });
 
+// MongoDB connection setup
 mongoose
   .connect(
     `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.lhybrvz.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
