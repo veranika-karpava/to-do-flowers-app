@@ -43,4 +43,4 @@ The Flourish app is a fully responsive, full-stack web application that allows u
    * **`npm start`** - launch the app in your browser;
 
 # 🌐 Link to the demo
-* https://to-do-flowers-app.herokuapp.com/
+* https://flourish-tasks-app.onrender.com
