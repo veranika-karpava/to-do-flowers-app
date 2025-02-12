@@ -32,12 +32,12 @@ app.use('/tasks', taskRouter);
 app.use('/quote', quoteRouter);
 
 // Serve static files (e.g., images, CSS, JavaScript) from the 'public' directory - for deploying
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Catch-all route for single-page applications (SPAs)
 // If no API routes match, serve the 'index.html' file from the 'public' directory
 app.use((_req, res) => {
-  res.sendFile(path.resolve(__dirname, '/public/index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Set default status code and message for errors
@@ -45,7 +45,7 @@ app.use((error, _req, res, next) => {
   if (res.headerSent) {
     return next(error);
   }
-  res.status(error.code || 500).json({ message: error.message || 'An unknown error occured' });
+  res.status(error.statusCode || 500).json({ message: error.message || 'An unknown error occured' });
 });
 
 // MongoDB connection setup
